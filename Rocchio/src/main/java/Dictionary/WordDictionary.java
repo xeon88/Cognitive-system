@@ -1,5 +1,7 @@
 package Dictionary;
 
+import it.uniroma1.lcl.babelnet.BabelNet;
+
 import java.io.*;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.TreeSet;
  */
 public class WordDictionary {
 
+    private BabelNet babelInstance;
     private TreeSet<String> words;
     private File directory;
     private final String splitRegex = "(\\s|\\t|\\n|\\r|," +
@@ -25,11 +28,13 @@ public class WordDictionary {
             throw new IllegalArgumentException("Missing directory");
         }
         words = new TreeSet();
+        babelInstance = BabelNet.getInstance();
     }
 
     public TreeSet<String> getWords(){
         return words;
     }
+
 
 
     public void loadWords() throws IOException {
@@ -44,6 +49,17 @@ public class WordDictionary {
     }
 
 
+
+    private String getNormalizedForm(String s) throws IOException {
+        String lemma = s;
+        if(lemma.length()>2){
+           lemma = toProperCase(s);
+        }
+        return lemma;
+    }
+
+
+
     private ArrayList<String> createArrayList(File file) throws IOException {
 
         ArrayList<String> words = new ArrayList<String>();
@@ -52,20 +68,17 @@ public class WordDictionary {
         String line ;
         String text="";
         while((line = buffreader.readLine())!=null){
-            text+= line;
+            text +=line;
         }
         String [] split = text.split(splitRegex);
         System.out.println("splits : " + split.length);
         for(int i = 0; i<split.length ; i++){
-            if(split[i].length()<=2){
-                words.add(split[i]);
-            }
-            else{
-                words.add(toProperCase(split[i]));
-            }
+            words.add(getNormalizedForm(split[i]));
         }
         return words;
     }
+
+
 
     static String toProperCase(String s) {
         return s.substring(0, 1).toUpperCase() +
