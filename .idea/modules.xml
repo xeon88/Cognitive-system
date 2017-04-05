@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BabelNet/babelNet.iml" filepath="$PROJECT_DIR$/BabelNet/babelNet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Rocchio/Rocchio.iml" filepath="$PROJECT_DIR$/Rocchio/Rocchio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SisCog.iml" filepath="$PROJECT_DIR$/SisCog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WordNet/WordNet.iml" filepath="$PROJECT_DIR$/WordNet/WordNet.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Rocchio/babelNet/babelNet.iml" filepath="$PROJECT_DIR$/Rocchio/babelNet/babelNet.iml" />
+    </modules>
+  </component>
+</project>
