@@ -13,5 +13,14 @@
         <module>WordNet</module>
         <module>Rocchio</module>
         <module>BabelNet</module>
+        <module>jena</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-querybuilder</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+    </dependencies>
 </project>

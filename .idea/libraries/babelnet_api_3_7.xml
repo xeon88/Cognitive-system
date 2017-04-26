@@ -3,6 +3,8 @@
     <CLASSES>
       <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/babelnet-api-3.7.jar!/" />
       <root url="file://D:/University/SisCog/utils/BabelNet-API-3.7/lib" />
+      <root url="file://D:/University/SisCog/utils/BabelNet-API-3.7/config" />
+      <root url="file://D:/University/SisCog/utils/BabelNet-API-3.7/resources" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

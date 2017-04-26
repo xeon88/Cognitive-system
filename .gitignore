@@ -3,3 +3,4 @@ BabelNet/.idea/
 jena/.idea/
 Rocchio/.idea/
 WordNet/.idea/
+*.class

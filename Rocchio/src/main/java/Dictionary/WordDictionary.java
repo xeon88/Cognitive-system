@@ -1,11 +1,14 @@
 package Dictionary;
 
 import it.uniroma1.lcl.babelnet.BabelNet;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Marco Corona on 05/04/2017.
@@ -15,20 +18,28 @@ public class WordDictionary {
     private BabelNet babelInstance;
     private TreeSet<String> words;
     private File directory;
-    private final String splitRegex = "(\\s|\\t|\\n|\\r|," +
-            "|\\.\\.\\.|\\.|\\(|\\)|\"|#|\\&|\\:|«|»|\\%|\\s\\-|\'|\\?)*";
+    private String[] stopwords;
+    private final String splitRegex = "(\\t|\\s|\\(|\\)|\\+|’|')+";
 
-    private final String prepositionsRegex= "(All|Dell|)";
+            /*"" +
+            "|(," +
+            "|\\.\\.\\.|\\.|\\(|\\)|\"|#|" +
+            "\\&|\\;|\\:|«|»|\\%|’|'|\\?|@|\\”" +
+            "|(([0-9]|/|\\-|\\+)+(\\S)*))+";
+            */
+
 
     public WordDictionary(File dir){
         if(dir.isDirectory()) {
             this.directory = dir;
+            this.stopwords  = StopWords.load();
         }
         else{
             throw new IllegalArgumentException("Missing directory");
         }
         words = new TreeSet();
         babelInstance = BabelNet.getInstance();
+
     }
 
     public TreeSet<String> getWords(){
@@ -42,10 +53,9 @@ public class WordDictionary {
         File [] files = directory.listFiles();
         ArrayList<String> fileWords;
         for(int i = 0 ; i<files.length; i++){
-           fileWords = createArrayList(files[i]);
+            fileWords = createArrayList(files[i]);
             words.addAll(fileWords);
         }
-
     }
 
 
@@ -67,17 +77,48 @@ public class WordDictionary {
         BufferedReader buffreader = new BufferedReader(reader);
         String line ;
         String text="";
+
         while((line = buffreader.readLine())!=null){
             text +=line;
         }
+
         String [] split = text.split(splitRegex);
-        System.out.println("splits : " + split.length);
         for(int i = 0; i<split.length ; i++){
-            words.add(getNormalizedForm(split[i]));
+            String s = getSubStr(split[i]);
+            if(s!=null && !isStopWords(s)){
+                String normalized = getNormalizedForm(s);
+                words.add(normalized);
+                //System.out.println("added : " + normalized);
+            }
         }
         return words;
     }
 
+
+    private String getSubStr(String s){
+        String regex = "(\\.\\.\\.|\\.|#|&|;|" +
+                ":|«|»|%|\\?|@|\\”)*([A-Za-zàèòùì]+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher match = pattern.matcher(s);
+        if(match.find()){
+            //System.out.println("group 0 : " + match.group(0));
+            //System.out.println("group 1 : " + match.group(1));
+            //System.out.println("group 2 : " + match.group(2));
+            return match.group(2);
+        }
+        return null;
+    }
+
+    private boolean isStopWords(String s){
+        boolean check = false;
+        for(int  i = 0; i<stopwords.length; i++){
+            if(s.equalsIgnoreCase(stopwords[i])){
+                check = true;
+                break;
+            }
+        }
+        return check;
+    }
 
 
     static String toProperCase(String s) {
