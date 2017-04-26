@@ -4,3 +4,5 @@ jena/.idea/
 Rocchio/.idea/
 WordNet/.idea/
 *.class
+resources/
+config/
