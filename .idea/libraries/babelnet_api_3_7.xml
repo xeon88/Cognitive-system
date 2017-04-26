@@ -2,27 +2,10 @@
   <library name="babelnet-api-3.7">
     <CLASSES>
       <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/babelnet-api-3.7.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-beanutils-1.7.0.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-beanutils-core-1.7.0.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-codec-1.8.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-collections-3.2.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-configuration-1.5.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-digester-1.8.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-lang-2.3.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/commons-logging-1.2.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/gson-2.2.4.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/guava-18.0.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/httpclient-4.3.6.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/httpcore-4.3.3.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/icu4j-56.1.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/jltutils-2.2.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/jwi-2.2.3.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/log4j-api-2.1.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/log4j-core-2.1.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/lucene-core-4.9.0.jar!/" />
-      <root url="jar://D:/University/SisCog/utils/BabelNet-API-3.7/lib/lucene-queryparser-4.9.0.jar!/" />
+      <root url="file://D:/University/SisCog/utils/BabelNet-API-3.7/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
+    <jarDirectory url="file://D:/University/SisCog/utils/BabelNet-API-3.7/lib" recursive="false" />
   </library>
 </component>
