@@ -38,5 +38,6 @@
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
     <orderEntry type="library" name="ritaWN" level="project" />
     <orderEntry type="library" name="rita" level="project" />
+    <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-core:2.0.6" level="project" />
   </component>
 </module>

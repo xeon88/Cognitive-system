@@ -1,5 +1,3 @@
-AC
-AR
 Abbandona
 Abbandonandosi
 Abbandonare
@@ -11,8 +9,6 @@ Abbassare
 Abbassato
 Abbattuti
 Abbattuto
-Abbia
-Abbiano
 Abbigliamento
 Abbinamenti
 Abbinamento
@@ -366,8 +362,6 @@ Alti
 Altissime
 Alto
 Altoparlanti
-Altrettanti
-Altrettanto
 Altronde
 Altrui
 Alvaro
@@ -1014,14 +1008,9 @@ Avevo
 Avezzano
 Avidi
 Avidità
-Avranno
 Avrebbe
-Avrebbero
 Avrei
 Avremmo
-Avrete
-Avrà
-Avuta
 Avveduto
 Avvelenato
 Avvenire
@@ -1970,9 +1959,6 @@ Chocolatdal
 Choosy
 Cialtroni
 Ciao
-Ciascun
-Ciascuna
-Ciascuno
 Cibarsi
 Cibati
 Cibernetica
@@ -2680,7 +2666,6 @@ Corto
 Cortometraggio
 Coscia
 Coscienza
-Cose
 Cosiddette
 Cosiddetto
 Cosmetici
@@ -2885,7 +2870,6 @@ Data
 Dati
 Dato
 Datori
-Davanti
 David
 Davide
 Davidson
@@ -3439,7 +3423,6 @@ Due
 Duecentomila
 Duello
 Duetto
-Dunque
 Duplicare
 Duplice
 Duqu
@@ -3800,7 +3783,6 @@ Esprimendo
 Espulsione
 Espulsuione
 Esquilinoennesimo
-Esse
 Essendo
 Essenza
 Essenziale
@@ -3922,7 +3904,6 @@ Facili
 Facilità
 Facilitò
 Faggi
-Fai
 Falco
 Falkenmark
 Fallimento
@@ -3942,7 +3923,6 @@ Familiari
 Famosa
 Famosi
 Famoso
-Fanno
 Fantasia
 Fantasiose
 Fantasmi
@@ -4294,7 +4274,6 @@ Forze
 Fosche
 Fossa
 Fosse
-Fossero
 Fossi
 Fossili
 Foto
@@ -4427,7 +4406,6 @@ Furente
 Furia
 Furibonda
 Furioso
-Furono
 Furto
 Fuscolo
 Fusione
@@ -5940,9 +5918,7 @@ Luminoso
 Lumière
 Luna
 Lunedì
-Lunga
 Lunghezza
-Lunghi
 Lunghissimo
 Lungimiranza
 Lunotto
@@ -5983,7 +5959,6 @@ Magazine
 Magazzino
 Maggio
 Maggioranza
-Maggiori
 Maggiormente
 Magia
 Magic
@@ -6467,8 +6442,6 @@ Molinari
 Molisano
 Molise
 Molle
-Molta
-Molte
 Momenti
 Momento
 Moments
@@ -7069,7 +7042,6 @@ Ovattati
 Over
 Overno
 Ovulo
-Ovunque
 Ovvero
 Ovviamente
 Oxford
@@ -8136,13 +8108,11 @@ Putin
 Può
 Qaeda
 Qatar
-Qua
 Quaderni
 Quadrare
 Quadri
 Quagliariello
 Qual
-Quali
 Qualificarci
 Qualificare
 Qualificazione
@@ -9716,7 +9686,6 @@ Solito
 Sollecitato
 Sollevato
 Sollievo
-Soltanto
 Soluzione
 Soluzioni
 Something
@@ -10052,10 +10021,8 @@ Stare
 Starebbe
 Starebbero
 Staremo
-Stata
-State
-Stati
 Station
+Stato
 Statocresce
 Statua
 Statue
@@ -10334,10 +10301,6 @@ Tangenti
 Tangibile
 Tango
 Tant
-Tanta
-Tante
-Tanti
-Tanto
 Tappa
 Tarantina
 Tarcela
@@ -10849,11 +10812,8 @@ Uguale
 Ugualmente
 Ulrich
 Ulteriormente
-Ultima
 Ultimati
 Ultimatum
-Ultime
-Ultimi
 Ultra
 Ultrasettantenne
 Ultravioletti
@@ -11014,13 +10974,11 @@ Vanto
 Vapor
 Vara
 Varare
-Vari
 Variante
 Varianti
 Variarle
 Variazione
 Variazioni
-Varie
 Varietà
 Varisco
 Varo
@@ -11174,8 +11132,6 @@ Vicende
 Vicepresidente
 Viceversa
 Vicina
-Vicini
-Vicino
 Vicoli
 Vidal
 Vide
@@ -11339,9 +11295,6 @@ Votato
 Voti
 Voto
 Vucinic
-Vuoi
-Vuol
-Vuole
 Vuota
 Vuoto
 Vuum
@@ -11428,3 +11381,4 @@ Zuava
 Zucchero
 Zucchine
 Zuppetta
+kW

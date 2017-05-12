@@ -1,6 +1,6 @@
 package Dictionary;
 
-import java.util.TreeMap;
+import java.util.HashMap;
 
 
 /**
@@ -10,120 +10,53 @@ import java.util.TreeMap;
 
 public class DocumentVector {
 
-    private  int [] occurences;
-    private String label;
-    private TreeMap<String,Term> map;
+    protected   double[] featureValues;
+    protected int size;
+    protected String label;
 
 
-    private class Term implements Comparable<Term>{
-
-        protected int occurencies;
-        protected String name;
-
-        public int compareTo(Term term) {
-            return name.compareTo(term.name);
-        }
-
-
-        public int getOccuriences(){
-            return occurencies;
-        }
-        public String getName(){
-            return name;
-
-        }
-
-        public void setName(String name){
-            this.name = name;
-        }
-
-        public void incrementsOcc(int occs){
-            this.occurencies+=occs;
-        }
-
-        protected Term(String name, int initOcc){
-            this.name = name;
-            this.occurencies = initOcc;
-        }
-    }
-
-
-    public TreeMap<String, Term> getMap() {
-        return map;
-    }
-
-
-    public void setOccurences(int[] occurences) {
-        this.occurences = occurences;
-    }
-
-    public void setMap(TreeMap<String, Term> map) {
-        this.map = map;
-    }
-
-    public void setLabel(String label) {
+    public DocumentVector(String label){
         this.label = label;
-    }
-
-
-    public DocumentVector(String label, int size){
-        this.label = label;
-        map = new TreeMap<String,Term>();
-        this.occurences = new int[size];
+        this.size = 1 ;
+        this.featureValues = new double[1];
     }
 
     public String getLabel() {
         return label;
     }
-
-    public int[] getOccurences() {
-        return occurences;
+    public double[] getFeatureValues() {
+        return featureValues;
     }
 
-    public TreeMap<String,Term> getInfo() {
-        return map;
-    }
-
-    public void incrementsOcc(String name, int occ){
-        if(map.containsKey(name)) {
-            map.get(name).incrementsOcc(occ);
-        }
-        else{
-            map.put(name,new Term(name, occ));
-        }
+    public void setFeatureValues(double [] values){
+        this.featureValues = values;
     }
 
 
-    public void makeArrayForDataVector(){
+
+
+    public void makeArrayForDataVector(WordDictionary dict , int totalDocs){
         int i = 0;
-        for (Term t : map.values()){
-            occurences[i]=t.occurencies;
+
+        this.featureValues = new double[dict.getWordsMap().size()];
+        for(String key : dict.getWordsMap().keySet()){
+            int freqs = 0;
+            Features f = dict.getWordsMap().get(key);
+            if(f.getLabelFreq().keySet().contains(label)){
+                freqs = f.getLabelFreq().get(label);
+            }
+            featureValues[i] = freqs*(Math.log(totalDocs) - Math.log(f.getPresence()));
             i++;
         }
-    }
-
-
-    public int[] makeArrayForCentroidVector(int size){
-        int [] mean = new int [occurences.length];
-        int i = 0;
-        for (Term t : map.values()){
-            occurences[i]=t.occurencies;
-            i++;
-        }
-
-        for (i = 0; i<occurences.length ; i++){
-            mean[i]=occurences[i]/size;
-        }
-        return mean;
     }
 
 
 
     public double normInf(){
         double norm = Double.MIN_VALUE;
-        for(int i = 0 ; i<occurences.length ; i++){
-            if(norm<occurences[i]){
-                norm = (double) occurences[i];
+        for(int i = 0; i< featureValues.length ; i++){
+            if(norm< featureValues[i]){
+                norm = featureValues[i];
             }
         }
         return norm;
@@ -132,8 +65,8 @@ public class DocumentVector {
 
     public double norm1(){
         double norm = 0;
-        for(int i = 0 ; i<occurences.length ; i++){
-            norm+= occurences[i];
+        for(int i = 0; i< featureValues.length ; i++){
+            norm+= featureValues[i];
         }
         return norm;
     }
@@ -142,20 +75,20 @@ public class DocumentVector {
 
     public double norm2(){
         double norm = 0;
-        for(int i = 0 ; i<occurences.length ; i++){
-            norm+= Math.pow(occurences[i],2);
+        for(int i = 0; i< featureValues.length ; i++){
+            norm+= Math.pow(featureValues[i],2);
         }
         return Math.sqrt(norm);
     }
 
 
 
-    public double cosDist (DocumentVector t1){
-        int [] vector = t1.getOccurences();
+    public double similarity(DocumentVector t1){
+        double [] vector = t1.getFeatureValues();
         double cosineDistance = 0;
         double dotProduct = 0;
-        for (int i = 0; i<occurences.length ; i++){
-            double product = (double) vector[i]*(double)occurences[i];
+        for (int i = 0; i< featureValues.length ; i++){
+            double product = vector[i]* featureValues[i];
             dotProduct += product;
         }
         double NormsProduct = norm2()*t1.norm2();
@@ -163,10 +96,27 @@ public class DocumentVector {
         return cosineDistance;
     }
 
-    public void printOccVectors(int num){
-        int end =  occurences.length > num ? num : occurences.length;
-        for(int i = 0 ; i<end; i++){
-            System.out.print("[" + occurences[i] + "]");
+
+    public double euclidianDistance(DocumentVector t1){
+        double [] vector = t1.getFeatureValues();
+        double euclidean = 0;
+        double variance = 0;
+        for(int i=0; i<featureValues.length ; i++){
+            variance+=Math.pow(featureValues[i]-vector[i],2);
         }
+        euclidean = Math.sqrt(variance);
+        return variance;
+    }
+
+    @Override
+    public String toString(){
+        String vector = "";
+        vector += "label="+label+"\n";
+        vector += "vec=[";
+        for(int i=0; i<featureValues.length-1; i++){
+            vector+=featureValues[i]+",";
+        }
+        vector+=featureValues[featureValues.length-1]+"]\n";
+        return vector;
     }
 }
