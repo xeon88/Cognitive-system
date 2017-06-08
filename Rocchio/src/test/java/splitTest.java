@@ -24,7 +24,7 @@ public class splitTest {
             System.out.println("testing vectors ....");
 
 
-            DocumentVector sportTest = vectorMaker.createTextVector(new File("Rocchio/src/main/resources/ubi.txt"));
+            DocumentVector sportTest = vectorMaker.createTextVector(new File("Rocchio/src/main/resources/grillo.txt"));
             System.out.println("Test norm : " + sportTest.norm2());
 
             DocumentVector euclideanCategory = vectorMaker.getManager().MostNearCategory(sportTest);

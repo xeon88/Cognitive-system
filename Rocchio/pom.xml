@@ -15,4 +15,12 @@
     <artifactId>Rocchio</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.edu.unito.sisCog</groupId>
+            <artifactId>Utility</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 </project>

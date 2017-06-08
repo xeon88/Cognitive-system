@@ -11,13 +11,11 @@ import java.util.HashMap;
 public class DocumentVector {
 
     protected   double[] featureValues;
-    protected int size;
     protected String label;
 
 
     public DocumentVector(String label){
         this.label = label;
-        this.size = 1 ;
         this.featureValues = new double[1];
     }
 
@@ -29,6 +27,7 @@ public class DocumentVector {
     }
 
     public void setFeatureValues(double [] values){
+
         this.featureValues = values;
     }
 

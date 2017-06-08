@@ -4,7 +4,6 @@ import edu.smu.tspell.wordnet.Synset;
 import org.apache.jena.atlas.io.IndentedWriter;
 import org.apache.jena.atlas.json.JsonArray;
 import org.apache.jena.atlas.json.io.JsonWriter;
-import org.apache.jena.base.Sys;
 
 import java.io.*;
 
@@ -19,6 +18,8 @@ import java.util.regex.Pattern;
  * Created by Marco Corona on 05/04/2017.
  * SingleTon class containing all features information
  */
+
+
 public class WordDictionary {
 
     private TreeMap<String,Features> wordsMap;
@@ -67,16 +68,28 @@ public class WordDictionary {
     }
 
 
-    public void loadWords(ArrayList<Synset> senses) throws IOException {
+    public void loadWords(Synset[] senses) throws IOException {
+
+        Logging logging = new Logging();
         WordUsageTextsRetrieve dbUsages = new WordUsageTextsRetrieve();
+        int i = 0;
         for(Synset sense : senses){
             ArrayList<String> usages = dbUsages.getUsagesBySynset(sense);
             signatures.createSenseSignature(sense);
+            logging.log("Sense nummber :" + i, "debug");
+            logging.log("Ssages number : " + usages.size(), "debug");
+            logging.log("Usages example :", "debug");
+
+            String usageMessage = "";
             for(String usage : usages){
+                usageMessage += usage + "\n";
                 resetFeatureLocks();
                 insertTextWords(usage,sense);
             }
+
+            logging.log(usageMessage, "debug");
             numberSentences++;
+            i++;
         }
     }
 

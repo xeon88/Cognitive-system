@@ -34,5 +34,16 @@
             <artifactId>jwi</artifactId>
             <version>2.2.3</version>
         </dependency>
+        <dependency>
+            <groupId>edu.stanford.nlp</groupId>
+            <artifactId>stanford-corenlp</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.edu.unito.sisCog</groupId>
+            <artifactId>Utility</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>

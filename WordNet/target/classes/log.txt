@@ -1,0 +1,58 @@
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+
+[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
+[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
+[DEBUG] Word to annotate : classification
+[DEBUG] Annotation : .
+

@@ -56,10 +56,21 @@ public class Features implements Comparable<Features> {
 
 
 
-    public int getOccurenciesForLabel(String category){
+    public int getOccurenciesByLabel(String category){
         int occurencies = 0;
         for(String label : labelFreq.keySet()){
             if(label.contains(category)){
+                occurencies+=labelFreq.get(label);
+            }
+        }
+        return occurencies;
+    }
+
+
+    public int getOccurenciesOutLabel(String category){
+        int occurencies = 0;
+        for(String label : labelFreq.keySet()){
+            if(!label.contains(category)){
                 occurencies+=labelFreq.get(label);
             }
         }

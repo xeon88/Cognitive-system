@@ -25,11 +25,5 @@ public class SynsetRetrieve {
     }
 
 
-    public SynsetType getPos(String word, String sentence) {
-
-        SynsetType pos = null;
-        return pos;
-    }
-
 
 }

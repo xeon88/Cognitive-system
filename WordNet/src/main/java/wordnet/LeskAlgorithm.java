@@ -15,10 +15,13 @@ public class LeskAlgorithm {
     private SynsetRetrieve sr;
     private WordDictionary dict ;
 
-    public  LeskAlgorithm (String wnSearchPath){
-        sr = new SynsetRetrieve(wnSearchPath);
+    public  LeskAlgorithm (SynsetRetrieve sr){
+        this.sr = sr;
         dict = WordDictionary.getInstance();
     }
+
+
+
 
     public SynsetRetrieve getSr() {
         return sr;
@@ -29,7 +32,6 @@ public class LeskAlgorithm {
     }
 
 
-
     public void setDict(WordDictionary dict) {
         this.dict = dict;
     }
@@ -38,33 +40,58 @@ public class LeskAlgorithm {
         this.sr = sr;
     }
 
-    public Synset getBestSense(String word, String sentence, SynsetType type){
+
+
+    public void getBestSense(String word, String sentence, SynsetType type) throws IOException {
+
+
+        Logging logging = new Logging();
+
+
+        String header = "Sentence : " + sentence + "\n"
+                + "Word : " + word + "\n"
+                + "Type : " +  getTypeName(type) + "\n\n";
+
+        logging.log(header, "info");
 
         Synset bestSense = null;
         double maxOverlap = Double.NEGATIVE_INFINITY;
         HashSet<String> context = getWordsContext(sentence);
         Synset[] senses = sr.getSynsets(word,type);
-        System.out.println("Context");
-        printWords(context);
-        System.out.println("--------------------------\n");
+
+        logging.log("Context : ", "info");
+        logging.log(toString(context), "info");
 
         for(int i = 0; i<senses.length; i++){
 
             HashSet<String> signature = getWordsSet(senses[i]);
-            System.out.println("Sense : "+ senses[i].getDefinition());
-            printWords(signature);
             HashSet<String> intersection = new HashSet<String>(context);
             intersection.retainAll(signature);
+
             double overlap = computeOverlap(intersection);
-            System.out.println("overlap : "  + overlap );
             if(overlap>maxOverlap) {
                 maxOverlap = overlap;
                 bestSense = senses[i];
             }
-            System.out.println("--------------------------\n");
+
+
+            String message = "Sense : " + senses[i].getDefinition() + "\n"
+                + "Signature : \n" + toString(signature) + "\n"
+                + "Intersection : " + toString(intersection) + "\n"
+                + "Overlap score : " + overlap + "\n\n";
+
+            logging.log(message, "info");
+
         }
 
-        return bestSense;
+        if(bestSense!=null){
+            logging.log("Best sense : " + bestSense.getDefinition(), "info");
+            logging.log("Best overlap : " + maxOverlap + "\n\n", "info");
+        }
+        else{
+            logging.log("[INFO] Failed! No sense found", "info");        }
+
+
     }
 
 
@@ -105,13 +132,44 @@ public class LeskAlgorithm {
     }
 
 
-    public void printWords(HashSet<String> set){
+    public String toString(HashSet<String> set){
 
-        System.out.print("[");
+        String words = "[";
         for(String word : set){
-            System.out.print(word + " ");
+            words += word + " ";
         }
-        System.out.print("]\n");
+        words +="]";
+        return words;
     }
+
+
+    public String getTypeName(SynsetType s){
+
+        int type = s.getCode() ;
+        String name = "";
+
+        switch (type){
+            case 1 :
+                name = "noun";
+                break;
+            case 2 :
+                name = "verb";
+                break;
+            case 3 :
+                name = "adjective";
+                break;
+            case 4 :
+                name = "adverb";
+                break;
+            case 5 :
+                name = "adjective satellite";
+                break;
+            default:
+                break;
+        }
+        return name;
+    }
+
+
 
 }

@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
  * Created by Marco Corona on 05/04/2017.
  * SingleTon class containing all features information
  */
+
+
 public class WordDictionary {
 
     private TreeMap<String,Features> wordsMap;
@@ -54,15 +56,10 @@ public class WordDictionary {
         this.wordsMap = map;
     }
 
-    public void cleanMostFreqWords(int docsNum){
-
-        for(String key : wordsMap.keySet()){
-            Features obj = wordsMap.get(key);
-            if(((double)obj.getPresence()/(double)docsNum)>0.5){
-                wordsMap.remove(key);
-            }
-        }
-    }
+    /**
+     * Load all words into dictionary contained in all training set texts
+     * @throws IOException
+     */
 
     public void loadWords() throws IOException {
 

@@ -2,7 +2,7 @@ package Dictionary;
 
 
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,7 +30,7 @@ public class StopWords {
                 BufferedReader reader = new BufferedReader(new FileReader(fileName));
                 String buffer = "";
                 while ((buffer=reader.readLine())!=null){
-                    String stop = StringEscapeUtils.unescapeHtml(buffer);
+                    String stop = StringEscapeUtils.escapeHtml4(buffer);
                     stopwords.add(stop);
                 }
             }
