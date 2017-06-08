@@ -99,4 +99,3 @@ public class Features implements Comparable<Features> {
         return json;
     }
 }
-

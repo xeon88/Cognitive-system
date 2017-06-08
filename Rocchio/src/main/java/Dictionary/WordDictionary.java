@@ -28,6 +28,12 @@ public class WordDictionary {
     private static WordDictionary instance;
 
 
+    public static WordDictionary getInstance(File dir){
+        if(instance==null){
+            instance = new WordDictionary(dir);
+        }
+        return instance;
+    }
 
     public static WordDictionary getInstance(File dir){
         if(instance==null){
@@ -156,4 +162,3 @@ public class WordDictionary {
         fos.close();
     }
 }
-
