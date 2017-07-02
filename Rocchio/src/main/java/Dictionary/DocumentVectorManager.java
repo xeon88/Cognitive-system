@@ -2,6 +2,7 @@ package Dictionary;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -12,12 +13,12 @@ public class DocumentVectorManager {
 
     private HashMap<String,Centroid> centroids;
     private HashMap<String,DocumentVector> vectors;
-    private int size;
+    private String [] categories ;
 
-    public DocumentVectorManager(int size){
+    public DocumentVectorManager(){
         vectors = new HashMap<String, DocumentVector>();
         centroids = new HashMap<String, Centroid>();
-        this.size = size;
+        this.categories = null;
     }
 
     public Set<String> getKeys(){
@@ -25,6 +26,14 @@ public class DocumentVectorManager {
     }
 
     public Set<String> getLabelsKey(){return centroids.keySet();}
+
+    public HashMap<String,Centroid> getCentroids(){
+        return centroids;
+    }
+
+    public HashMap<String,DocumentVector> getVectors(){
+        return vectors;
+    }
 
     public void printVectors(){
 
@@ -77,15 +86,53 @@ public class DocumentVectorManager {
     }
 
 
-    public DocumentVector MostLikelihoodCategory(DocumentVector in){
+    public DocumentVector MostLikelihoodCategory(DocumentVector in) throws IOException {
 
+        if(categories == null){
+            categories = centroids.keySet().toArray(new String[centroids.size()]);
+            Arrays.sort(categories);
+        }
         double max = Double.NEGATIVE_INFINITY;
         DocumentVector bestCentroid = null;
 
-        for(Centroid centroid : centroids.values()){
+        Logging log = new Logging();
+
+        String message = "Label : " + in.getLabel() + "\n"
+                + "[ " ;
+
+
+        for(int i=0;i<categories.length; i++){
+            Centroid centroid = centroids.get(categories[i]);
             double sim = in.similarity(centroid);
+            message += " [" + centroid.getLabel() + " : " + sim + "] ";
             if(sim>max){
                 max = sim;
+                bestCentroid = centroid;
+            }
+        }
+
+        message +="] \n";
+        log.log(message,"info");
+
+
+        return bestCentroid;
+    }
+
+
+    public DocumentVector MostNearCategory(DocumentVector in){
+
+        if(categories == null){
+            categories = centroids.keySet().toArray(new String[centroids.size()]);
+            Arrays.sort(categories);
+        }
+        double min = Double.POSITIVE_INFINITY;
+        DocumentVector bestCentroid = null;
+
+        for(int i=0;i<categories.length; i++){
+            Centroid centroid = centroids.get(categories[i]);
+            double sim = in.euclidianDistance(centroid);
+            if(sim<min){
+                min = sim;
                 bestCentroid = centroid;
             }
         }
@@ -93,18 +140,35 @@ public class DocumentVectorManager {
     }
 
 
-    public DocumentVector MostNearCategory(DocumentVector in){
+    public Centroid NearestCentroid(Centroid input) throws IOException {
 
-        double min = Double.POSITIVE_INFINITY;
-        DocumentVector bestCentroid = null;
+        if(categories == null){
+            categories = centroids.keySet().toArray(new String[centroids.size()]);
+            Arrays.sort(categories);
+        }
 
-        for(Centroid centroid : centroids.values()){
-            double sim = in.euclidianDistance(centroid);
-            if(sim<min){
-                min = sim;
-                bestCentroid = centroid;
+        double max = Double.NEGATIVE_INFINITY;
+        Centroid bestCentroid = null;
+        Logging log = new Logging();
+
+        String message = "Label : " + input.getLabel() + "\n"
+                + "[ " ;
+
+        for(int i=0;i<categories.length; i++){
+            Centroid centroid = centroids.get(categories[i]);
+            if(!centroid.getLabel().equals(input.getLabel())){
+                double sim = input.similarity(centroid);
+                message += " [" + centroid.getLabel() + " : " + sim + "] ";
+                if(sim>max){
+                    max = sim;
+                    bestCentroid = centroid;
+                }
             }
         }
+
+        message +="] \n";
+        log.log(message,"info");
+
         return bestCentroid;
     }
 }

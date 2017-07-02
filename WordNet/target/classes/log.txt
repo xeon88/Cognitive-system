@@ -1,58 +1,32 @@
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
+Sentence : house burnt ash owner return . 
+Word : ash
+Type : noun
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
+Context : 
+[null Owner Return Ash House Burnt ]
+Sense : the residue that remains when something is burned
+Signature : 
+[Burn Remains Residue ]
+Intersection : []
+Overlap score : 0.0
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
+Sense : any of various deciduous pinnate-leaved ornamental or timber trees of the genus Fraxinus
+Signature : 
+[Genus Timber Deciduous Pinnate Tree Ornamental Fraxinus ]
+Intersection : []
+Overlap score : 0.0
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
+Sense : strong elastic wood of any of various ash trees; used for furniture and tool handles and sporting goods such as baseball bats
+Signature : 
+[Sport Elastic Baseball Bat Wood Ash Tree Goods Furniture Strong Handle Tool ]
+Intersection : [Ash ]
+Overlap score : 1.0986122886681098
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
+Best sense : strong elastic wood of any of various ash trees; used for furniture and tool handles and sporting goods such as baseball bats
+Best overlap : 1.0986122886681098
 
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
-
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$LemmaAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
-
-[DEBUG] Class annotation : edu.stanford.nlp.ling.CoreAnnotations$PartOfSpeechAnnotation
-[DEBUG] Text to read : The classiﬁcation of the genetic data took two years.
-[DEBUG] Word to annotate : classification
-[DEBUG] Annotation : .
 

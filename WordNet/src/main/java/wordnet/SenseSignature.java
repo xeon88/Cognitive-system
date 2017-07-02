@@ -1,6 +1,7 @@
 package wordnet;
 
-import edu.smu.tspell.wordnet.Synset;
+
+import net.didion.jwnl.data.Synset;
 
 import java.util.HashMap;
 import java.util.TreeSet;

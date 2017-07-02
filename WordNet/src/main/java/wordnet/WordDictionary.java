@@ -1,6 +1,8 @@
 package wordnet;
 
-import edu.smu.tspell.wordnet.Synset;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.pipeline.Annotation;
+import net.didion.jwnl.data.Synset;
 import org.apache.jena.atlas.io.IndentedWriter;
 import org.apache.jena.atlas.json.JsonArray;
 import org.apache.jena.atlas.json.io.JsonWriter;
@@ -9,7 +11,6 @@ import java.io.*;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,12 +24,11 @@ import java.util.regex.Pattern;
 public class WordDictionary {
 
     private TreeMap<String,Features> wordsMap;
-    private TreeSet stopwords;
     public final String splitRegex = "(\\t|\\s|\\(|\\)|\\+|’|')+";
     private SenseSignature signatures;
     private static WordDictionary instance;
     private int numberSentences;
-
+    private DocumentAnnotator annotator;
 
 
 
@@ -40,10 +40,10 @@ public class WordDictionary {
     }
 
     private WordDictionary(){
-            this.stopwords  = StopWords.load();
             this.numberSentences = 0;
             this.wordsMap = new TreeMap<String, Features>();
             this.signatures = new SenseSignature();
+            this.annotator = new DocumentAnnotator();
     }
 
 
@@ -59,9 +59,6 @@ public class WordDictionary {
         return numberSentences;
     }
 
-    public TreeSet getStopwords() {
-        return stopwords;
-    }
 
     public SenseSignature getSignatures(){
         return signatures;
@@ -71,7 +68,7 @@ public class WordDictionary {
     public void loadWords(Synset[] senses) throws IOException {
 
         Logging logging = new Logging();
-        WordUsageTextsRetrieve dbUsages = new WordUsageTextsRetrieve();
+        WordNetUtils dbUsages = new WordNetUtils();
         int i = 0;
         for(Synset sense : senses){
             ArrayList<String> usages = dbUsages.getUsagesBySynset(sense);
@@ -114,15 +111,18 @@ public class WordDictionary {
 
 
 
-    public void insertTextWords(String text, Synset sense) {
+    public void insertTextWords(String text, Synset sense) throws IOException {
+
+        StopWords sw = StopWords.getInstance();
 
         String [] split = text.split(splitRegex);
         for(int i = 0; i<split.length ; i++){
 
             String s = getSubStr(split[i]);
+            Annotation annotation = annotator.makeAnnotatedDocument(s);
+            s = annotator.getWordAnnotationByClass(annotation,s,CoreAnnotations.LemmaAnnotation.class);
 
-            if(s!=null && !isStopWords(s)){
-
+            if(s!=null && !sw.isStopWords(s)){
                 String normalized = getNormalizedForm(s);
                 Features f = new Features(normalized);
 
@@ -136,7 +136,6 @@ public class WordDictionary {
                 }
 
                 wordsMap.put(normalized,f);
-
             }
 
             }
@@ -155,9 +154,6 @@ public class WordDictionary {
         return null;
     }
 
-    public boolean isStopWords(String s){
-        return stopwords.contains(s.toLowerCase());
-    }
 
 
     static String toProperCase(String s) {

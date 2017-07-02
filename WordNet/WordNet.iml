@@ -12,8 +12,16 @@
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ritaWN" level="project" />
-    <orderEntry type="library" name="rita" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-core:2.0.6" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://D:/University/SisCog/tools/stanford-english-corenlp-2016-10-31-models.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="Maven: com.github.jaytaylor:jaws:1.3.1" level="project" />
     <orderEntry type="library" name="Maven: edu.mit:jwi:2.2.3" level="project" />
     <orderEntry type="library" name="Maven: edu.stanford.nlp:stanford-corenlp:3.6.0" level="project" />
@@ -27,6 +35,8 @@
     <orderEntry type="library" name="Maven: com.googlecode.efficient-java-matrix-library:ejml:0.23" level="project" />
     <orderEntry type="library" name="Maven: javax.json:javax.json-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.12" level="project" />
+    <orderEntry type="module" module-name="Utility" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-querybuilder:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-tdb:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-arq:3.1.1" level="project" />
@@ -48,15 +58,5 @@
     <orderEntry type="library" name="Maven: org.apache.thrift:libthrift:0.9.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.21" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-csv:1.3" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://D:/University/SisCog/tools/stanford-english-corenlp-2016-10-31-models.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>

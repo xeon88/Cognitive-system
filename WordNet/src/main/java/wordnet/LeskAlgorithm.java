@@ -1,7 +1,8 @@
 package wordnet;
 
-import edu.smu.tspell.wordnet.Synset;
-import edu.smu.tspell.wordnet.SynsetType;
+import net.didion.jwnl.JWNLException;
+import net.didion.jwnl.data.POS;
+import net.didion.jwnl.data.Synset;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -12,20 +13,16 @@ import java.util.HashSet;
  */
 public class LeskAlgorithm {
 
-    private SynsetRetrieve sr;
+
     private WordDictionary dict ;
+    private WordNetUtils usageRetrieve;
 
-    public  LeskAlgorithm (SynsetRetrieve sr){
-        this.sr = sr;
+    public  LeskAlgorithm (){
+
         dict = WordDictionary.getInstance();
+        usageRetrieve = new WordNetUtils();
     }
 
-
-
-
-    public SynsetRetrieve getSr() {
-        return sr;
-    }
 
     public WordDictionary getDict() {
         return dict;
@@ -36,13 +33,8 @@ public class LeskAlgorithm {
         this.dict = dict;
     }
 
-    public void setSr(SynsetRetrieve sr) {
-        this.sr = sr;
-    }
 
-
-
-    public void getBestSense(String word, String sentence, SynsetType type) throws IOException {
+    public void getBestSense(String word, String sentence, POS pos) throws IOException, JWNLException {
 
 
         Logging logging = new Logging();
@@ -50,14 +42,14 @@ public class LeskAlgorithm {
 
         String header = "Sentence : " + sentence + "\n"
                 + "Word : " + word + "\n"
-                + "Type : " +  getTypeName(type) + "\n\n";
+                + "Type : " +  getTypeName(pos) + "\n\n";
 
         logging.log(header, "info");
 
         Synset bestSense = null;
         double maxOverlap = Double.NEGATIVE_INFINITY;
         HashSet<String> context = getWordsContext(sentence);
-        Synset[] senses = sr.getSynsets(word,type);
+        Synset[] senses = usageRetrieve.getSynsets(word,pos);
 
         logging.log("Context : ", "info");
         logging.log(toString(context), "info");
@@ -75,7 +67,7 @@ public class LeskAlgorithm {
             }
 
 
-            String message = "Sense : " + senses[i].getDefinition() + "\n"
+            String message = "Sense : " + senses[i].getGloss() + "\n"
                 + "Signature : \n" + toString(signature) + "\n"
                 + "Intersection : " + toString(intersection) + "\n"
                 + "Overlap score : " + overlap + "\n\n";
@@ -85,7 +77,7 @@ public class LeskAlgorithm {
         }
 
         if(bestSense!=null){
-            logging.log("Best sense : " + bestSense.getDefinition(), "info");
+            logging.log("Best sense : " + bestSense.getGloss(), "info");
             logging.log("Best overlap : " + maxOverlap + "\n\n", "info");
         }
         else{
@@ -117,12 +109,14 @@ public class LeskAlgorithm {
 
     public HashSet<String> getWordsContext(String text){
 
+        StopWords sw = StopWords.getInstance();
+
         HashSet<String> wordsContext = new HashSet<String>();
         String [] split = text.split(dict.splitRegex);
         for(int i = 0; i<split.length ; i++){
 
             String normalized = dict.getSubStr(split[i]);
-            if(normalized!=null && !dict.isStopWords(normalized)) {
+            if(normalized!=null && !sw.isStopWords(normalized)) {
                 normalized = dict.getNormalizedForm(normalized);
             }
             wordsContext.add(normalized);
@@ -143,31 +137,9 @@ public class LeskAlgorithm {
     }
 
 
-    public String getTypeName(SynsetType s){
+    public String getTypeName(POS pos){
 
-        int type = s.getCode() ;
-        String name = "";
-
-        switch (type){
-            case 1 :
-                name = "noun";
-                break;
-            case 2 :
-                name = "verb";
-                break;
-            case 3 :
-                name = "adjective";
-                break;
-            case 4 :
-                name = "adverb";
-                break;
-            case 5 :
-                name = "adjective satellite";
-                break;
-            default:
-                break;
-        }
-        return name;
+        return pos.getLabel();
     }
 
 

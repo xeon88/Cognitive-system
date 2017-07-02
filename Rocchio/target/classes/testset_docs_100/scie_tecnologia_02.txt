@@ -1,0 +1,7 @@
+Il cervello è molto più complesso del previsto, al punto che ogni volta che impara qualcosa di nuovo le sue cellule si riorganizzano e si collegano le une alle altre a partire da strutture semplicissime a due dimensioni come i piani, o a tre dimensioni come i cubi, fino a strutture molto più complicate, a cinque, sei e perfino 11 dimensioni. Pubblicata sulla rivista Frontiers in Computational Neuroscience, la scoperta si deve al progetto Blue Brain, nato nel 2005 per iniziativa del Politecnico di Losanna e della Ibm e con l'obiettivo simulare il funzionamento del cervello.
+
+Le strutture nelle quali il cervello di organizza "sono come castelli di sabbia multidimensionali, che continuamente si materializzano per disintegrarsi subito dopo", ha osservato il coordinatore della ricerca, Henry Markram, direttore del progetto Blue Brain e ricercatore del Politecnico di Losanna.
+
+I ricercatori sono riusciti a individuare questo lato finora nascosto e un po' fantascientifico dell'organizzazione del cervello applicando in modo nuovo la matematica allo studio delle neuroscienze. In particolare l'organizzazione dei neuroni è stata studiata utilizzando la topologia algebrica, ossia la branca della matematica che applica l'algebra per studiare le proprietà e la struttura delle forme nello spazio.
+
+E' la prima volta che uno strumento del genere viene utilizzato dalle neuroscienze e applicarlo allo studio dei circuiti cerebrali ha permesso di scoprire che questi possono essere articolati secondo figure geometriche in più dimensioni.

@@ -13,8 +13,25 @@ import java.util.TreeSet;
 public class StopWords {
 
     public final static String pathStopWords = "WordNet/src/main/resources/stopwords";
+    private static StopWords stopWords;
+    private TreeSet words;
 
-    public static TreeSet load(){
+
+
+    public static StopWords getInstance(){
+        if(stopWords==null){
+            stopWords = new StopWords();
+        }
+        return stopWords;
+    }
+
+
+    private StopWords(){
+        this.words = load();
+    }
+
+
+    private TreeSet load(){
         TreeSet stopwords;
         try {
             stopwords = new TreeSet();
@@ -39,4 +56,10 @@ public class StopWords {
 
         return stopwords;
     }
+
+
+    public boolean isStopWords(String s){
+        return words.contains(s.toLowerCase());
+    }
+
 }

@@ -1,0 +1,5 @@
+ROMA - I computer Mac di Apple sono sempre più nel mirino degli hacker e a rischio di "cyber-ricatto". Alcuni ricercatori informatici hanno scoperto che diverse tipologie di virus in grado di infettare anche i Mac, tra cui i famigerati "ransomware" che prendono in ostaggio i computer con la promessa di rilasciarne i dati solo dietro pagamento di un riscatto, sono a disposizione di chiunque, gratuitamente, sul web.
+
+Sarebbe la prima piattaforma di "ransomware" come servizio, con virus offerti a chiunque abbia intenzioni criminali, che tra i suoi obiettivi non abbia solo pc con sistema operativo Windows, ma anche altri, in primis i Mac di Apple. A rilevarla sono stati ricercatori informatici delle società Fortinet e AlienVault. Agli hacker, precisano, si possono chiedere anche dei virus su misura per sferrare gli attacchi. Questi vengono confezionati e distribuiti gratis, in cambio di una parte del denaro raccolto con l'attacco "ransomware".
+
+Tra i virus per Mac a disposizione ci sarebbero anche i cosiddetti "spyware", programmi in grado di rubare informazioni sensibili agli utenti.

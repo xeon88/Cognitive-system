@@ -20,7 +20,7 @@ public class DocumentVector {
     }
 
     public String getLabel() {
-        return label;
+         return label;
     }
     public double[] getFeatureValues() {
         return featureValues;
@@ -34,18 +34,18 @@ public class DocumentVector {
 
 
 
-    public void makeArrayForDataVector(WordDictionary dict , int totalDocs){
-        int i = 0;
+    public void makeDataVector(WordDictionary dict , int totalDocs){
+
 
         this.featureValues = new double[dict.getWordsMap().size()];
-        for(String key : dict.getWordsMap().keySet()){
+        String [] keys = dict.getWordKeys();
+        for(int i=0; i<keys.length; i++ ){
             int freqs = 0;
-            Features f = dict.getWordsMap().get(key);
+            Feature f = dict.getWordsMap().get(keys[i]);
             if(f.getLabelFreq().keySet().contains(label)){
                 freqs = f.getLabelFreq().get(label);
             }
             featureValues[i] = freqs*(Math.log(totalDocs) - Math.log(f.getPresence()));
-            i++;
         }
     }
 
@@ -87,7 +87,7 @@ public class DocumentVector {
         double cosineDistance = 0;
         double dotProduct = 0;
         for (int i = 0; i< featureValues.length ; i++){
-            double product = vector[i]* featureValues[i];
+            double product = vector[i]*featureValues[i];
             dotProduct += product;
         }
         double NormsProduct = norm2()*t1.norm2();

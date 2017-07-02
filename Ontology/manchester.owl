@@ -1,0 +1,333 @@
+Prefix: : <http://www.semanticweb.org/theacidmc/ontologies/2017/5/untitled-ontology-17#>
+Prefix: music: <http://www.semanticweb.org/marco.corona/music/>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+
+Ontology: <http://www.semanticweb.org/marco.corona/music>
+
+
+Datatype: rdf:PlainLiteral
+
+    
+Datatype: xsd:double
+
+    
+Datatype: xsd:int
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: music:aboutArtist
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Album or music:Track
+    
+    Range: 
+        music:Artist
+    
+    
+ObjectProperty: music:aboutGroup
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Album or music:Track
+    
+    Range: 
+        music:Group
+    
+    
+ObjectProperty: music:aboutTrack
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    
+ObjectProperty: music:classifiedAs
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    
+ObjectProperty: music:featuredWith
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Featuring
+    
+    Range: 
+        music:Artist or music:Group
+    
+    
+ObjectProperty: music:hasLyrics
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    
+ObjectProperty: music:isComposedBy
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Track
+    
+    Range: 
+        music:Composer
+    
+    
+ObjectProperty: music:isMemberOf
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Artist
+    
+    Range: 
+        music:Group
+    
+    
+ObjectProperty: music:isPerformedWith
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Album or music:Track
+    
+    Range: 
+        music:Instrument
+    
+    
+ObjectProperty: music:isProducedBy
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Track
+    
+    Range: 
+        music:Producer
+    
+    
+ObjectProperty: music:isSungBy
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        music:Singer
+    
+    Range: 
+        music:Track
+    
+    
+ObjectProperty: owl:topObjectProperty
+
+    SubPropertyOf: 
+        music:isProducedBy
+    
+    Domain: 
+        music:Track
+    
+    Range: 
+        music:Genre
+    
+    
+DataProperty: music:hasBPM
+
+    Domain: 
+        music:Track
+    
+    Range: 
+        xsd:double
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: music:hasLength
+
+    Domain: 
+        music:Track
+    
+    Range: 
+        xsd:double
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: music:hasNickName
+
+    Domain: 
+        music:Artist or music:Group
+    
+    Range: 
+        xsd:string
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    EquivalentTo: 
+        music:hasStageName
+    
+    
+DataProperty: music:hasRealName
+
+    Domain: 
+        music:Artist
+    
+    Range: 
+        xsd:string
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: music:hasStageName
+
+    Domain: 
+        music:Artist or music:Group
+    
+    Range: 
+        xsd:string
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    EquivalentTo: 
+        music:hasNickName
+    
+    
+DataProperty: music:hasTitle
+
+    Domain: 
+        music:Album or music:Track
+    
+    Range: 
+        xsd:string
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: music:isNumber
+
+    Domain: 
+        music:TrackNumber
+    
+    Range: 
+        xsd:int
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: owl:topDataProperty
+
+    
+Class: music:Album
+
+    
+Class: music:Artist
+
+    
+Class: music:Composer
+
+    SubClassOf: 
+        music:Artist
+    
+    
+Class: music:Discography
+
+    
+Class: music:Featuring
+
+    
+Class: music:Genre
+
+    
+Class: music:Group
+
+    
+Class: music:Instrument
+
+    
+Class: music:Lyrics
+
+    
+Class: music:Musician
+
+    SubClassOf: 
+        music:Artist
+    
+    
+Class: music:Producer
+
+    SubClassOf: 
+        music:Artist
+    
+    
+Class: music:RecordLabel
+
+    
+Class: music:Singer
+
+    SubClassOf: 
+        music:Artist
+    
+    
+Class: music:Track
+
+    
+Class: music:TrackNumber
+
+    
+Individual: <http://www.semanticweb.org/marco.corona/music/genre/Rock>
+
+    
+Individual: <http://www.semanticweb.org/marco.corona/music/genre/blues>
+
+    
+Individual: <http://www.semanticweb.org/marco.corona/music/genre/jazz>
+
+    
+Individual: <http://www.semanticweb.org/marco.corona/music/group/zapp_roger>
+
+    Types: 
+        music:Group
+    
+    Facts:  
+     music:hasNickName  "Zapp & Roger",
+     music:hasStageName  "Zapp & Roger"
+
+Individual: <http://www.semanticweb.org/marco.corona/music/artist/roger_troutman>
+
+    Types: 
+        music:Singer
+        music:Musician
+    
+    Facts:  
+     music:hasNickName  "Roger Troutman",
+     music:hasStageName  "Roger Troutman"
+    
+    
+DisjointClasses: 
+    music:Album,music:Artist,music:Genre,music:Group,music:Instrument,music:Track
+

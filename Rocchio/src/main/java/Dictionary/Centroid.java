@@ -1,26 +1,57 @@
 package Dictionary;
 
+
+
 /**
  * Created by Marco Corona on 09/05/2017.
+ * Class for representation of a centroid such a particolar case of document vector.
+ * This class compute the data vector such a mean of document vectors found in training set
  */
+
+
 public class Centroid extends DocumentVector {
 
-    private final double beta = 16.0 ;
-    private final double gamma = 4.0;
+    private Centroid nearest = null;
+    private int documents = 0;
 
     public Centroid(String label) {
         super(label);
     }
 
-    public void makeArrayForCentroidVector(WordDictionary dict, int categoryDocs , int totalDocs){
-        int i = 0;
+    public Centroid getNearest() {
+        return nearest;
+    }
+
+    public void setNearest(Centroid centroid) {
+        this.nearest = centroid;
+    }
+
+    public void incDocuments(){
+        documents++;
+    }
+
+
+    public void makeDataVector(WordDictionary dict, int totalDocs
+            , double beta, double gamma) {
+
         this.featureValues = new double[dict.getWordsMap().size()];
-        for(String key : dict.getWordsMap().keySet()){
-            Features f = dict.getWordsMap().get(key);
-            double positveVal=(beta)*((double)f.getOccurenciesByLabel(label)/(double)categoryDocs);
-            double negativeVal=(gamma)*((double)f.getOccurenciesOutLabel(label)/(double)(totalDocs-categoryDocs));
-            featureValues[i]=positveVal-negativeVal;
-            featureValues[i] = featureValues[i]*(Math.log(totalDocs) - Math.log(f.getPresence()));
+
+        // apply rocchio method together to td-idf formula
+
+        String[] keys = dict.getWordKeys();
+        for (int i = 0; i < keys.length; i++) {
+            Feature f = dict.getWordsMap().get(keys[i]);
+            double negativeVal = 0;
+            double positveVal = 0;
+            if (nearest == null) {
+                positveVal = ((double) f.getOccurenciesByLabel(label) / (double) documents);
+                negativeVal = 0;
+            } else {
+                positveVal = beta*((double) f.getOccurenciesByLabel(label) / (double) documents);
+                negativeVal = gamma* ((double) f.getOccurenciesByLabel(nearest.getLabel()) / (double) (documents));
+            }
+            featureValues[i] = positveVal - negativeVal;
+            featureValues[i] = featureValues[i] * (Math.log(totalDocs) - Math.log(f.getPresence()));
             i++;
         }
     }

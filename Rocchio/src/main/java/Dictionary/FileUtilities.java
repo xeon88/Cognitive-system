@@ -1,6 +1,7 @@
 package Dictionary;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.TreeMap;
@@ -10,13 +11,15 @@ import java.util.TreeMap;
  */
 public class FileUtilities {
 
-    public static String getTextFile( File file) throws IOException {
-        FileReader reader = new FileReader(file);
-        BufferedReader buffreader = new BufferedReader(reader);
+    public static String getTextFromFile( File file) throws IOException {
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream(file), "ISO-8859-1")
+        );
         String line ;
         String text="";
 
-        while((line = buffreader.readLine())!=null){
+        while((line = reader.readLine())!=null){
             text += line + "\n";
         }
 
@@ -24,47 +27,70 @@ public class FileUtilities {
     }
 
 
+    public static void CreateNewDirectory(File directory) throws IOException {
+
+        if(directory.isDirectory()){
+            String path = directory.getAbsolutePath();
+            File[] subdir = directory.listFiles();
+            for(File sub : subdir){
+                if(sub.isDirectory()){
+                    File [] files = sub.listFiles();
+                    for(File source : files){
+                        String text = getTextFromFile(source);
+                        String subName = sub.getName();
+                        String fileName = source.getName();
+                        String fullPath = path + File.separator + subName + "_" + fileName;
+                        String newPath = StringUtils.replace(fullPath,".","_");
+                        newPath += ".txt";
+                        System.out.println("Path created :" + newPath);
+                        File destination = new File(newPath);
+                        writeString(destination,text);
+                    }
+                }
+            }
+
+
+        }
+
+
+    }
+
     public static String getFileName(File file){
         String name = FilenameUtils.getBaseName(file.getName());
         return name;
     }
 
-    public static String getLabelFromFileName(File file){
-        String label = "";
-        String name = FilenameUtils.getBaseName(file.getName());
-        String [] split = name.split("_");
-        if(split.length==2){
-            label = split[0]; // first part of name
-        }
-        if(split.length>2){
-            for(int j = 0 ; j<split.length-1; j++){
-                label+= split[j] + " ";
-            }
-        }
-        return label;
-    }
+
 
 
     public static String getCategoryfromLabel(String label){
         String category = "";
 
         String [] split = label.split("_");
+        if(split[0].equals("test")){
+            String [] tmp = new String [split.length-1];
+            for(int i = 0; i<split.length-1;i++){
+                tmp[i]=split[i+1];
+            }
+            split=tmp;
+        }
         if(split.length==2){
             category = split[0]; // first part of name
         }
         if(split.length>2){
-            for(int j = 0 ; j<split.length-1; j++){
-                category+= split[j] + " ";
+            for(int j = 0 ; j<split.length-2; j++){
+                category+= split[j] + "_";
             }
+            category+=split[split.length-2];
         }
         return category;
     }
 
-    public static void makeWordFile(TreeMap<String, Features> words) throws IOException {
+    public static void makeWordFile(TreeMap<String, Feature> words) throws IOException {
         String path = "Rocchio/src/main/resources/output.txt";
         File file = new File(path);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        for ( Features s: words.values()) {
+        for ( Feature s: words.values()) {
             writer.write(s.getWord() + "\n");
         }
         writer.close();
@@ -76,16 +102,6 @@ public class FileUtilities {
         writer.close();
     }
 
-    public static String makeText(File file) throws IOException {
 
-        FileReader reader = new FileReader(file);
-        BufferedReader buffreader = new BufferedReader(reader);
-        String line ;
-        String text="";
-        while((line = buffreader.readLine())!=null){
-            text +=line;
-        }
-        return text;
-    }
 
 }

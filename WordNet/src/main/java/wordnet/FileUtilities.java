@@ -29,6 +29,8 @@ public class FileUtilities {
         return name;
     }
 
+    /*
+
     public static String getLabelFromFileName(File file){
         String label = "";
         String name = FilenameUtils.getBaseName(file.getName());
@@ -43,6 +45,8 @@ public class FileUtilities {
         }
         return label;
     }
+
+    */
 
 
     public static String getCategoryfromLabel(String label){
@@ -60,6 +64,8 @@ public class FileUtilities {
         return category;
     }
 
+
+
     public static void makeWordFile(TreeMap<String, Features> words) throws IOException {
         String path = "Rocchio/src/main/resources/output.txt";
         File file = new File(path);
@@ -75,6 +81,8 @@ public class FileUtilities {
         writer.write(s);
         writer.close();
     }
+
+
 
     public static String makeText(File file) throws IOException {
 

@@ -35,7 +35,7 @@ public class Logging {
         headers.put("debug","[DEBUG] ");
     }
 
-    public String formatMessage(String message, String type){
+    private String formatMessage(String message, String type){
         String formatted= "";
         if(config.containsKey(type)){
             formatted =  config.get(type) + message + "\n";

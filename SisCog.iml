@@ -10,7 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="babelnet-api-3.7" level="project" />
     <orderEntry type="library" name="ritaWN" level="project" />
-    <orderEntry type="library" name="rita" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-core:2.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-querybuilder:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-tdb:3.1.1" level="project" />
