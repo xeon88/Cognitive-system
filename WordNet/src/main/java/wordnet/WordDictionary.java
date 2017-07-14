@@ -11,8 +11,6 @@ import java.io.*;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -23,7 +21,7 @@ import java.util.regex.Pattern;
 
 public class WordDictionary {
 
-    private TreeMap<String,Features> wordsMap;
+    private TreeMap<String, Feature> wordsMap;
     public final String splitRegex = "(\\t|\\s|\\(|\\)|\\+|’|')+";
     private SenseSignature signatures;
     private static WordDictionary instance;
@@ -41,17 +39,17 @@ public class WordDictionary {
 
     private WordDictionary(){
             this.numberSentences = 0;
-            this.wordsMap = new TreeMap<String, Features>();
+            this.wordsMap = new TreeMap<String, Feature>();
             this.signatures = new SenseSignature();
             this.annotator = new DocumentAnnotator();
     }
 
 
-    public TreeMap<String,Features> getWordsMap(){
+    public TreeMap<String, Feature> getWordsMap(){
         return wordsMap;
     }
 
-    public void setWordsMap(TreeMap<String,Features> map){
+    public void setWordsMap(TreeMap<String, Feature> map){
         this.wordsMap = map;
     }
 
@@ -69,6 +67,7 @@ public class WordDictionary {
 
         Logging logging = new Logging();
         WordNetUtils dbUsages = new WordNetUtils();
+        if(senses==null) return;
         int i = 0;
         for(Synset sense : senses){
             ArrayList<String> usages = dbUsages.getUsagesBySynset(sense);
@@ -81,7 +80,8 @@ public class WordDictionary {
             for(String usage : usages){
                 usageMessage += usage + "\n";
                 resetFeatureLocks();
-                insertTextWords(usage,sense);
+                ArrayList<String> words = getLemmas(usage);
+                insertTextWords(words,sense);
             }
 
             logging.log(usageMessage, "debug");
@@ -91,81 +91,56 @@ public class WordDictionary {
     }
 
 
+    private ArrayList<String> getLemmas(String text) throws IOException {
+
+        Annotation annotation = annotator.makeAnnotatedDocument(text);
+        ArrayList<String> words = annotator.getAllWordsAnnotationByClass(annotation,CoreAnnotations.LemmaAnnotation.class);
+        return words;
+    }
+
+
     private void resetFeatureLocks(){
 
         for(String key : wordsMap.keySet()){
-            Features f = wordsMap.get(key);
+            Feature f = wordsMap.get(key);
             f.resetLock();
             wordsMap.put(key,f);
         }
     }
 
 
-    public String getNormalizedForm(String s) {
-        String lemma = s;
-        if(lemma.length()>2){
-            lemma = toProperCase(s);
-        }
-        return lemma;
-    }
 
 
 
-    public void insertTextWords(String text, Synset sense) throws IOException {
+    public void insertTextWords(ArrayList<String> words, Synset sense) throws IOException {
 
         StopWords sw = StopWords.getInstance();
-
-        String [] split = text.split(splitRegex);
-        for(int i = 0; i<split.length ; i++){
-
-            String s = getSubStr(split[i]);
-            Annotation annotation = annotator.makeAnnotatedDocument(s);
-            s = annotator.getWordAnnotationByClass(annotation,s,CoreAnnotations.LemmaAnnotation.class);
-
-            if(s!=null && !sw.isStopWords(s)){
-                String normalized = getNormalizedForm(s);
-                Features f = new Features(normalized);
-
+        for(String word : words){
+            word = StringUtilities.getSubStr(word);
+            if(word!=null && !sw.isStopWords(word)){
+                String normalized = StringUtilities.getNormalizedForm(word);
+                Feature f = new Feature(normalized);
                 if(wordsMap.containsKey(normalized)) {
                     f = wordsMap.get(normalized);
                 }
-
                 if(!f.getLock()){
                     f.updateOccurencies();
                     signatures.addWordToSignature(sense,normalized);
                 }
-
                 wordsMap.put(normalized,f);
             }
 
-            }
+        }
+
         }
 
 
-
-    public String getSubStr(String s){
-        String regex = "(\\.\\.\\.|\\.|#|&|;|" +
-                ":|«|»|%|\\?|@|\\”)*([A-Za-zàèòùì]+)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher match = pattern.matcher(s);
-        if(match.find()){
-            return match.group(2);
-        }
-        return null;
-    }
-
-
-
-    static String toProperCase(String s) {
-        return s.substring(0, 1).toUpperCase() +
-                s.substring(1).toLowerCase();
-    }
 
 
     public void makeDictonaryJson() throws IOException {
 
         JsonArray jsonFeatures = new JsonArray();
-        for(Features f : wordsMap.values()){
+        for(Feature f : wordsMap.values()){
             jsonFeatures.add(f.toJsonObject());
         }
 

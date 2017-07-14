@@ -42,11 +42,14 @@ public class DocumentAnnotator {
         Annotation document = new Annotation(sentence);
         pipeline.annotate(document);
 
+        RedwoodConfiguration configuration = RedwoodConfiguration.current();
+        configuration.empty().capture(System.err).apply();
         MorphaAnnotator morphaAnnotator = new MorphaAnnotator();
         morphaAnnotator.annotate(document);
 
         POSTaggerAnnotator posTagger = new POSTaggerAnnotator();
         posTagger.annotate(document);
+        configuration.clear().apply();
         return document;
     }
 

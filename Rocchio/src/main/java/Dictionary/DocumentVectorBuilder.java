@@ -10,16 +10,17 @@ import java.io.IOException;
 
 public class DocumentVectorBuilder {
 
-    private File directory;
     private DocumentVectorManager manager;
     private WordDictionary wdict;
     private int docsNumber;
 
 
-    public DocumentVectorBuilder(File directory, String lang) throws IOException {
-        this.wdict = WordDictionary.getInstance(directory, lang);
-        this.directory = directory;
-        this.docsNumber = directory.listFiles().length;
+    public DocumentVectorBuilder(File directory, String lang, int samples) throws IOException {
+        this.wdict = WordDictionary.getInstance(directory, lang, samples);
+        this.docsNumber = 1;
+        if(directory.isDirectory()){
+            this.docsNumber = samples*wdict.getCategories().length;
+        }
         this.manager = new DocumentVectorManager();
     }
 
@@ -28,14 +29,19 @@ public class DocumentVectorBuilder {
         return manager;
     }
 
-    public File getDirectory() {
-        return directory;
-    }
 
     public WordDictionary getWdict() {
         return wdict;
     }
 
+
+    public void clear(){
+
+        this.wdict.clear();
+        this.manager.clear();
+        System.gc();
+        this.docsNumber=1;
+    }
 
     /**
      * Update all document vectors
@@ -82,23 +88,24 @@ public class DocumentVectorBuilder {
             manager.updateCentroid(label,centroid);
         }
 
+        manager.clearVectors();
     }
 
 
+    private void makeDocumentVector(File text){
+
+        String label = FileUtilities.getFileName(text);
+        DocumentVector vect = manager.getVector(label);
+        manager.updateDocumentVector(label,vect);
+    }
+
 
     public void makeAllDocumentVectors(){
-        File [] texts = directory.listFiles();
-        String label = "";
 
-        for (int i = 0; i< texts.length; i++){
-            label = FileUtilities.getFileName(texts[i]);
-            DocumentVector vect = manager.getVector(label);
-            vect.makeDataVector(wdict, docsNumber);
-            manager.updateDocumentVector(label,vect);
+        File [] documents = wdict.getDocuments();
+        for (int i = 0; i< documents.length; i++){
+            makeDocumentVector(documents[i]);
         }
-
-
-        System.out.println("number of features : " + wdict.getWordsMap().keySet().size());
     }
 
 

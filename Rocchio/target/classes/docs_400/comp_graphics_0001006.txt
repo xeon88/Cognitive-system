@@ -1,1 +1,0 @@
-I am a Mac-user when it comes to graphics (that's what I own software and hardware for) andI've recently come across a large number of TTTDDD format modeling databases.  Is there anysoftware, mac or unix, for translating those to something I could use, like DXF?  Pleasereply via email.Thanx.Eric Oehleroehler@picard.cs.wisc.edu

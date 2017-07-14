@@ -6,16 +6,16 @@ import java.util.regex.Pattern;
 
 /**
  * Created by Marco Corona on 26/06/2017.
+ * Collection of function to work and parse strings
  */
 public class StringUtilities {
 
     public static String getSubStr(String s){
-        String regex = "(\\.\\.\\.|\\.|#|&|;|" +
-                ":|«|»|%|\\?|@|\\”)*([A-Za-zàèòùì]+)";
+        String regex = "([A-zàèòùì]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher match = pattern.matcher(s);
         if(match.find()){
-            return match.group(2);
+            return match.group(0);
         }
         return null;
     }

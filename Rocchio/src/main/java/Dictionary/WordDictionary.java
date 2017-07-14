@@ -6,13 +6,11 @@ import edu.stanford.nlp.pipeline.Annotation;
 import org.apache.jena.atlas.io.IndentedWriter;
 import org.apache.jena.atlas.json.JsonArray;
 import org.apache.jena.atlas.json.io.JsonWriter;
+import org.apache.jena.base.Sys;
 
 import java.io.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 
 
 /**
@@ -24,41 +22,40 @@ import java.util.TreeSet;
 public class WordDictionary {
 
     private TreeMap<String,Feature> wordsMap;
-    private File directory;
+    private File [] documents;
     private final String splitRegex = "(\\t|\\s|\\n|\\(|\\)|\\+|’|')+";
     private static WordDictionary instance;
     private DocumentAnnotator annotator;
     private String [] wordKeys;
     private String language;
+    private int samples;
+    private String [] categories;
 
-    public static WordDictionary getInstance(File dir, String lang){
+    public static WordDictionary getInstance(File dir, String lang, int size){
         if(instance==null){
-            instance = new WordDictionary(dir, lang);
+            instance = new WordDictionary(dir, lang, size);
         }
         return instance;
     }
 
 
-    private WordDictionary(File dir, String lang){
 
-        if(dir.isDirectory()) {
-            try {
-                this.annotator = new DocumentAnnotator(lang);
-                this.directory = dir;
-                this.wordsMap = new TreeMap<String, Feature>();
-                this.language = lang;
-                this.wordKeys = null;
-                loadWords();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else{
-            throw new IllegalArgumentException("Missing directory");
+    private WordDictionary(File dir, String lang, int size){
+        try {
+            this.annotator = new DocumentAnnotator(lang);
+            this.wordsMap = new TreeMap<String, Feature>();
+            this.language = lang;
+            this.wordKeys = null;
+            this.documents = null;
+            this.samples = size;
+            this.categories = null;
+            loadWords(dir);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    public String[] getWordKeys(){return  wordKeys ;}
+    public String[] getWordKeys(){return wordKeys ;}
 
     public TreeMap<String,Feature> getWordsMap(){
         return wordsMap;
@@ -68,35 +65,152 @@ public class WordDictionary {
         this.wordsMap = map;
     }
 
+    public File[] getDocuments(){
+        return this.documents;
+    }
+
+    public String [] getCategories(){
+        return categories;
+    }
 
 
+    public void clear(){
+        this.wordsMap = null;
+        this.wordKeys = null;
+        this.documents = null;
+        this.annotator = null;
+        this.categories = null;
+        this.samples = 0;
+        instance = null;
+    }
 
     /**
      * Load all words into dictionary contained in all training set texts
      * @throws IOException
      */
 
-    public void loadWords() throws IOException {
+    public void loadWords(File directory) throws IOException {
 
-        File [] files = directory.listFiles();
-        TreeSet<String> categories = new TreeSet<String>();
-        ArrayList<String> fileWords;
-        for(int i = 0 ; i<files.length; i++){
-            String label = FileUtilities.getFileName(files[i]);
-            String category = FileUtilities.getCategoryfromLabel(label);
-            String text = FileUtilities.getTextFromFile(files[i]);
-            insertTrainingTextWords(text,label);
-            categories.add(category);
-            System.out.println("Text file : " + label + " added");
+
+        if(directory.isDirectory()){
+            categories = loadFromDirectory(directory);
         }
+        else {
+            categories = loadFromFile(directory);
+        }
+
 
         createKeysArray();
         cleanMostFreqWords(categories);
         createKeysArray();
+        System.out.println("number of features : " + wordKeys.length);
+        /*
+        String message = "[ADDED WORDS ] :  \n";
+        for (String key : wordKeys){
+            message += " :   " + key + " \n";
+        }
+        log.log(message,"debug");
+
         makeDictonaryJson();
+        */
     }
 
 
+
+    private void loadSingleText(File file) throws IOException {
+        String label = FileUtilities.getFileName(file);
+        String text = FileUtilities.getTextFromFile(file);
+        String category = FileUtilities.getCategoryfromLabel(label);
+        insertTrainingTextWords(text,category);
+    }
+
+
+    private File[] selectSubSetCategories(int size, File [] documents){
+
+
+        File [] selection = new File [size];
+        int i = 0;
+        int j = 0;
+        boolean [] locks = new boolean[documents.length];
+
+        while (i<size){
+            if(!locks[j%documents.length]){
+                double rand = Math.random();
+                if(rand>0.6){
+                    selection[i]=documents[j%documents.length];
+                    locks[j%documents.length]=false;
+                    i++;
+                }
+                j++;
+            }
+        }
+
+        return selection;
+    }
+
+
+    /**
+     * Load a sampled subset of documents contained within a directory
+     * A random selection of document is performed before filling the
+     * dictionary
+     * @return
+     * @throws IOException
+     */
+
+    private String [] loadFromDirectory(File directory) throws IOException {
+
+        File [] files = directory.listFiles();
+        TreeSet<String> categories = new TreeSet<String>();
+        ArrayList<File> tmp = new ArrayList<File>();
+        String prevCategory= FileUtilities.getCategoryfromLabel(FileUtilities.getFileName(files[0]));
+        ArrayList<File> selection = new ArrayList<File>();
+
+        System.out.println("Documents selection..");
+
+        for (int i = 0;i<files.length ; i++) {
+            String filename = FileUtilities.getFileName(files[i]);
+            String category = FileUtilities.getCategoryfromLabel(filename);
+            categories.add(category);
+            if(category.equals(prevCategory)){
+                tmp.add(files[i]);
+            }
+            else {
+                File [] documents = tmp.toArray(new File[tmp.size()]);
+                tmp = new ArrayList<File>();
+                File [] subset = selectSubSetCategories(samples,documents);
+                for (int j=0; j<subset.length ; j++){
+                    selection.add(subset[j]);
+                }
+            }
+            prevCategory = category;
+        }
+
+        String [] categoriesKeys = categories.toArray(new String [categories.size()]);
+        File [] selectionArray = selection.toArray(new File [selection.size()]);
+        int j = 1;
+
+        System.out.println("Loading texts...");
+        for(File file : selectionArray){
+            if(j%10==0){
+                System.out.println("loaded : " + (j+1) + "/" + selectionArray.length + " documents");
+            }
+            loadSingleText(file);
+            j++;
+        }
+
+        this.documents = selectionArray;
+        System.gc();
+        System.out.println("Loaded all texts done");
+        return categoriesKeys;
+    }
+
+
+    private String [] loadFromFile(File file) throws IOException {
+        String category = FileUtilities.getCategoryfromLabel(FileUtilities.getFileName(file));
+        loadSingleText(file);
+        String [] categories = new String[]{category};
+        return categories;
+    }
 
 
 
@@ -108,13 +222,13 @@ public class WordDictionary {
      */
 
 
-    private void cleanMostFreqWords(TreeSet<String> categories) {
+    private void cleanMostFreqWords(String [] categories) throws IOException {
 
-        double normalizationConstant = - ((double)categories.size())
-                *(1/(double)categories.size())*Math.log(1/(double)categories.size());
-
-        double threshold = 0.4;
-
+        double normalizationConstant = Math.log((double)categories.length) ;
+        StopWords sw = StopWords.getInstance();
+        Logging log = new Logging();
+        double threshold = 0.6;
+        String message = "[REMOVED] : ";
         for (String key : wordKeys){
             Feature f = wordsMap.get(key);
             double occ = f.getOccurencies();
@@ -126,12 +240,20 @@ public class WordDictionary {
 
             double normalizedEntropy = partial/normalizationConstant;
 
-            if(normalizedEntropy>=threshold){
+            if(normalizedEntropy>=threshold || f.getOccurencies()<=1){
                 wordsMap.remove(key);
+                double stopWordsThreshold = 0.95 - ((double) samples/200)*0.1;
+                if(normalizedEntropy>=stopWordsThreshold){
+                    sw.addStopWords(f.getWord());
+                }
+                message+= " " + key + " - " + normalizedEntropy + "\n";
             }
 
         }
-
+        System.out.println("stopwords loaded ... " + sw.size());
+        sw.export();
+        message+="\n";
+       //log.log(message,"debug");
     }
 
     /**
@@ -163,12 +285,13 @@ public class WordDictionary {
 
     public void insertTrainingTextWords(String text, String label) throws IOException {
 
-        ArrayList<Annotation> documents = annotator.makeAnnotatedSentences(text);
+        Annotation [] documents = annotator.makeAnnotatedSentences(text);
         for(Annotation document : documents){
-            ArrayList<String> tokens = annotator.getAllWordsAnnotationByClass(document,CoreAnnotations.LemmaAnnotation.class);
-            insertSentencesFeatures(tokens,document,label,false);
+            String [] tokens = annotator.getAllWordsAnnotationByClass(document,CoreAnnotations.LemmaAnnotation.class);
+            insertSentencesFeatures(tokens,label,false);
         }
     }
+
 
 
     /**
@@ -182,12 +305,11 @@ public class WordDictionary {
     public void insertQueryTextFeatures(String text, String label) throws IOException {
 
 
-        ArrayList<Annotation> documents = annotator.makeAnnotatedSentences(text);
+        Annotation [] documents = annotator.makeAnnotatedSentences(text);
         for(Annotation document : documents){
-            ArrayList<String> tokens = annotator.getAllWordsAnnotationByClass(document,CoreAnnotations.LemmaAnnotation.class);
-            insertSentencesFeatures(tokens,document,label,true);
+            String [] tokens = annotator.getAllWordsAnnotationByClass(document,CoreAnnotations.LemmaAnnotation.class);
+            insertSentencesFeatures(tokens,label,true);
         }
-
     }
 
 
@@ -195,49 +317,33 @@ public class WordDictionary {
      * Insert or update all features into wordsMap derived from an annotated sentence
      * belonged to a text labelled
      * @param tokens list of token to lemmatize
-     * @param sentence annotated sentences
      * @param label label of text
      * @param queryText needs an update of occurencies (not in case of query text)
      * @throws IOException
      */
 
-    private void insertSentencesFeatures(ArrayList<String> tokens,Annotation sentence,
-                                         String label, boolean queryText) throws IOException {
+    private void insertSentencesFeatures(String [] tokens, String label, boolean queryText) throws IOException {
 
         Logging logger = new Logging();
         StopWords sw = StopWords.getInstance();
-        MorphItLemmatizer lemmatizer = MorphItLemmatizer.getInstance();
         for(String token : tokens){
-            token = StringUtilities.getSubStr(token);
-            if(token!=null && !sw.isStopWords(token)){
-                String lemma = "";
-                if(language.equals(DocumentAnnotator.LANGUAGE_EN)){
-                    lemma = annotator.getWordAnnotationByClass(sentence,token,CoreAnnotations.LemmaAnnotation.class);
-                    lemma = StringUtilities.getNormalizedForm(lemma);
-                }
-                if(language.equals(DocumentAnnotator.LANGUAGE_IT)){
-                    String normalized=StringUtilities.getNormalizedForm(token);
-                    lemma = lemmatizer.getLemma(normalized);
-                }
-                Feature f = new Feature(lemma);
-                if(wordsMap.containsKey(lemma)){
-                    f = wordsMap.get(lemma);
-                }
-                else {
-                    String message = "Added : " + lemma ;
-                    logger.log(message,"debug");
+            if(token!=null && StringUtilities.checkWord(token) && !sw.isStopWords(token)){
+                token = StringUtilities.getNormalizedForm(token);
+
+                Feature f = new Feature(token);
+                if(wordsMap.containsKey(token)){
+                    f = wordsMap.get(token);
                 }
                 f.updateLabelFrequencies(label);
-
                 // update occuriences only if features belonged to
                 // a training text
                 if(!queryText){
                     f.updateOccurencies();
-                    wordsMap.put(lemma,f);
+                    wordsMap.put(token,f);
                 }
                 else { // query text case
-                    if(wordsMap.containsKey(lemma)){
-                        wordsMap.put(lemma,f);
+                    if(wordsMap.containsKey(token)){
+                        wordsMap.put(token,f);
                     }
                 }
             }
@@ -245,6 +351,52 @@ public class WordDictionary {
 
     }
 
+    /**
+     * Select the most (size) frequent features in documents belonged to a given
+     * category
+     * @param category
+     * @param size
+     * @return
+     */
+
+    public ArrayList<Feature> getBestFeatureForCategory(String category, int size){
+
+        ArrayList<Feature> best = new ArrayList<Feature>();
+
+        for(String key : wordKeys) {
+
+            Feature f = wordsMap.get(key);
+            if(f.getOccurenciesByLabel(category)==0){
+                continue;
+            }
+
+            int i = 0;
+            for (Feature feature : best) {
+                if (f.getOccurenciesByLabel(category) > feature.getOccurenciesByLabel(category)) {
+                    break;
+                }
+                i++;
+            }
+
+            ArrayList<Feature> tmp = new ArrayList<Feature>();
+
+            for(int j = 0; j<i ; j++){
+                tmp.add(best.get(j));
+            }
+
+            if(i<size){
+                tmp.add(f);
+                if(tmp.size()<=best.size()){
+                    for (int j=i; j<best.size();j++){
+                        tmp.add(best.get(j));
+                    }
+                }
+            }
+            best=tmp;
+        }
+
+        return best;
+    }
 
     /**
      * Export all dictionary in a json file
@@ -265,4 +417,6 @@ public class WordDictionary {
         writer.finishOutput();
         fos.close();
     }
+
+
 }

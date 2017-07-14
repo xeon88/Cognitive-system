@@ -8,6 +8,8 @@ import java.util.Set;
 
 /**
  * Created by Marco Corona on 06/04/2017.
+ * This class manages all document vectors created other than
+ * provides all methods to execute the search of best category
  */
 public class DocumentVectorManager {
 
@@ -46,16 +48,26 @@ public class DocumentVectorManager {
 
     public DocumentVector getVector(String label){
         if(!vectors.containsKey(label)){
-            System.out.println("Label created : " + label);
+            //System.out.println("Label created : " + label);
             vectors.put(label,new DocumentVector(label));
         }
         return vectors.get(label);
     }
 
+    public void clear(){
+        this.centroids = null;
+        this.categories = null;
+        this.vectors = null;
+    }
+
+    public void clearVectors(){
+        this.vectors = null;
+    }
+
 
     public Centroid getCentroid(String label){
         if(!centroids.containsKey(label)){
-            System.out.println("Label created : " + label);
+           //System.out.println("Label created : " + label);
             centroids.put(label,new Centroid(label));
         }
         return centroids.get(label);
@@ -84,6 +96,15 @@ public class DocumentVectorManager {
             ex.printStackTrace();
         }
     }
+
+
+    /**
+     * Compute the best category associated to an input vector through a measure of
+     * similarity
+     * @param in
+     * @return
+     * @throws IOException
+     */
 
 
     public DocumentVector MostLikelihoodCategory(DocumentVector in) throws IOException {
@@ -118,6 +139,12 @@ public class DocumentVectorManager {
         return bestCentroid;
     }
 
+    /**
+     * Compute the best category associated to an input vector through a distance measure
+     * , in particular an euclidean distance.
+     * @param in
+     * @return
+     */
 
     public DocumentVector MostNearCategory(DocumentVector in){
 
@@ -139,6 +166,14 @@ public class DocumentVectorManager {
         return bestCentroid;
     }
 
+
+    /**
+     * Compute most similar category centroid of an other to determine the most similar category
+     *
+     * @param input
+     * @return
+     * @throws IOException
+     */
 
     public Centroid NearestCentroid(Centroid input) throws IOException {
 

@@ -77,7 +77,12 @@ public class WordNetUtils {
     public Synset[] getSynsets(String word, POS pos) throws JWNLException {
         Dictionary dict = wn.getDictionary();
         IndexWord index = dict.getIndexWord(pos,word);
-        return index.getSenses();
+        if(index!=null){
+            return index.getSenses();
+        }
+        else {
+            return null;
+        }
     }
 
 

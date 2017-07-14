@@ -1,1 +1,0 @@
-Newsgroups: comp.os.ms-windows.miscSubject: Hiragana/Katakana TT fontsKeywords: hiragana, katakana, TrueType, JapaneseWhere can I obtain TrueType hiragana and katakana (Japanese phonetic character)fonts?(note: I can receive mail at the address in the header, but I cannot send.)

@@ -8,20 +8,22 @@ import java.util.HashMap;
 
 /**
  * Created by Marco Corona on 05/05/2017.
+ * Represent a feature and its info
  */
 
 public class Feature implements Comparable<Feature> {
-    private String word;
-    private int occurencies;
-    private int presence;
-    private HashMap<String, Integer> labelFreq ;
+    private String word; // word associated to the feature
+    private int occurencies; // number of total occurenices of specific feature
+    private int presences;  // number of text in which feature is present
+    private HashMap<String, Integer> textFreqs; // map indexed through text name of
+                                                // occurencies in a specif text
 
 
     public Feature(String s){
         this.word = s;
         this.occurencies = 0;
-        this.presence = 0;
-        labelFreq = new HashMap<String, Integer>();
+        this.presences = 0;
+        textFreqs = new HashMap<String, Integer>();
     }
 
     public int getOccurencies() {
@@ -32,12 +34,12 @@ public class Feature implements Comparable<Feature> {
         return word;
     }
 
-    public int getPresence() {
-        return presence;
+    public int getPresences() {
+        return presences;
     }
 
-    public HashMap<String, Integer> getLabelFreq() {
-        return labelFreq;
+    public HashMap<String, Integer> getTextFreqs() {
+        return textFreqs;
     }
 
     public void updateOccurencies(){
@@ -45,54 +47,61 @@ public class Feature implements Comparable<Feature> {
     }
 
     public void updateLabelFrequencies(String label){
-        if(!labelFreq.keySet().contains(label)){
-            presence++;
-            labelFreq.put(label,1);
+        if(!textFreqs.keySet().contains(label)){
+            presences++;
+            textFreqs.put(label,1);
         }
         else{
-            labelFreq.put(label,labelFreq.get(label)+1);
+            textFreqs.put(label, textFreqs.get(label)+1);
         }
     }
 
+    public int getFreqsByLabel(String label){
+        int freqs = 0;
+        if(textFreqs.containsKey(label)){
+            freqs = textFreqs.get(label);
+        }
+        return freqs;
+    }
 
+    /**
+     * Compute the total number of occurencies of a feature for all document
+     * belonged to the same category
+     * @param category
+     * @return
+     */
 
     public int getOccurenciesByLabel(String category){
         int occurencies = 0;
-        for(String label : labelFreq.keySet()){
+        for(String label : textFreqs.keySet()){
             if(label.contains(category)){
-                occurencies+=labelFreq.get(label);
+                occurencies+= textFreqs.get(label);
             }
         }
         return occurencies;
     }
 
-
-    public int getOccurenciesOutLabel(String category){
-        int occurencies = 0;
-        for(String label : labelFreq.keySet()){
-            if(!label.contains(category)){
-                occurencies+=labelFreq.get(label);
-            }
-        }
-        return occurencies;
-    }
 
     public int compareTo(Feature o) {
         return this.word.compareTo(o.word);
     }
 
 
+    /**
+     * Build an json object about feature's informations
+     * @return
+     */
 
     public JsonObject toJsonObject(){
 
         JsonObject json = new JsonObject();
         json.put("word",word);
         json.put("global", occurencies);
-        json.put("presecence",presence);
+        json.put("presecence", presences);
         JsonArray labelledFrequencies = new JsonArray();
-        for(String labels : labelFreq.keySet()){
+        for(String labels : textFreqs.keySet()){
             JsonObject infoLabel = new JsonObject();
-            infoLabel.put(labels,labelFreq.get(labels));
+            infoLabel.put(labels, textFreqs.get(labels));
             labelledFrequencies.add(infoLabel);
         }
         json.put("labelled_freq",labelledFrequencies);

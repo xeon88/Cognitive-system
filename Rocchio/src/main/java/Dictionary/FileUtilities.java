@@ -8,6 +8,7 @@ import java.util.TreeMap;
 
 /**
  * Created by Marco Corona on 13/04/2017.
+ * Collection of function to work with text document
  */
 public class FileUtilities {
 
@@ -96,9 +97,14 @@ public class FileUtilities {
         writer.close();
     }
 
+
     public static void writeString(File file, String s) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        writer.write(s);
+        String [] split = s.split("\n");
+        for(int i =0 ; i<split.length; i++){
+            writer.write(split[i]);
+            writer.newLine();
+        }
         writer.close();
     }
 

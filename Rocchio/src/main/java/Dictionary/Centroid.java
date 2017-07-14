@@ -42,16 +42,19 @@ public class Centroid extends DocumentVector {
         for (int i = 0; i < keys.length; i++) {
             Feature f = dict.getWordsMap().get(keys[i]);
             double negativeVal = 0;
-            double positveVal = 0;
+            double positiveVal = 0;
+            int freqs = f.getFreqsByLabel(label);
             if (nearest == null) {
-                positveVal = ((double) f.getOccurenciesByLabel(label) / (double) documents);
+                positiveVal = ((double) freqs/ (double) documents);
                 negativeVal = 0;
-            } else {
-                positveVal = beta*((double) f.getOccurenciesByLabel(label) / (double) documents);
-                negativeVal = gamma* ((double) f.getOccurenciesByLabel(nearest.getLabel()) / (double) (documents));
             }
-            featureValues[i] = positveVal - negativeVal;
-            featureValues[i] = featureValues[i] * (Math.log(totalDocs) - Math.log(f.getPresence()));
+            else {
+                positiveVal = beta*((double) freqs/ (double) documents);
+                int nearfreqs = f.getFreqsByLabel(nearest.getLabel());
+                negativeVal = gamma* ((double)nearfreqs/(double)documents);
+            }
+            featureValues[i] = positiveVal - negativeVal;
+            featureValues[i] = featureValues[i] * (Math.log(totalDocs) - Math.log(f.getPresences()));
             i++;
         }
     }

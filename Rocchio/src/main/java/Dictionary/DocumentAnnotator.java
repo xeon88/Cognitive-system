@@ -4,10 +4,8 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.MorphaAnnotator;
-import edu.stanford.nlp.pipeline.POSTaggerAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.util.logging.Redwood;
 import edu.stanford.nlp.util.logging.RedwoodConfiguration;
 import eu.fbk.dh.tint.runner.TintPipeline;
 import net.didion.jwnl.data.POS;
@@ -44,21 +42,9 @@ public class DocumentAnnotator {
     private String regexSentenceSplit = "(\\s|\\t|\\n)+";
 
     public DocumentAnnotator(String lang) {
-        try {
             this.language = lang;
-            if(lang.equals(LANGUAGE_IT)){
-                initTint();
-            }
-            else if(lang.equals(LANGUAGE_EN)){
-                initStandfordNlp();
-            }
-            else{
-                throw  new IllegalArgumentException("Language not supported");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        makeMap();
+            initStandfordNlp();
+            makeMap();
     }
 
 
@@ -69,29 +55,16 @@ public class DocumentAnnotator {
         configuration.empty().capture(System.out).apply();
         StanfordCoreNLP stanPipeline = new StanfordCoreNLP(props);
         this.stanfordPipeline= stanPipeline;
+        configuration.restore(System.out).apply();
         System.out.println("standfordNlp initialized \n");
     }
-
-    private void initTint() throws IOException {
-        TintPipeline tintPipeline = new TintPipeline();
-        tintPipeline.loadDefaultProperties();
-        tintPipeline.load();
-        this.tintPipeline= tintPipeline;
-    }
-
 
 
 
     private Annotation initAnnotatedDocument(String sentence){
 
         Annotation annotatedSentence = new Annotation(sentence);
-        if(language.equals(LANGUAGE_IT)){
-            annotatedSentence = tintPipeline.runRaw(sentence);
-        }
-
-        if(language.equals(LANGUAGE_EN)){
-            stanfordPipeline.annotate(annotatedSentence);
-        }
+        stanfordPipeline.annotate(annotatedSentence);
         return annotatedSentence;
     }
 
@@ -109,46 +82,72 @@ public class DocumentAnnotator {
         return ratio;
     }
 
+    /**
+     * Substitute all word in a sentence with a new words composed only
+     * by legit characters
+     * @param sentence
+     * @return
+     */
+
+    private String clearNoise(String sentence){
+
+        String [] split = sentence.split(regexSentenceSplit);
+        String clear = "";
+        for(int i = 0; i<split.length ; i++ ){
+            String sub = StringUtilities.getSubStr(split[i]);
+            if(sub!=null){
+                clear += sub + " " ;
+            }
+        }
+
+        clear += "\n";
+
+        return clear;
+    }
+
 
     /**
-     *  Make a list of annotated sentences from a text, splitting text itself
-     *  and nextly calling standford nlp utilities
+     *  Make a list of annotated sentences from a text, splitting text itself and filter
+     *  useless senteces and nextly calling standford nlp utilities
      * @param text
      * @return
      */
 
 
-    public ArrayList<Annotation> makeAnnotatedSentences(String text){
+    public Annotation[]  makeAnnotatedSentences(String text){
 
         ArrayList<Annotation> annotatedSentences = new ArrayList<Annotation>();
         String[] textSplit = text.split(regexTextSplit);
-
+        MorphaAnnotator morphaAnnotator = new MorphaAnnotator();
         for(String sentence : textSplit){
             String [] words = sentence.split(regexSentenceSplit);
             if(words.length>3 && numberOfValidWord(words)>0.9){
+                sentence = clearNoise(sentence);
                 Annotation document = initAnnotatedDocument(sentence);
                 RedwoodConfiguration configuration = RedwoodConfiguration.current();
                 configuration.empty().capture(System.out).apply();
-                MorphaAnnotator morphaAnnotator = new MorphaAnnotator();
                 morphaAnnotator.annotate(document);
-                configuration.clear().apply();
+                configuration.restore(System.out).apply();
                 annotatedSentences.add(document);
-                // System.out.println("sentence annotated " + sentence);
             }
         }
-        return annotatedSentences;
+        Annotation [] annotations = annotatedSentences.toArray(new Annotation[annotatedSentences.size()]);
+        return annotations;
     }
 
 
 
 
 
-    public ArrayList<String> getAllWordsAnnotationByClass(Annotation document, Class c) throws IOException {
+    public String [] getAllWordsAnnotationByClass(Annotation document, Class c) throws IOException {
 
-        Logging logger = new Logging();
+
         ArrayList<String> annotations = new ArrayList<String>();
-        List<CoreMap> texts = document.get(CoreAnnotations.SentencesAnnotation.class);
-        String message = "Class annotation : " + c.getName() + "\n";
+        List<CoreMap> coreMaps = document.get(CoreAnnotations.SentencesAnnotation.class);
+
+        CoreMap [] texts = coreMaps.toArray(new CoreMap[coreMaps.size()]);
+        String message = "Method : getAllWordsAnnotationByClass \n" +
+                "Class annotation : " + c.getName() + "\n";
         for(CoreMap text : texts) {
             message+= "Text to read : " + text.toString() +  "\n";
             for (CoreLabel token : text.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -159,8 +158,8 @@ public class DocumentAnnotator {
                         + "Annotation : " + annotations + "\n";
             }
         }
-        logger.log(message, "debug");
-        return annotations;
+        String [] annotationStrings = annotations.toArray(new String[annotations.size()]);
+        return annotationStrings;
     }
 
 
@@ -169,12 +168,22 @@ public class DocumentAnnotator {
         Logging logger = new Logging();
 
         String annotation = null;
-        List<CoreMap> texts = document.get(CoreAnnotations.SentencesAnnotation.class);
-        String message = "Class annotation : " + c.getName() + "\n";
+        List<CoreMap> coreMaps = document.get(CoreAnnotations.SentencesAnnotation.class);
+        String message = "Method : getAllWordsAnnotationByClass \n" +
+                "Class annotation : " + c.getName() + "\n"
+                + "Word to annotate : " + word + "\n";
+
+        CoreMap [] texts = coreMaps.toArray(new CoreMap[coreMaps.size()]);
 
         for(CoreMap text : texts) {
             message+= "Text to read : " + text.toString() +  "\n";
-            for (CoreLabel token : text.get(CoreAnnotations.TokensAnnotation.class)) {
+            List<CoreLabel> tokens = text.get(CoreAnnotations.TokensAnnotation.class);
+            for (CoreLabel token : tokens) {
+
+                message+= "CoreMap : " + token.originalText() + "\n";
+                message+= " index : " + token.index() + "\n";
+                message+= " word : " + token.word() + "\n";
+                message+= " tag : " + token.tag() + "\n";
                 String elem = token.get(CoreAnnotations.TextAnnotation.class);
                 annotation = (String)token.get(c);
                 if(elem.equalsIgnoreCase(word)){

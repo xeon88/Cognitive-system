@@ -1,7 +1,5 @@
 package Dictionary;
 
-import java.util.HashMap;
-
 
 /**
  * Created by Marco Corona on 06/04/2017.
@@ -42,10 +40,10 @@ public class DocumentVector {
         for(int i=0; i<keys.length; i++ ){
             int freqs = 0;
             Feature f = dict.getWordsMap().get(keys[i]);
-            if(f.getLabelFreq().keySet().contains(label)){
-                freqs = f.getLabelFreq().get(label);
+            if(f.getTextFreqs().keySet().contains(label)){
+                freqs = f.getTextFreqs().get(label);
             }
-            featureValues[i] = freqs*(Math.log(totalDocs) - Math.log(f.getPresence()));
+            featureValues[i] = freqs*(Math.log(totalDocs) - Math.log(f.getPresences()));
         }
     }
 
@@ -104,7 +102,7 @@ public class DocumentVector {
             variance+=Math.pow(featureValues[i]-vector[i],2);
         }
         euclidean = Math.sqrt(variance);
-        return variance;
+        return euclidean;
     }
 
     @Override

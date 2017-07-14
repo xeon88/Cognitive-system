@@ -66,11 +66,11 @@ public class FileUtilities {
 
 
 
-    public static void makeWordFile(TreeMap<String, Features> words) throws IOException {
+    public static void makeWordFile(TreeMap<String, Feature> words) throws IOException {
         String path = "Rocchio/src/main/resources/output.txt";
         File file = new File(path);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        for ( Features s: words.values()) {
+        for ( Feature s: words.values()) {
             writer.write(s.getWord() + "\n");
         }
         writer.close();

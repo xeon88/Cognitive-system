@@ -9,18 +9,23 @@ import java.io.IOException;
 public class RocchioClassifier {
 
     private DocumentVectorBuilder builder;
+    private int zeroVectors;
 
-    public RocchioClassifier(File trainingSet,double beta, double gamma, String lang) throws IOException {
-        this.builder = new DocumentVectorBuilder(trainingSet,lang);
+    public RocchioClassifier(File trainingSet,double beta, double gamma,
+                             String lang, int samples) throws IOException {
+        this.zeroVectors= 0;
+        this.builder = new DocumentVectorBuilder(trainingSet,lang,samples);
         builder.makeAllDocumentVectors();
         builder.makeAllMeanDocumentVectors(beta,gamma);
     }
 
-    public RocchioClassifier(File trainingSet, String lang) throws IOException {
-        this.builder = new DocumentVectorBuilder(trainingSet, lang);
+    public RocchioClassifier(File trainingSet, String lang , int samples) throws IOException {
+        this.builder = new DocumentVectorBuilder(trainingSet, lang, samples);
         builder.makeAllDocumentVectors();
         builder.makeAllMeanDocumentVectors(1,0);
+        this.zeroVectors= 0;
     }
+
 
 
 
@@ -36,9 +41,12 @@ public class RocchioClassifier {
 
         String realCategory = FileUtilities.getCategoryfromLabel(docTest.getLabel());
         DocumentVector similarityCategory = builder.getManager().MostLikelihoodCategory(docTest);
-
-        System.out.println("[Real category] : " + realCategory);
-        System.out.println("[Similarity] test belong to : " + similarityCategory.getLabel() + "\n\n");
+        if(similarityCategory==null){
+            zeroVectors++;
+            return false;
+        }
+        //System.out.println("[Real category] : " + realCategory);
+        //System.out.println("[Similarity] test belong to : " + similarityCategory.getLabel() + "\n\n");
         return realCategory.equals(similarityCategory.getLabel());
     }
 

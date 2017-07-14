@@ -42,24 +42,23 @@ public class wordNetTest {
 
 
         // Sentences for testing
-        BestSense("The house was burnt to ashes while the owner returned.","ashes");
 
-        /*
-        BestSense("Germany sells arms to Saudi Arabia.","arms");
+        BestSense("This table is made of ash wood.","ash");
         BestSense("Arms bend at the elbow.","arms");
+        BestSense("Germany sells arms to Saudi Arabia.","arms");
+        BestSense("Work out the solution in your head.","head");
+        BestSense("The house was burnt to ashes while the owner returned.","ashes");
         BestSense("The key broke in the lock.","key");
         BestSense("The key problem was not one of quality but of quantity.","key");
-        BestSense("Work out the solution in your head.","head");
         BestSense("Heat the solution to 75° Celsius.","heat");
-        BestSense("This table is made of ash wood.","ash");
         BestSense("The lunch with her boss took longer than she expected.","lunch");
         BestSense("She packed her lunch in her purse.","lunch");
         BestSense("I decided to get the car this week ","get");
+        /*
         BestSense("The classification of the genetic data took two years.","classification");
         BestSense("The journal Science published the classification this month.","classification");
         BestSense("His cottage is near a small wood.","wood");
         BestSense("The statue was made out of a block of wood.","wood");
-
         */
     }
 
@@ -78,23 +77,11 @@ public class wordNetTest {
             String morpha = annotator.getWordAnnotationByClass(document,search,CoreAnnotations.LemmaAnnotation.class);
             String pos = annotator.getWordAnnotationByClass(document,search,CoreAnnotations.PartOfSpeechAnnotation.class);
 
-            ArrayList<String> words = annotator.getAllWordsAnnotationByClass(document,CoreAnnotations.LemmaAnnotation.class);
-            StopWords sw = StopWords.getInstance();
-
-            String newSentence = "";
-            for(String word : words){
-                if(!sw.isStopWords(word)){
-                    newSentence += word + " ";
-                }
-            }
-
             // select best sense from all
-            Synset s = null;
-
             LeskAlgorithm lesk = new LeskAlgorithm();
             WordNetUtils wtr = new WordNetUtils();
             lesk.getDict().loadWords(wtr.getSynsets(morpha,annotator.getPOS(pos)));
-            lesk.getBestSense(morpha,newSentence, annotator.getPOS(pos));
+            lesk.getBestSense(morpha,sentence,annotator.getPOS(pos));
         }
         catch (IOException ex){
             ex.printStackTrace();

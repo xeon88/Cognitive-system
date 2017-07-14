@@ -81,6 +81,7 @@
     <orderEntry type="library" name="Maven: com.googlecode.efficient-java-matrix-library:ejml:0.23" level="project" />
     <orderEntry type="library" name="Maven: javax.json:javax.json-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: edu.stanford.nlp:stanford-parser:2.0.4" level="project" />
+    <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-querybuilder:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-tdb:3.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.jena:jena-arq:3.1.1" level="project" />

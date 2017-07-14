@@ -10,9 +10,9 @@ import java.util.TreeSet;
  */
 public class StopWords {
 
-    public final static String pathStopWords = "WordNet/src/main/resources/stopwords";
+    public final static String pathStopWords = "WordNet/src/main/resources/stopwords/stopwords_en.txt";
     private static StopWords stopWords;
-    private TreeSet words;
+    private TreeSet<String> words;
 
 
 
@@ -26,35 +26,31 @@ public class StopWords {
 
     private StopWords(){
         this.words = load();
+        System.out.println("stopwords loaded ... " + words.size());
     }
 
 
     private TreeSet load(){
-        TreeSet stopwords;
+        TreeSet stopwords = null;
         try {
             stopwords = new TreeSet();
-            File dir = new File(pathStopWords);
-            File[] files = dir.listFiles();
-
-            for(int i=0 ; i<files.length ; i++){
-
-                String fileName = files[i].getParent() + File.separator +files[i].getName();
-                BufferedReader reader = new BufferedReader(
+            BufferedReader reader = new BufferedReader(
                         new InputStreamReader(
-                        new FileInputStream(fileName), "ISO-8859-1")
-                        );
-                String buffer = "";
-                while ((buffer=reader.readLine())!=null){
-                    String stop = StringEscapeUtils.unescapeHtml4(buffer);
-                    stopwords.add(stop);
-                }
+                        new FileInputStream(pathStopWords), "ISO-8859-1")
+            );
+            String buffer = "";
+            while ((buffer=reader.readLine())!=null){
+                String stop = StringEscapeUtils.unescapeHtml4(buffer);
+                stopwords.add(stop);
             }
 
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException io){
-            return null;
-        }
-
         return stopwords;
     }
 
@@ -63,4 +59,24 @@ public class StopWords {
         return words.contains(s.toLowerCase());
     }
 
+    public void addStopWords(String stop){
+        words.add(stop.toLowerCase());
+    }
+
+    public int size(){
+        return words.size();
+    }
+
+    public void export(){
+        String dump = "";
+        File stopwords = new File(pathStopWords);
+        for(String stop : words){
+            dump += stop + "\n";
+        }
+        try {
+            FileUtilities.writeString(stopwords,dump);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,236 +1,155 @@
-Prefix: : <http://www.semanticweb.org/theacidmc/ontologies/2017/5/untitled-ontology-17#>
-Prefix: music: <http://www.semanticweb.org/marco.corona/music/>
+Prefix: : <http://www.semanticweb.org/ontomap/retiecologiche/ontology#>
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
 Prefix: owl: <http://www.w3.org/2002/07/owl#>
 Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: skos: <http://www.w3.org/2004/02/skos/core#>
+Prefix: terms: <http://purl.org/dc/terms/>
 Prefix: xml: <http://www.w3.org/XML/1998/namespace>
 Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
 
 
 
-Ontology: <http://www.semanticweb.org/marco.corona/music>
+Ontology: <http://www.semanticweb.org/ontomap/retiecologiche/ontology>
 
+Import: <http://www.opengis.net/ont/geosparql>
 
-Datatype: rdf:PlainLiteral
+AnnotationProperty: owl:qualifiedCardinality
 
     
-Datatype: xsd:double
+AnnotationProperty: rdfs:comment
+
+    
+AnnotationProperty: rdfs:label
+
+    
+Datatype: rdf:PlainLiteral
 
     
 Datatype: xsd:int
 
     
-Datatype: xsd:string
+Datatype: xsd:nonNegativeInteger
 
     
-ObjectProperty: music:aboutArtist
+ObjectProperty: <http://www.opengis.net/ont/geosparql#hasGeometry>
 
-    SubPropertyOf: 
-        owl:topObjectProperty
+    
+ObjectProperty: <http://www.opengis.net/ont/geosparql#sfIntersects>
+
+    
+ObjectProperty: haPiante
+
+    Annotations: 
+        rdfs:label "hasPlants"@en,
+        rdfs:label "haPiante"@it
     
     Domain: 
-        music:Album or music:Track
+        TerritorioAgricolo or TerritorioNaturale
     
     Range: 
-        music:Artist
+        ListaPiante
     
     
-ObjectProperty: music:aboutGroup
+ObjectProperty: intersectsone
 
     SubPropertyOf: 
+        <http://www.opengis.net/ont/geosparql#sfIntersects>
+    
+    
+ObjectProperty: isLandUseElement
+
+    Annotations: 
+        rdfs:label "descrittoDa"@it,
+        rdfs:comment "describedBy"@en
+    
+    SubPropertyOf: 
         owl:topObjectProperty
+    
+    Characteristics: 
+        Functional
     
     Domain: 
-        music:Album or music:Track
+        Patch
     
     Range: 
-        music:Group
-    
-    
-ObjectProperty: music:aboutTrack
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    
-ObjectProperty: music:classifiedAs
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    
-ObjectProperty: music:featuredWith
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    Domain: 
-        music:Featuring
-    
-    Range: 
-        music:Artist or music:Group
-    
-    
-ObjectProperty: music:hasLyrics
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    
-ObjectProperty: music:isComposedBy
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    Domain: 
-        music:Track
-    
-    Range: 
-        music:Composer
-    
-    
-ObjectProperty: music:isMemberOf
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    Domain: 
-        music:Artist
-    
-    Range: 
-        music:Group
-    
-    
-ObjectProperty: music:isPerformedWith
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    Domain: 
-        music:Album or music:Track
-    
-    Range: 
-        music:Instrument
-    
-    
-ObjectProperty: music:isProducedBy
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    Domain: 
-        music:Track
-    
-    Range: 
-        music:Producer
-    
-    
-ObjectProperty: music:isSungBy
-
-    SubPropertyOf: 
-        owl:topObjectProperty
-    
-    Domain: 
-        music:Singer
-    
-    Range: 
-        music:Track
+        ElementoUsoSuolo
     
     
 ObjectProperty: owl:topObjectProperty
 
-    SubPropertyOf: 
-        music:isProducedBy
     
-    Domain: 
-        music:Track
-    
-    Range: 
-        music:Genre
-    
-    
-DataProperty: music:hasBPM
+DataProperty: haArea
 
+    Annotations: 
+        rdfs:label "haArea"@it,
+        rdfs:label "hasArea"@en
+    
     Domain: 
-        music:Track
-    
-    Range: 
-        xsd:double
-    
-    SubPropertyOf: 
-        owl:topDataProperty
+        <http://www.opengis.net/ont/geosparql#hasGeometry> only <http://www.opengis.net/ont/sf#Surface>
     
     
-DataProperty: music:hasLength
+DataProperty: hasEcologicFunction
 
+    Annotations: 
+        rdfs:label "HaFunzionalitaEcologica"@it,
+        rdfs:label "hasEcologicFunction"@en
+    
+    Characteristics: 
+        Functional
+    
     Domain: 
-        music:Track
+        ElementoUsoSuolo
     
     Range: 
-        xsd:double
+        xsd:int[>= "1"^^xsd:int , <= "4"^^xsd:int]
     
     SubPropertyOf: 
-        owl:topDataProperty
+        hasEvaluations
     
     
-DataProperty: music:hasNickName
+DataProperty: hasEvaluations
 
+    Annotations: 
+        rdfs:label "haValutazioni"@it
+    
     Domain: 
-        music:Artist or music:Group
-    
-    Range: 
-        xsd:string
-    
-    SubPropertyOf: 
-        owl:topDataProperty
-    
-    EquivalentTo: 
-        music:hasStageName
-    
-    
-DataProperty: music:hasRealName
-
-    Domain: 
-        music:Artist
-    
-    Range: 
-        xsd:string
+        ElementoUsoSuolo
     
     SubPropertyOf: 
         owl:topDataProperty
     
     
-DataProperty: music:hasStageName
+DataProperty: hasExtroversion
 
+    Annotations: 
+        rdfs:label "haEstroversione"@it,
+        rdfs:label "hasExtroversion"@en
+    
+    Characteristics: 
+        Functional
+    
     Domain: 
-        music:Artist or music:Group
+        ElementoUsoSuolo
     
     Range: 
-        xsd:string
+        xsd:int[>= "1"^^xsd:int , <= "5"^^xsd:int]
     
     SubPropertyOf: 
-        owl:topDataProperty
-    
-    EquivalentTo: 
-        music:hasNickName
+        hasEvaluations
     
     
-DataProperty: music:hasTitle
+DataProperty: hasLCPCode
 
+    Annotations: 
+        rdfs:label "haCodiceLcp"@it,
+        rdfs:label "hasLcpCode"
+    
+    Characteristics: 
+        Functional
+    
     Domain: 
-        music:Album or music:Track
-    
-    Range: 
-        xsd:string
-    
-    SubPropertyOf: 
-        owl:topDataProperty
-    
-    
-DataProperty: music:isNumber
-
-    Domain: 
-        music:TrackNumber
+        ElementoUsoSuolo
     
     Range: 
         xsd:int
@@ -239,95 +158,591 @@ DataProperty: music:isNumber
         owl:topDataProperty
     
     
+DataProperty: hasNaturality
+
+    Annotations: 
+        rdfs:label "hasNaturality"@en,
+        rdfs:label "haNaturalita"@it
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        ElementoUsoSuolo
+    
+    Range: 
+        xsd:int[>= "1"^^xsd:int , <= "5"^^xsd:int]
+    
+    SubPropertyOf: 
+        hasEvaluations
+    
+    
+DataProperty: hasPerimeter
+
+    Annotations: 
+        rdfs:label "haPerimetro"@it
+    
+    Domain: 
+        Patch
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: hasRelevence
+
+    Annotations: 
+        rdfs:label "haRilevanza"@it,
+        rdfs:label "hasRelevance"@en
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        ElementoUsoSuolo
+    
+    Range: 
+        xsd:int[>= "1"^^xsd:int , <= "5"^^xsd:int]
+    
+    SubPropertyOf: 
+        hasEvaluations
+    
+    
+DataProperty: hasUnchangeability
+
+    Annotations: 
+        rdfs:label "hasUnchangeability"@en,
+        rdfs:label "haIrreversibilita"@it
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        ElementoUsoSuolo
+    
+    Range: 
+        xsd:int[>= "1"^^xsd:int , <= "5"^^xsd:int]
+    
+    SubPropertyOf: 
+        hasEvaluations
+    
+    
+DataProperty: hasWeakness
+
+    Annotations: 
+        rdfs:label "hasWeakness"@en,
+        rdfs:label "haFragilita"@it
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        ElementoUsoSuolo
+    
+    Range: 
+        xsd:int[>= "1"^^xsd:int , <= "4"^^xsd:int]
+    
+    SubPropertyOf: 
+        hasEvaluations
+    
+    
 DataProperty: owl:topDataProperty
 
     
-Class: music:Album
+Class: <http://www.opengis.net/ont/geosparql#Feature>
 
     
-Class: music:Artist
+Class: <http://www.opengis.net/ont/sf#LineString>
 
     
-Class: music:Composer
+Class: <http://www.opengis.net/ont/sf#Surface>
+
+    
+Class: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/PartialVegetation>
+
+    Annotations: 
+        rdfs:label "PartialVegetation"@en,
+        rdfs:label "VegetazioneRada"@it
+    
+    SubClassOf: 
+        TerritorioNaturale
+    
+    
+Class: AmbitoConnessione
+
+    Annotations: 
+        rdfs:label "ConnectionElement"@en,
+        rdfs:label "AmbitoConnessione"@it
+    
+    SubClassOf: 
+        AmbitoPrioritariaEspansione
+    
+    
+Class: AmbitoPrioritariaEspansione
+
+    Annotations: 
+        rdfs:label "EPE"@en,
+        rdfs:label "APE"@it
+    
+    SubClassOf: 
+        ElementoReteEcologica
+    
+    
+Class: AreaContigua
+
+    Annotations: 
+        rdfs:label "AreaContigua"@it,
+        rdfs:label "AdjoiningArea"@en
+    
+    SubClassOf: 
+        AmbitoPrioritariaEspansione
+    
+    
+Class: BlackList
 
     SubClassOf: 
-        music:Artist
+        ListaPiante
     
     
-Class: music:Discography
-
-    
-Class: music:Featuring
-
-    
-Class: music:Genre
-
-    
-Class: music:Group
-
-    
-Class: music:Instrument
-
-    
-Class: music:Lyrics
-
-    
-Class: music:Musician
+Class: BoschiMisti
 
     SubClassOf: 
-        music:Artist
+        TerritorioBoscato
     
     
-Class: music:Producer
+Class: Ceduazione
+
+    Annotations: 
+        rdfs:label "Ceduazione"@it,
+        rdfs:label "Coppicing"@en
+    
+    SubClassOf: 
+        Gestione,
+        <http://www.opengis.net/ont/geosparql#sfIntersects> only (<http://www.opengis.net/ont/geosparql#hasGeometry> only <http://www.opengis.net/ont/sf#LineString>),
+        <http://www.opengis.net/ont/geosparql#sfIntersects> exactly 1 TerritorioNaturale
+    
+    
+Class: Conifere
 
     SubClassOf: 
-        music:Artist
+        TerritorioBoscato
     
     
-Class: music:RecordLabel
+Class: CorpoIdrico
 
+    Annotations: 
+        rdfs:label "WaterBody"@en,
+        rdfs:label "CorpoIdrico"@it
     
-Class: music:Singer
+    SubClassOf: 
+        ElementoUsoSuolo
+    
+    
+Class: CostruzioneReticolarita
+
+    Annotations: 
+        rdfs:label "ENBuilding"@en,
+        rdfs:label "CostruzioneRE"@it
+    
+    SubClassOf: 
+        InterventoReteEcologica
+    
+    
+Class: ElementoReteEcologica
+
+    Annotations: 
+        rdfs:label "ElementoRE"@it,
+        rdfs:label "ENElement"
+    
+    SubClassOf: 
+        skos:Concept
+    
+    
+Class: ElementoStrutturale
+
+    Annotations: 
+        rdfs:label "StructuralElem",
+        rdfs:label "ElemStrutturale"@it
+    
+    SubClassOf: 
+        ElementoReteEcologica
+    
+    
+Class: ElementoUsoSuolo
+
+    Annotations: 
+        rdfs:label "LandUseElem"@en,
+        rdfs:label "ElemUsoSuolo"@it
+    
+    SubClassOf: 
+        skos:Concept
+    
+    
+Class: Eliminazione
+
+    Annotations: 
+        rdfs:label "Elimination"@en,
+        rdfs:label "Eliminazione"@it
+    
+    SubClassOf: 
+        Operazione
+    
+    
+Class: Eradicazione
+
+    Annotations: 
+        rdfs:label "Eradication"@en,
+        rdfs:label "Eradicazione"@it
+    
+    SubClassOf: 
+        Eliminazione
+    
+    
+Class: Gestione
+
+    Annotations: 
+        rdfs:label "Gestione"@it,
+        rdfs:label "Maintenance"@en
+    
+    SubClassOf: 
+        Operazione
+    
+    
+Class: InterventoReteEcologica
+
+    Annotations: 
+        rdfs:label "InterventoRE"@it,
+        rdfs:label "ENIntervention"@en
+    
+    SubClassOf: 
+        Operazione
+    
+    
+Class: Latifoglie
 
     SubClassOf: 
-        music:Artist
+        TerritorioBoscato
     
     
-Class: music:Track
+Class: ListaPiante
+
+    SubClassOf: 
+        skos:OrderedCollection
+    
+    
+Class: MiglioramentoReticolarita
+
+    Annotations: 
+        rdfs:label "MiglioramentoRE"@it,
+        rdfs:label "ENImprovement"@en
+    
+    SubClassOf: 
+        InterventoReteEcologica
+    
+    
+Class: NuovoImpianto
+
+    Annotations: 
+        rdfs:label "NewPlanting"@en,
+        rdfs:label "NuovoImpianto"@it
+    
+    SubClassOf: 
+        Operazione
+    
+    
+Class: Operazione
+
+    Annotations: 
+        rdfs:label "Operation"@en,
+        rdfs:label "Operazione"@it
+    
+    SubClassOf: 
+        skos:Concept
+    
+    
+Class: Patch
+
+    SubClassOf: 
+        <http://www.opengis.net/ont/geosparql#Feature>
+    
+    
+Class: Pianta
+
+    Annotations: 
+        rdfs:label "Plant"@en,
+        rdfs:label "Pianta"@it
+    
+    
+Class: TerritorioAgricolo
+
+    Annotations: 
+        rdfs:label "TerritorioAgricolo"@it,
+        rdfs:label "AgricultureLand"@en
+    
+    SubClassOf: 
+        ElementoUsoSuolo
+    
+    
+Class: TerritorioBoscato
+
+    SubClassOf: 
+        TerritorioNaturale
+    
+    
+Class: TerritorioModellatoArtificialmente
+
+    Annotations: 
+        rdfs:label "TerritorioArtificiale"@it,
+        rdfs:label "ArtificialLand"@en
+    
+    SubClassOf: 
+        ElementoUsoSuolo
+    
+    
+Class: TerritorioNaturale
+
+    Annotations: 
+        rdfs:label "NaturalLand"@en,
+        rdfs:label "TerritorioNaturale"@it
+    
+    SubClassOf: 
+        ElementoUsoSuolo
+    
+    
+Class: TutelaReticolarita
+
+    Annotations: 
+        rdfs:label "TutelaRE"@it,
+        rdfs:label "ENConservation"@en
+    
+    SubClassOf: 
+        InterventoReteEcologica
+    
+    
+Class: ZonaUmida
+
+    Annotations: 
+        rdfs:label "WetLand"@en,
+        rdfs:label "ZonaUmida"@it
+    
+    SubClassOf: 
+        ElementoUsoSuolo
+    
+    
+Class: skos:Concept
 
     
-Class: music:TrackNumber
+Class: skos:OrderedCollection
 
     
-Individual: <http://www.semanticweb.org/marco.corona/music/genre/Rock>
-
-    
-Individual: <http://www.semanticweb.org/marco.corona/music/genre/blues>
-
-    
-Individual: <http://www.semanticweb.org/marco.corona/music/genre/jazz>
-
-    
-Individual: <http://www.semanticweb.org/marco.corona/music/group/zapp_roger>
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3111>
 
     Types: 
-        music:Group
+        Latifoglie
     
     Facts:  
-     music:hasNickName  "Zapp & Roger",
-     music:hasStageName  "Zapp & Roger"
-
-Individual: <http://www.semanticweb.org/marco.corona/music/artist/roger_troutman>
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3111"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3112>
 
     Types: 
-        music:Singer
-        music:Musician
+        Latifoglie
     
     Facts:  
-     music:hasNickName  "Roger Troutman",
-     music:hasStageName  "Roger Troutman"
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3112"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "2"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3113>
+
+    Types: 
+        Latifoglie
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3111"@it,
+     hasNaturality  "3"@it,
+     hasRelevence  "2"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3114>
+
+    Types: 
+        Latifoglie
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3114"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3115>
+
+    Types: 
+        Latifoglie
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3115"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3116>
+
+    Types: 
+        Latifoglie
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3116"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3117>
+
+    Types: 
+        Latifoglie
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3117"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3118>
+
+    Types: 
+        Latifoglie
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3118"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3121>
+
+    Types: 
+        Conifere
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3121"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3122>
+
+    Types: 
+        Conifere
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3122"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3123>
+
+    Types: 
+        Conifere
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3123"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/3124>
+
+    Types: 
+        Conifere
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "3124"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "3"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/32>
+
+    Types: 
+        TerritorioNaturale
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "32"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "2"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/331>
+
+    Types: 
+        <http://www.semanticweb.org/ontomap/retiecologiche/ontology/PartialVegetation>
+    
+    Facts:  
+     hasExtroversion  "5"@it,
+     hasLCPCode  "331"@it,
+     hasNaturality  "1"@it,
+     hasRelevence  "1"@it,
+     hasUnchangeability  "3"@it,
+     hasWeakness  "2"@it
+    
+    
+Individual: <http://www.semanticweb.org/ontomap/retiecologiche/ontology/LandUseElement/id/332>
+
+    Types: 
+        <http://www.semanticweb.org/ontomap/retiecologiche/ontology/PartialVegetation>
+    
+    
+Individual: _:genid14
+
+    Annotations: 
+        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
     
     
 DisjointClasses: 
-    music:Album,music:Artist,music:Genre,music:Group,music:Instrument,music:Track
+    BoschiMisti,Conifere,Latifoglie
 
