@@ -1,6 +1,7 @@
 package Dictionary;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,23 +11,34 @@ import java.util.regex.Pattern;
  */
 public class StringUtilities {
 
-    public static String getSubStr(String s){
+    public static ArrayList<String> getSubStr(String s){
+        ArrayList<String> tmp = new ArrayList<String>();
         String regex = "([A-zàèòùì]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher match = pattern.matcher(s);
-        if(match.find()){
-            return match.group(0);
+        while (match.find()){
+            tmp.add(match.group(0));
         }
-        return null;
+        return tmp;
     }
 
 
+    public static boolean checkWordIterative(String s){
+
+        if(s==null || s.equals("")) return false;
+        for(char c : s.toCharArray()){
+            int ascii = (int)c;
+            if(ascii<=64 || (ascii>=91 && ascii<=96) || ascii>122){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static boolean checkWord(String s){
 
-        String regex = "(\\-|\\?|!|/|\\*|#|\\{|\\}|<|>|" +
-                "\\$|:|\\.|;|\\(|\\)|=|%|[0-9]|:|«|»" +
-                "&)";
+        String regex = "(\0|\\s|\\t|\\-|\\?|!|/|\\*|#|\\{|\\}|<|>|" +
+                "\\$|:|\\.|;|\\(|\\)|=|%|[0-9]|:|«|»|\\+|&|')";
         Pattern pattern = Pattern.compile(regex);
         Matcher match = pattern.matcher(s);
         boolean result = match.find();

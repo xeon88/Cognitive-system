@@ -191,8 +191,8 @@ public class WordDictionary {
 
         System.out.println("Loading texts...");
         for(File file : selectionArray){
-            if(j%10==0){
-                System.out.println("loaded : " + (j+1) + "/" + selectionArray.length + " documents");
+            if(j%(samples*2)==0){
+                System.out.println("loaded : " + j + "/" + selectionArray.length + " documents");
             }
             loadSingleText(file);
             j++;
@@ -227,8 +227,10 @@ public class WordDictionary {
         double normalizationConstant = Math.log((double)categories.length) ;
         StopWords sw = StopWords.getInstance();
         Logging log = new Logging();
-        double threshold = 0.6;
+        double threshold = 0.4;
+
         String message = "[REMOVED] : ";
+
         for (String key : wordKeys){
             Feature f = wordsMap.get(key);
             double occ = f.getOccurencies();
@@ -242,7 +244,7 @@ public class WordDictionary {
 
             if(normalizedEntropy>=threshold || f.getOccurencies()<=1){
                 wordsMap.remove(key);
-                double stopWordsThreshold = 0.95 - ((double) samples/200)*0.1;
+                double stopWordsThreshold = 0.95 - ((double) samples/1000)*0.1;
                 if(normalizedEntropy>=stopWordsThreshold){
                     sw.addStopWords(f.getWord());
                 }
@@ -251,7 +253,7 @@ public class WordDictionary {
 
         }
         System.out.println("stopwords loaded ... " + sw.size());
-        sw.export();
+        //sw.export();
         message+="\n";
        //log.log(message,"debug");
     }
@@ -284,12 +286,8 @@ public class WordDictionary {
 
 
     public void insertTrainingTextWords(String text, String label) throws IOException {
-
-        Annotation [] documents = annotator.makeAnnotatedSentences(text);
-        for(Annotation document : documents){
-            String [] tokens = annotator.getAllWordsAnnotationByClass(document,CoreAnnotations.LemmaAnnotation.class);
-            insertSentencesFeatures(tokens,label,false);
-        }
+        String [] tokens = annotator.makeAnnotatedSentences(text);
+        insertSentencesFeatures(tokens,label,false);
     }
 
 
@@ -303,13 +301,8 @@ public class WordDictionary {
 
 
     public void insertQueryTextFeatures(String text, String label) throws IOException {
-
-
-        Annotation [] documents = annotator.makeAnnotatedSentences(text);
-        for(Annotation document : documents){
-            String [] tokens = annotator.getAllWordsAnnotationByClass(document,CoreAnnotations.LemmaAnnotation.class);
-            insertSentencesFeatures(tokens,label,true);
-        }
+        String [] tokens = annotator.makeAnnotatedSentences(text);
+        insertSentencesFeatures(tokens,label,true);
     }
 
 

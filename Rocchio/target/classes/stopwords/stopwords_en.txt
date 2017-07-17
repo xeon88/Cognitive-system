@@ -284,7 +284,7 @@ main
 mainly
 make
 makes
-many
+manyn
 may
 maybe
 me

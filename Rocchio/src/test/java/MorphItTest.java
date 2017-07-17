@@ -14,6 +14,7 @@ public class MorphItTest {
 
     public static void main (String [] args){
 
+        /*
         String logPath = "Rocchio/src/main/resources/log.txt";
         System.setProperty("siscog.rocchio.logpath",logPath);
         DocumentAnnotator annotator = new DocumentAnnotator(DocumentAnnotator.LANGUAGE_EN);
@@ -34,5 +35,6 @@ public class MorphItTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
     }
 }

@@ -99,6 +99,9 @@ public class DocumentVectorBuilder {
         manager.updateDocumentVector(label,vect);
     }
 
+    /**
+     * Create all documentVector from document files
+     */
 
     public void makeAllDocumentVectors(){
 

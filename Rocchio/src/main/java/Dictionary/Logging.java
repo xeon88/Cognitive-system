@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 /**
  * Created by Marco Corona on 07/06/2017.
+ * Log services with different levels of verbosity
  */
 public class Logging {
 

@@ -6,11 +6,14 @@ import java.util.ArrayList;
 
 /**
  * Created by Marco Corona on 05/04/2017.
+ * Class to test Rocchio based classifier
  */
 public class RocchioMethodTest {
 
     public static void main(String [] args){
         try {
+
+            // global configuration
 
             String logPath = "Rocchio/src/main/resources/log.txt";
             System.setProperty("siscog.rocchio.logpath",logPath);
@@ -21,23 +24,29 @@ public class RocchioMethodTest {
                 file.delete();
             }
 
-            System.out.println("start to create vectors ....");
+            // fetching directories with documents
 
             String choose ="docs_400" ;
             File trainingSet = new File("Rocchio/src/main/resources/" + choose);
-
-            double beta =16;
-            double gamma = 4;
-            int [] samplesAmounts = new int[]{10,25,50, 125, 200};
-            double meanAccuracy;
             File testSet = new File("Rocchio/src/main/resources/testset_" + choose);
             File [] documents = testSet.listFiles();
+
+            // parameters of exectution
+
+            double beta =16; // slope of positive class
+            double gamma =2; // slope of negative class
+            int [] samplesAmounts = new int[]{500};  // sampling amount to testing classifier
+            int trials = 1; // number of execution per amount sampling type
+
+
+            double meanAccuracy;
             Logging log = new Logging();
             String language = DocumentAnnotator.LANGUAGE_EN;
             String message = "[TEST] \n";
-            int trials = 10;
 
             for(int i = 0; i<samplesAmounts.length; i++){
+
+                System.out.println("start to create vectors ....");
                 meanAccuracy = 0;
                 for(int j=0;j<trials;j++){
                     System.out.println("Test with " + samplesAmounts[i] + " samples number  " + (j+1));

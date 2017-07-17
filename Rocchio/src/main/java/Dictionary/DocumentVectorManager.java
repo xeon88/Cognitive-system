@@ -133,7 +133,7 @@ public class DocumentVectorManager {
         }
 
         message +="] \n";
-        log.log(message,"info");
+        //log.log(message,"info");
 
 
         return bestCentroid;
@@ -202,7 +202,7 @@ public class DocumentVectorManager {
         }
 
         message +="] \n";
-        log.log(message,"info");
+        //log.log(message,"info");
 
         return bestCentroid;
     }

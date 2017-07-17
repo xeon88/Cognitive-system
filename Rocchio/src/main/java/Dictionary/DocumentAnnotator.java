@@ -5,6 +5,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.MorphaAnnotator;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.simple.Sentence;
 import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.util.logging.RedwoodConfiguration;
 import eu.fbk.dh.tint.runner.TintPipeline;
@@ -36,10 +37,10 @@ public class DocumentAnnotator {
     private String regexTextSplit = "((\\.|\\?|!|;|,)|" +
             "((\\[|\\(|\\{))|" +
             "((\\[|\\{|\\)))|" +
-            "(\\t\\t)+(\\s)*)";
+            "(\\t\\t\\s))";
+    private String regexSentenceSplit = "\\s|\\t|\\n";
+    private MorphaAnnotator morphaAnnotator ;
 
-
-    private String regexSentenceSplit = "(\\s|\\t|\\n)+";
 
     public DocumentAnnotator(String lang) {
             this.language = lang;
@@ -55,16 +56,18 @@ public class DocumentAnnotator {
         configuration.empty().capture(System.out).apply();
         StanfordCoreNLP stanPipeline = new StanfordCoreNLP(props);
         this.stanfordPipeline= stanPipeline;
+        morphaAnnotator = new MorphaAnnotator();
         configuration.restore(System.out).apply();
         System.out.println("standfordNlp initialized \n");
     }
 
 
 
-    private Annotation initAnnotatedDocument(String sentence){
-
-        Annotation annotatedSentence = new Annotation(sentence);
-        stanfordPipeline.annotate(annotatedSentence);
+    private Sentence initAnnotatedDocument(String sentence){
+        Sentence annotatedSentence = null;
+        if(sentence!=null || !sentence.equals("")){
+            annotatedSentence = new Sentence(sentence);
+        }
         return annotatedSentence;
     }
 
@@ -74,7 +77,7 @@ public class DocumentAnnotator {
         double ratio = 0;
         int count = 0;
         for(String word : sentenceSplit){
-            if(StringUtilities.checkWord(word)){
+            if(StringUtilities.checkWordIterative(word)){
                 count++;
             }
         }
@@ -94,9 +97,11 @@ public class DocumentAnnotator {
         String [] split = sentence.split(regexSentenceSplit);
         String clear = "";
         for(int i = 0; i<split.length ; i++ ){
-            String sub = StringUtilities.getSubStr(split[i]);
-            if(sub!=null){
-                clear += sub + " " ;
+            ArrayList<String> sub = StringUtilities.getSubStr(split[i]);
+            if(!sub.isEmpty()){
+                for(String s : sub){
+                    clear+= s + " ";
+                }
             }
         }
 
@@ -114,25 +119,36 @@ public class DocumentAnnotator {
      */
 
 
-    public Annotation[]  makeAnnotatedSentences(String text){
+    public String[]  makeAnnotatedSentences(String text){
 
-        ArrayList<Annotation> annotatedSentences = new ArrayList<Annotation>();
+        ArrayList<String> tokens = new ArrayList<String>();
         String[] textSplit = text.split(regexTextSplit);
-        MorphaAnnotator morphaAnnotator = new MorphaAnnotator();
         for(String sentence : textSplit){
             String [] words = sentence.split(regexSentenceSplit);
-            if(words.length>3 && numberOfValidWord(words)>0.9){
+            if(words.length>3 && numberOfValidWord(words)>=0.5){
                 sentence = clearNoise(sentence);
-                Annotation document = initAnnotatedDocument(sentence);
+                Sentence document = null;
+                try {
+                    document = initAnnotatedDocument(sentence);
+                }
+                catch (Exception e){
+                    System.out.println("bad sentence : .." + sentence);
+                    System.out.println("check passed with : " + numberOfValidWord(words));
+                    System.out.println("words length : " + words.length);
+                    String checkOut = "words : \n ";
+                    System.out.println(checkOut);
+                }
+
                 RedwoodConfiguration configuration = RedwoodConfiguration.current();
                 configuration.empty().capture(System.out).apply();
-                morphaAnnotator.annotate(document);
                 configuration.restore(System.out).apply();
-                annotatedSentences.add(document);
+                if(document!=null){
+                    tokens.addAll(document.lemmas());
+                }
             }
         }
-        Annotation [] annotations = annotatedSentences.toArray(new Annotation[annotatedSentences.size()]);
-        return annotations;
+        String [] tokensArray = tokens.toArray(new String[tokens.size()]);
+        return tokensArray;
     }
 
 
@@ -161,6 +177,7 @@ public class DocumentAnnotator {
         String [] annotationStrings = annotations.toArray(new String[annotations.size()]);
         return annotationStrings;
     }
+
 
 
     public String getWordAnnotationByClass(Annotation document,String word,Class c) throws IOException {

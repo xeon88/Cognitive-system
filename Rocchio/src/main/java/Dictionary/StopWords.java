@@ -7,10 +7,12 @@ import java.util.TreeSet;
 
 /**
  * Created by Marco Corona on 12/04/2017.
+ * Collect and manage all founded stopwords
  */
 public class StopWords {
 
-    public final static String pathStopWords = "WordNet/src/main/resources/stopwords/stopwords_en.txt";
+    public final static String pathStopWords = "Rocchio/src/main/resources/stopwords/stopwords_en.txt";
+    //public final static String pathStopWordsBackUp = "WordNet/src/main/resources/stopwords/stopwords_en_new.txt";
     private static StopWords stopWords;
     private TreeSet<String> words;
 

@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**
@@ -70,14 +71,16 @@ public class MorphItLemmatizer {
                 buffer = StringEscapeUtils.unescapeHtml4(buffer);
                 String[] split = buffer.split("\\t");
                 String word = split [0];
-                String filteredWord = StringUtilities.getSubStr(word);
-                if(filteredWord!=null && split.length>1){
-                    String lemma = split[1];
-                    String pos = split[2];
-                    word = StringUtilities.getNormalizedForm(word);
-                    lemma = StringUtilities.getNormalizedForm(lemma);
-                    Lemma l = new Lemma(lemma,pos);
-                    lemmas.put(word,l);
+                ArrayList<String> filteredWords = StringUtilities.getSubStr(word);
+                for(String filteredWord : filteredWords){
+                    if(filteredWord!=null && split.length>1){
+                        String lemma = split[1];
+                        String pos = split[2];
+                        word = StringUtilities.getNormalizedForm(word);
+                        lemma = StringUtilities.getNormalizedForm(lemma);
+                        Lemma l = new Lemma(lemma,pos);
+                        lemmas.put(word,l);
+                    }
                 }
             }
         }
