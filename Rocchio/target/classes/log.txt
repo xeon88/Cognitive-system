@@ -1,4 +1,4 @@
 
 [TEST] 
-Samples : 250  mean accuracy : 0.58
+Samples : 1000  mean accuracy : 0.62
 

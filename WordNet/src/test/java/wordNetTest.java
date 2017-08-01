@@ -43,8 +43,9 @@ public class wordNetTest {
 
         // Sentences for testing
 
-        BestSense("This table is made of ash wood.","ash");
         BestSense("Arms bend at the elbow.","arms");
+        /*
+        BestSense("This table is made of ash wood.","ash");
         BestSense("Germany sells arms to Saudi Arabia.","arms");
         BestSense("Work out the solution in your head.","head");
         BestSense("The house was burnt to ashes while the owner returned.","ashes");
@@ -54,7 +55,6 @@ public class wordNetTest {
         BestSense("The lunch with her boss took longer than she expected.","lunch");
         BestSense("She packed her lunch in her purse.","lunch");
         BestSense("I decided to get the car this week ","get");
-        /*
         BestSense("The classification of the genetic data took two years.","classification");
         BestSense("The journal Science published the classification this month.","classification");
         BestSense("His cottage is near a small wood.","wood");

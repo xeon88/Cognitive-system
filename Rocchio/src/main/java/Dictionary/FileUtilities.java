@@ -57,6 +57,8 @@ public class FileUtilities {
     }
 
     public static String getFileName(File file){
+
+        if(file==null) return null;
         String name = FilenameUtils.getBaseName(file.getName());
         return name;
     }

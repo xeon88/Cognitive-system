@@ -5,6 +5,7 @@ import net.didion.jwnl.JWNLException;
 import net.didion.jwnl.data.IndexWord;
 import net.didion.jwnl.data.POS;
 import net.didion.jwnl.data.Synset;
+import net.didion.jwnl.data.Word;
 import net.didion.jwnl.dictionary.Dictionary;
 import rita.wordnet.RiWordnet;
 
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Marco Corona on 14/05/2017.
+ * Provide all methods to access to Wordnet's resources, to retrieve synset
+ * and sentences associated to each synset
  */
 public class WordNetUtils {
 
@@ -74,6 +77,14 @@ public class WordNetUtils {
     }
 
 
+    /**
+     * Get all synset of word when it occupies a specific part-of-speech
+     * @param word
+     * @param pos
+     * @return
+     * @throws JWNLException
+     */
+
     public Synset[] getSynsets(String word, POS pos) throws JWNLException {
         Dictionary dict = wn.getDictionary();
         IndexWord index = dict.getIndexWord(pos,word);
@@ -94,11 +105,14 @@ public class WordNetUtils {
 
         ArrayList<String> usages = new ArrayList<String>();
         String definition = s.getGloss();
+        String [] verbframes = s.getVerbFrames();
 
         try {
             log.log("Gloss : " + definition, "debug");
             usages.add(definition);
-
+            for(String verbFrame : verbframes){
+                usages.add(verbFrame);
+            }
         }
          catch (IOException e) {
             e.printStackTrace();

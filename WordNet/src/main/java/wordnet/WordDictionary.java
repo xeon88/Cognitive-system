@@ -15,7 +15,7 @@ import java.util.TreeMap;
 
 /**
  * Created by Marco Corona on 05/04/2017.
- * SingleTon class containing all features information
+ * Singleton class containing all features information
  */
 
 
@@ -63,6 +63,7 @@ public class WordDictionary {
     }
 
 
+
     public void loadWords(Synset[] senses) throws IOException {
 
         Logging logging = new Logging();
@@ -91,6 +92,7 @@ public class WordDictionary {
     }
 
 
+
     private ArrayList<String> getLemmas(String text) throws IOException {
 
         Annotation annotation = annotator.makeAnnotatedDocument(text);
@@ -109,7 +111,12 @@ public class WordDictionary {
     }
 
 
-
+    /**
+     * Insert a list of words related to a specific sense
+     * @param words
+     * @param sense
+     * @throws IOException
+     */
 
 
     public void insertTextWords(ArrayList<String> words, Synset sense) throws IOException {

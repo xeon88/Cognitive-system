@@ -13,6 +13,7 @@ import java.util.HashSet;
 
 /**
  * Created by Marco Corona on 13/05/2017.
+ * This class implements the lesk algorithm
  */
 public class LeskAlgorithm {
 
@@ -37,11 +38,22 @@ public class LeskAlgorithm {
     }
 
 
+    /**
+     * Compute the best sense of a given word into a sentence, knowing that in that
+     * sentence it occupies a specific part-of-speech
+     * @param word
+     * @param sentence
+     * @param pos
+     * @throws IOException
+     * @throws JWNLException
+     */
+
     public void getBestSense(String word, String sentence, POS pos) throws IOException, JWNLException {
 
 
         Logging logging = new Logging();
 
+        // Write log info
 
         String header = "Sentence : " + sentence + "\n"
                 + "Word : " + word + "\n"
@@ -52,19 +64,30 @@ public class LeskAlgorithm {
         Synset bestSense = null;
 
         double maxOverlap = Double.NEGATIVE_INFINITY;
+
+        // fetch context words set
+
         HashSet<String> context = getWordsContext(sentence);
         Synset[] senses = usageRetrieve.getSynsets(word,pos);
+
+        // if exsist some synset for that pos
+
         if(senses!=null){
+
             logging.log("Context : ", "info");
             logging.log(toString(context), "info");
 
             for(int i = 0; i<senses.length; i++){
 
+                // fetch signature of synset and computes intersection with context
                 HashSet<String> signature = getWordsSet(senses[i]);
                 HashSet<String> intersection = new HashSet<String>(context);
                 intersection.retainAll(signature);
 
+                // compute overlap
                 double overlap = computeOverlap(intersection);
+
+                // optimization step
                 if(overlap>maxOverlap) {
                     maxOverlap = overlap;
                     bestSense = senses[i];
@@ -89,6 +112,11 @@ public class LeskAlgorithm {
 
     }
 
+    /**
+     * Compute overlap through the use of idf function
+     * @param intersection
+     * @return
+     */
 
     private double computeOverlap(HashSet<String> intersection) {
         double overlap = 0;
@@ -108,7 +136,12 @@ public class LeskAlgorithm {
         return context;
     }
 
-
+    /**
+     * Returns a string list contained all words of context, after lemmatization step
+     * @param text
+     * @return
+     * @throws IOException
+     */
 
     public HashSet<String> getWordsContext(String text) throws IOException {
 

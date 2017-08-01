@@ -26,17 +26,17 @@ public class RocchioMethodTest {
 
             // fetching directories with documents
 
-            String choose ="docs_400" ;
-            File trainingSet = new File("Rocchio/src/main/resources/" + choose);
-            File testSet = new File("Rocchio/src/main/resources/testset_" + choose);
+
+            File trainingSet = new File("Rocchio/src/main/resources/docs_400");
+            File testSet = new File("Rocchio/src/main/resources/testset_docs_400_clean");
             File [] documents = testSet.listFiles();
 
             // parameters of exectution
 
             double beta =16; // slope of positive class
-            double gamma =2; // slope of negative class
-            int [] samplesAmounts = new int[]{500};  // sampling amount to testing classifier
-            int trials = 1; // number of execution per amount sampling type
+            double gamma =4; // slope of negative class
+            int [] samplesAmounts = new int[]{1000};  // sampling amount to testing classifier
+            int trials = 1 ; // number of execution per amount sampling type
 
 
             double meanAccuracy;

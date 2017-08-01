@@ -127,11 +127,15 @@ public class WordDictionary {
 
     private File[] selectSubSetCategories(int size, File [] documents){
 
+        if(documents.length<size){
+            size = documents.length;
+        }
 
         File [] selection = new File [size];
         int i = 0;
         int j = 0;
         boolean [] locks = new boolean[documents.length];
+
 
         while (i<size){
             if(!locks[j%documents.length]){
@@ -227,7 +231,7 @@ public class WordDictionary {
         double normalizationConstant = Math.log((double)categories.length) ;
         StopWords sw = StopWords.getInstance();
         Logging log = new Logging();
-        double threshold = 0.4;
+        double threshold = 0.6;
 
         String message = "[REMOVED] : ";
 

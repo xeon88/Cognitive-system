@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 /**
  * Created by Marco Corona on 17/05/2017.
+ * This class provides an hash map structure to improve access to synset signatures
  */
 public class SenseSignature {
 

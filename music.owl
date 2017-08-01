@@ -1,0 +1,1492 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/theacidmc/ontologies/2017/5/untitled-ontology-17#"
+     xml:base="http://www.semanticweb.org/theacidmc/ontologies/2017/5/untitled-ontology-17"
+     xmlns:music="http://www.semanticweb.org/marco.corona/music/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/marco.corona/music"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Play -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/Play">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/marco.corona/music/isPlayedBy"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/aboutArtist -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/aboutArtist">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Album"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Track"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/aboutGroup -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/aboutGroup">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Album"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Track"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Group"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/aboutTrack -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/aboutTrack">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/classifiedAs -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/classifiedAs">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/containedIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/containedIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Album"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/featuredWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/featuredWith">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Featuring"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Artist"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Group"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasContractWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasContractWith">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Artist"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Group"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/RecordLabel"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasGenre -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasGenre">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Album"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasLyrics -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasLyrics">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasMembers -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasMembers">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Group"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasPublished -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasPublished">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/marco.corona/music/isPublishedBy"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/RecordLabel"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Album"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isComposedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isComposedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Composer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isMemberOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isMemberOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Group"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isPerformedWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isPerformedWith">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Album"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Track"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Instrument"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isPlayedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isPlayedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isProducedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isProducedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Producer"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isPublishedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isPublishedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Album"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/RecordLabel"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isRemixOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isRemixOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isSampledFrom -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isSampledFrom">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isSungBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isSungBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Singer"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isTrackNumber -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isTrackNumber">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topObjectProperty -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topObjectProperty">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/marco.corona/music/isProducedBy"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Released -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/Released"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/cityOfBirth -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/cityOfBirth"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/dateOfBirth -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/dateOfBirth"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasBPM -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasBPM">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasLength -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasLength">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Instrument"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasNickName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasNickName">
+        <owl:equivalentProperty rdf:resource="http://www.semanticweb.org/marco.corona/music/hasStageName"/>
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Artist"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Group"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasRealName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasRealName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasStageName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasStageName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Artist"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Group"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasText -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasText">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Lyrics"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/hasTitle -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/hasTitle">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Album"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/marco.corona/music/Track"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/isNumber -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/isNumber">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/numberOftracksContained -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/marco.corona/music/numberOftracksContained">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/marco.corona/music/Album"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Album -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Album"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Artist -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Artist"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Blues -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Blues">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Classic -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Classic">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Composer -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Composer">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Country -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Country">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Discography -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Discography"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Electronic -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Electronic">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Featuring -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Featuring"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Folk -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Folk">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Funk -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Funk">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Genre -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Group -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Group"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Hip-Hop -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Hip-Hop">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/House -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/House">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Instrument -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Instrument"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Jazz -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Jazz">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Latin -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Latin">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Lyrics -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Lyrics"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Musician -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Musician">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Pop -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Pop">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Producer -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Producer">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/RecordLabel -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/RecordLabel"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Reggae -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Reggae">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Rock -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Rock">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Singer -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Singer">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Artist"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Techno -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Techno">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/marco.corona/music/Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Track -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/Track"/>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/TrackNumber -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/CoolJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/CoolJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/DanceHall -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/DanceHall">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Reggae"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/DeepHouse -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/DeepHouse">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/House"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Dub -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/Dub">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Reggae"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/EthnoJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/EthnoJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/FrenchCore -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/FrenchCore">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Techno"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/FusionJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/FusionJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/GypsyJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/GypsyJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/JazzRock -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/JazzRock">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Lounge -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/Lounge">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/House"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Metal -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/Metal">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Rock"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/MinimalHouse -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/MinimalHouse">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/House"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/NuJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/NuJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/House"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/OrchestraJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/OrchestraJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Punk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/Punk">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Rock"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Ragga -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/Ragga">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Reggae"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/RaggeaFusion -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/RaggeaFusion">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Reggae"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/RockGrunge -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/RockGrunge">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Rock"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/RockProgressive -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/RockProgressive">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Rock"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/SmoothJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/SmoothJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/SoulJazz -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/SoulJazz">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/Swing -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/Swing">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Jazz"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/TranceCore -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/TranceCore">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Techno"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/album/Zapp -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/album/Zapp">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Album"/>
+        <music:aboutGroup rdf:resource="http://www.semanticweb.org/marco.corona/music/group/zapp_roger"/>
+        <music:isPublishedBy rdf:resource="http://www.semanticweb.org/marco.corona/music/recordlabel/warnerbros"/>
+        <music:Released>28 july 1980</music:Released>
+        <music:numberOftracksContained rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">6</music:numberOftracksContained>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/artist/roger_troutman -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/artist/roger_troutman">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Musician"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Producer"/>
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Singer"/>
+        <music:Play rdf:resource="http://www.semanticweb.org/marco.corona/music/instrument/talkbox"/>
+        <music:isMemberOf rdf:resource="http://www.semanticweb.org/marco.corona/music/group/zapp_roger"/>
+        <music:cityOfBirth>Hamilton (Ohio)</music:cityOfBirth>
+        <music:hasNickName>Roger</music:hasNickName>
+        <music:hasRealName>Roger Troutman</music:hasRealName>
+        <music:hasStageName>Roger</music:hasStageName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/artist/tupac -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/artist/tupac">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Singer"/>
+        <music:hasContractWith rdf:resource="http://www.semanticweb.org/marco.corona/music/recordlabel/deathrow"/>
+        <music:cityOfBirth>New York</music:cityOfBirth>
+        <music:dateOfBirth>16 june 1971</music:dateOfBirth>
+        <music:hasNickName>2pac</music:hasNickName>
+        <music:hasRealName>Tupac Amalu Shakur</music:hasRealName>
+        <music:hasStageName>2pac</music:hasStageName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Americana -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Americana">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/ArgentineTango -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/ArgentineTango">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Baroque -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Baroque">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Classic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Boogie -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Boogie">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Funk"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/BossaNova -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/BossaNova">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Chant -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Chant">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Classic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/ChicagoBlues -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/ChicagoBlues">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Blues"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/ChillHop -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/ChillHop">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/ChipTune -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/ChipTune">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Christian -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Christian">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Hip-Hop"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Chutney -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Chutney">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/ConsciousHipHop -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/ConsciousHipHop">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Hip-Hop"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/DetroitBlues -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/DetroitBlues">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Blues"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/DirtySouth -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/DirtySouth">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Hip-Hop"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Downtempo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Downtempo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/DrumAndBass -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/DrumAndBass">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Dubstep -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Dubstep">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/ElectricBlues -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/ElectricBlues">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Blues"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/G-funk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/G-funk">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Hip-Hop"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/GhettoFunk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/GhettoFunk">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/GlitchHop -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/GlitchHop">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/HardCore -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/HardCore">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Electronic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Mambo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Mambo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Merengue -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Merengue">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/NashvilleSound -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/NashvilleSound">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/NewJackSwing -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/NewJackSwing">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Hip-Hop"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Opera -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Opera">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Classic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/P-Funk -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/P-Funk">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Funk"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Reinascimental -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Reinascimental">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Classic"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/RhythmBlues -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/RhythmBlues">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Blues"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/RockBlues -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/RockBlues">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Blues"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Rumba -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Rumba">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Salsa -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Salsa">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Soca -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Soca">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/SoulBlues -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/SoulBlues">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Blues"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/TexasCountry -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/TexasCountry">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Timba -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Timba">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Latin"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/WestCoastHipHop -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/WestCoastHipHop">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Hip-Hop"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/WestcoastBlues -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/WestcoastBlues">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Blues"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/genre/Zydeco -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/genre/Zydeco">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/group/zapp_roger -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/group/zapp_roger">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Group"/>
+        <music:hasNickName>Zapp &amp; Roger</music:hasNickName>
+        <music:hasStageName>Zapp &amp; Roger</music:hasStageName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/instrument/talkbox -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/instrument/talkbox">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Instrument"/>
+        <music:isPlayedBy rdf:resource="http://www.semanticweb.org/marco.corona/music/artist/roger_troutman"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/lyrics/zapp_roger/be_allright -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/lyrics/zapp_roger/be_allright">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Lyrics"/>
+        <music:hasText>Ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+
+Ooh, ooh, ah, ah, ah,
+Ah, ah, ah,
+
+Oh, baby, please don&apos;t ever leave me
+Just stick with me, mama, put your hand in mine
+We can be together through love and shelter
+Our very last dime or last meal or last sip of wine
+
+Ooh, ooh, ooh, yes, we can
+Come on, baby (Put your hand in mine)
+We share a good thing together
+Come on, baby (Put your hand in mine, girl)
+
+Together we can make this journey
+Together we can make this journey
+
+Alright
+It&apos;s gonna be alright
+Alright
+It&apos;s gonna be alright
+
+Alright
+It&apos;s gonna be alright
+Alright
+It&apos;s gonna be alright
+
+Alright
+Shucks, oh, my mama, don&apos;t you talk about me
+No, no, no, don&apos;t you head for that door
+This little thing we got is gonna work our fine, yeah, yeah, yeah, yeah
+Work out fine, work out fine, it&apos;s gonna work out fine
+
+Doo-doo-doo-doo-doo-doo
+Doo-doo-doo-doo-doo
+Doo-doo-doo-doo-doo-doo
+Doo-doo-doo-doo-doo
+
+Alright
+It&apos;s gonna be alright
+Alright
+It&apos;s gonna be alright
+
+Alright
+It&apos;s gonna be alright
+Alright
+It&apos;s gonna be alright
+
+Alright
+Alright
+Alright
+Alright
+
+It&apos;s gonna be alright
+Doo-doo
+Doo-doo-doo-doo-doo
+Doo-doo
+Doo-doo-doo-doo-doo
+
+Doo-doo
+Doo-doo-doo-doo-doo
+Doo-doo
+Doo-doo-doo-doo-doo
+
+Doo-doo
+Doo-doo-doo-doo-doo
+Doo-doo
+Doo-doo-doo-doo-doo
+
+Doo-doo
+Doo-doo-doo-doo-doo
+Doo-doo
+
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh, ah, ah, ah,
+Ooh, ooh,
+Ooh, ooh,
+Ooh, ooh,
+Ooh, ooh,
+Ooh, ooh,
+Ooh, ooh,
+Ooh, ooh,
+Ooh, ooh,
+
+
+
+Read more: Zapp &amp; Roger - Be Alright Lyrics | MetroLyrics</music:hasText>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/recordlabel/deathrow -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/recordlabel/deathrow">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/RecordLabel"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/recordlabel/warnerbros -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/recordlabel/warnerbros">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/RecordLabel"/>
+        <music:hasPublished rdf:resource="http://www.semanticweb.org/marco.corona/music/album/Zapp"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/track/00001 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/track/00001">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <music:aboutGroup rdf:resource="http://www.semanticweb.org/marco.corona/music/group/zapp_roger"/>
+        <music:isPerformedWith rdf:resource="http://www.semanticweb.org/marco.corona/music/instrument/talkbox"/>
+        <music:isTrackNumber rdf:resource="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/01"/>
+        <music:hasLength rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">565.00</music:hasLength>
+        <music:hasTitle>More Bounce to Ounce</music:hasTitle>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/track/00002 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/track/00002">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <music:isPerformedWith rdf:resource="http://www.semanticweb.org/marco.corona/music/instrument/talkbox"/>
+        <music:isTrackNumber rdf:resource="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/02"/>
+        <music:hasLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">228</music:hasLength>
+        <music:hasTitle>Freedom</music:hasTitle>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/track/00003 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/track/00003">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <music:aboutGroup rdf:resource="http://www.semanticweb.org/marco.corona/music/group/zapp_roger"/>
+        <music:isTrackNumber rdf:resource="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/03"/>
+        <music:hasLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">351</music:hasLength>
+        <music:hasTitle>Brand new player</music:hasTitle>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/track/00004 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/track/00004">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <music:aboutGroup rdf:resource="http://www.semanticweb.org/marco.corona/music/group/zapp_roger"/>
+        <music:isTrackNumber rdf:resource="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/04"/>
+        <music:hasLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">408</music:hasLength>
+        <music:hasTitle>Funky Bounce</music:hasTitle>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/track/00005 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/track/00005">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <music:aboutGroup rdf:resource="http://www.semanticweb.org/marco.corona/music/group/zapp_roger"/>
+        <music:isTrackNumber rdf:resource="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/05"/>
+        <music:hasLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">472</music:hasLength>
+        <music:hasTitle>Be Alright</music:hasTitle>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/track/00006 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/track/00006">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <music:aboutGroup rdf:resource="http://www.semanticweb.org/marco.corona/music/group/zapp_roger"/>
+        <music:isTrackNumber rdf:resource="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/06"/>
+        <music:hasLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">394</music:hasLength>
+        <music:hasTitle>Coming Home</music:hasTitle>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/track/00007 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/track/00007">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/Track"/>
+        <music:isSampledFrom rdf:resource="http://www.semanticweb.org/marco.corona/music/track/00005"/>
+        <music:hasLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">262</music:hasLength>
+        <music:hasTitle>Keep ya head up</music:hasTitle>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/01 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/01">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+        <music:containedIn rdf:resource="http://www.semanticweb.org/marco.corona/music/album/Zapp"/>
+        <music:isNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</music:isNumber>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/02 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/02">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+        <music:containedIn rdf:resource="http://www.semanticweb.org/marco.corona/music/album/Zapp"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/03 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/03">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+        <music:containedIn rdf:resource="http://www.semanticweb.org/marco.corona/music/album/Zapp"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/04 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/04">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/05 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/05">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+        <music:containedIn rdf:resource="http://www.semanticweb.org/marco.corona/music/album/Zapp"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/06 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/marco.corona/music/zapp_roger/zapp/06">
+        <rdf:type rdf:resource="http://www.semanticweb.org/marco.corona/music/TrackNumber"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.6.20160910-2108) https://github.com/owlcs/owlapi -->
+
