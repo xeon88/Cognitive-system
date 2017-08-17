@@ -15,6 +15,7 @@
         <module>BabelNet</module>
         <module>jena</module>
         <module>Utility</module>
+        <module>DepParser</module>
     </modules>
 
     <dependencies>
