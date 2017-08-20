@@ -173,7 +173,7 @@ public class State implements Comparable<State>{
         }
     }
 
-
+    
     @Override
     public int hashCode(){
 
@@ -181,12 +181,52 @@ public class State implements Comparable<State>{
         builder.append(nseq)
             .append(stack)
             .append(buffer)
+            .append(arcs)    
             .build();
 
         return builder.toHashCode();
 
     }
 
+    
+    
+    
+    @Override
+    public boolean equals(Object obj){
+    
+        if(obj==null){
+            return false;
+        }
+        
+        if(!State.class.isAssignableFrom(obj.getClass())){
+            return false;
+        }
+        
+        State t = (State) obj;
+        
+        if(this.nseq!=t.nseq){
+            return false;
+        }
+        
+        if(this.stack==null ? t.stack!=null : !this.stack.equals(t.stack)){
+            return false;
+        }
+        
+        if(this.buffer==null ? t.buffer!=null : !this.buffer.equals(t.buffer)){
+            return false;
+        }
+        
+        if(this.arcs==null ? t.arcs!=null : !this.arcs.equals(t.arcs)){
+            return false;
+        }
+        
+        return true;
+        
+       }
+    
+   
+
+    @Override
     public int compareTo(State t){
         return this.nseq-t.nseq;
     }

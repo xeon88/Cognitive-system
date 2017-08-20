@@ -12,7 +12,10 @@ public class UDBankTest {
 
     public static void main(String [] args){
 
-        File udbank = new File("DepParser/src/main/resources/dev-test.txt");
+         System.out.println("Working Directory = " +
+              System.getProperty("user.dir"));
+        
+        File udbank = new File("src/main/resources/dev-test.txt");
         UDBankReader reader = new UDBankReader(udbank);
         Trainer trainer = reader.getTrainer();
         trainer.train();

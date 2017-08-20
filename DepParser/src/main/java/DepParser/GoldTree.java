@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class GoldTree extends ProjectiveTree {
 
-    private TreeMap<State,Action.Type> history;
+    private LinkedHashMap<Integer,Transition> history;
 
 
     public GoldTree(){
@@ -15,18 +15,23 @@ public class GoldTree extends ProjectiveTree {
     }
 
 
-    public TreeMap<State,Action.Type> getGoldSeqs() {
+    public LinkedHashMap<Integer,Transition> getGoldSeqs() {
         return history;
     }
 
 
-    public void setGoldSeqs(TreeMap<State, Action.Type> history) {
+    public void setGoldSeqs(LinkedHashMap<Integer,Transition> history) {
         this.history = history;
     }
 
 
     public void printGoldSeqs(){
 
+        
+        for(Map.Entry<Integer,Transition> entry : history.entrySet()){
+          System.out.println("Step ; " + entry.getKey().intValue());
+          System.out.println("Action : " + entry.getValue().getAction().getName());
+        }
         System.out.println(history.toString());
     }
 }

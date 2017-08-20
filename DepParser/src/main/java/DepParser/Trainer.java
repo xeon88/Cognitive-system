@@ -39,8 +39,8 @@ public class Trainer {
         for (int i = 0; i < sentences.size(); i++) {
 
             GoldTree gt = goldTrees.get(i);
-            TreeMap<State, Action.Type> history = buildGoldSeqs(sentences.get(i), gt);
-            Action.Type[] goldActions = history.values().toArray(new Action.Type[history.size()]);
+            LinkedHashMap<Integer,Transition> history = buildGoldSeqs(sentences.get(i), gt);
+            Transition[] goldActions = history.values().toArray(new Transition[history.size()]);
 
             // update gold tree with gold sequence
 
@@ -52,27 +52,27 @@ public class Trainer {
     }
 
 
-    private TreeMap<State, Action.Type> buildGoldSeqs(Sentence s, GoldTree goldTree) {
+    private LinkedHashMap<Integer,Transition> buildGoldSeqs(Sentence s, GoldTree goldTree) {
 
-        TreeMap<State, Action.Type> history = new TreeMap<State, Action.Type>(new Comparator<State>() {
-            public int compare(State o1, State o2) {
-                return o1.compareTo(o2);
-            }
-        });
+        LinkedHashMap<Integer, Transition> history = new LinkedHashMap<Integer,Transition>();
         goldTree.printDeps();
         State state = new State(s);
-        history.put(state, Action.Type.NOP);
+        Transition tr = new Transition(state,Action.Type.NOP);
         int step = 0;
+        history.put(step,tr);
+       
         while (!state.isTerminal()) {
             Action.Type type = getAction(state);
             System.out.println("State number : " + state.getNseq() + " - Actions selected : " + type.getName());
             int prevHash = state.hashCode();
             state = state.applyAction(type);
             int newHash = state.hashCode();
-            history.put(state, type);
+            // boolean added = history.containsKey(state);
+            tr = new Transition(state,type);
+            step++;        
+            history.put(step,tr);
             state.printArcs();
         }
-
         return history;
     }
 
