@@ -1,5 +1,7 @@
 package DepParser;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -7,14 +9,13 @@ import java.util.Stack;
 /**
  * Created by Marco Corona on 11/08/2017.
  */
-public class State {
+public class State implements Comparable<State>{
 
     private Stack<Token> stack;
     private LinkedList<Token> buffer;
     private static final String NSUBJ = "nsubj";
     private static final String DOBJ = "dobj";
     private ArrayList<Dependency> arcs;
-    private static State state;
     private Token topStack;
     private Token firstBuffer;
     private Sentence input;
@@ -35,7 +36,7 @@ public class State {
 
     public void initStructures(Token [] tokens){
         stack.push(Token.makeRoot());
-        for(int i = 0; i<tokens.length ; i++){
+        for(int i = 1; i<tokens.length ; i++){
             buffer.add(tokens[i]);
         }
         updateOutliers();
@@ -43,8 +44,9 @@ public class State {
 
 
     private void updateOutliers(){
-        topStack = stack.peek();
-        firstBuffer = buffer.getFirst();
+
+        topStack = !stack.isEmpty() ? stack.peek() : null;
+        firstBuffer = !buffer.isEmpty()? buffer.getFirst() : null;
     }
 
 
@@ -73,9 +75,11 @@ public class State {
         return firstBuffer;
     }
 
+    public int getNseq(){return nseq;}
 
     public void shift(){
-        Token vertex = this.buffer.poll();
+        Token vertex = this.buffer.getFirst();
+        this.buffer.removeFirst();
         this.stack.push(vertex);
         updateOutliers();
         nseq++;
@@ -83,7 +87,7 @@ public class State {
 
 
     private void left(String type){
-        Token head = this.buffer.poll();
+        Token head = this.buffer.getFirst();
         Token dependent = this.stack.pop();
         Dependency dependency = new Dependency(head,dependent,type);
         arcs.add(dependency);
@@ -93,9 +97,10 @@ public class State {
 
 
     private void right(String type){
-        Token head = this.stack.pop();
-        Token dependent = this.buffer.poll();
-        this.buffer.addFirst(head);
+        Token head = this.stack.peek();
+        Token dependent = this.buffer.getFirst();
+        this.buffer.removeFirst();
+        this.stack.push(dependent);
         Dependency dependency = new Dependency(head,dependent,type);
         arcs.add(dependency);
         updateOutliers();
@@ -141,6 +146,9 @@ public class State {
                 left();
                 return this;
             }
+            else if(Action.Type.NOP==type){
+                return this;
+            }
             else{
                 right();
                 return this;
@@ -149,11 +157,37 @@ public class State {
 
 
     public boolean isTerminal(){
-        if(this.stack.empty() && this.buffer.isEmpty()){
+        System.out.println("\n\n Stack dim : " + stack.size());
+        System.out.println("Buffer dim : " + buffer.size());
+        if(this.buffer.isEmpty()){
             return true;
         }
         return false;
     }
 
 
+    public void printArcs(){
+
+        for(Dependency dep : arcs){
+            System.out.println(dep.toString());
+        }
+    }
+
+
+    @Override
+    public int hashCode(){
+
+        HashCodeBuilder builder = new HashCodeBuilder(31,17);
+        builder.append(nseq)
+            .append(stack)
+            .append(buffer)
+            .build();
+
+        return builder.toHashCode();
+
+    }
+
+    public int compareTo(State t){
+        return this.nseq-t.nseq;
+    }
 }

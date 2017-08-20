@@ -1,3 +1,4 @@
+import DepParser.GoldTree;
 import DepParser.ProjectiveTree;
 import DepParser.Trainer;
 import DepParser.UDBankReader;
@@ -14,8 +15,10 @@ public class UDBankTest {
         File udbank = new File("DepParser/src/main/resources/dev-test.txt");
         UDBankReader reader = new UDBankReader(udbank);
         Trainer trainer = reader.getTrainer();
-        for(ProjectiveTree gold : trainer.getGoldTrees().values()){
+        trainer.train();
+        for(GoldTree gold : trainer.getGoldTrees().values()){
             gold.printDeps();
+            gold.printGoldSeqs();
         }
     }
 }

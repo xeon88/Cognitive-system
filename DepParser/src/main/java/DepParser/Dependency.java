@@ -29,6 +29,13 @@ public class Dependency {
         return head;
     }
 
-
+    @Override
+    public String toString(){
+        return  "(head," + this.head.getIndex() +
+                " " + this.head.getValue("form") + ")" +
+                "(dep," + this.dependent.getIndex() +
+                " " + this.dependent.getValue("form") +
+                ")";
+    }
 
 }

@@ -74,27 +74,31 @@ public class UDBankReader {
                     }
                     if(token.getIndex()==1){
                         deps.add(new Dependency(tokens.get(0),token,"root"));
+
                     }
                     else{
                         deps.add(new Dependency(
                                 tokens.get(token.getHead()),
                                 token,
-                                token.getValue(UDIndex.HEAD.getName()))
+                                token.getValue(UDIndex.DEPREL.getName()))
                             );
                     }
                 }
 
-                ProjectiveTree tree = new ProjectiveTree();
+                GoldTree tree = new GoldTree();
                 Dependency [] dependencies = deps.toArray(new Dependency[deps.size()]);
                 tree.setDependencies(dependencies);
-                trainer.addGoldTree(count,tree);
+                Sentence s = new Sentence(count);
+                Token [] sentenceTokens = tokens.toArray(new Token[tokens.size()]);
+                s.setTokens(sentenceTokens);
+                trainer.addGoldTree(count,tree,s);
                 tokens = new ArrayList<Token>();
                 tokens.add(Token.makeRoot());
                 deps = new ArrayList<Dependency>();
 
                 System.out.println("Loaded sentence : " + (count+1));
-
-                count++;
+                // count++;
+                break;
             }
             else{
 

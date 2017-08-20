@@ -28,10 +28,7 @@ public class ProjectiveTree {
         String deps = "";
         if(dependencies!=null){
             for(int i = 0; i<dependencies.length; i++){
-                deps+= "(head," + dependencies[i].getHead().getIndex() +
-                        " " + dependencies[i].getHead().getValue("form") + ")" +
-                        "(dep," + dependencies[i].getDependent().getIndex() +
-                        " " + dependencies[i].getDependent().getValue("form") + ")" + "\n";
+                deps += dependencies[i].toString();
             }
         }
         System.out.println(deps);
