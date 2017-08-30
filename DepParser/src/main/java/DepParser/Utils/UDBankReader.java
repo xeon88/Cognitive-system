@@ -1,6 +1,13 @@
-package DepParser;
+package DepParser.Utils;
 
-import java.awt.image.Kernel;
+import DepParser.Model.Dependency;
+import DepParser.Model.GoldTree;
+import DepParser.Model.Token;
+import DepParser.Parser.Sentence;
+import DepParser.Parser.Tester;
+import DepParser.Parser.Trainer;
+import DepParser.Parser.TransitionBasedParser;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -10,6 +17,9 @@ import java.util.ArrayList;
 public class UDBankReader {
 
     private Trainer trainer;
+    private Tester tester;
+    private static final String [] relations = new String[]{"nsubj","dobj","noname"};
+    private Sentence[] sentences ;
 
     public enum UDIndex{
 
@@ -21,7 +31,7 @@ public class UDBankReader {
         FEATS(5,"feats"),
         HEAD(6,"idhead"),
         DEPREL(7,"deprel"),
-        DEPS(8,"deprel");
+        DEPS(8,"deps");
 
         private int index;
         private String name;
@@ -39,29 +49,48 @@ public class UDBankReader {
     }
 
 
-    public UDBankReader(File udbank) {
+    public UDBankReader(File train) {
 
         trainer = new Trainer();
         try {
-            LoadProjTrees(udbank);
+            ReadUDFile(train,true);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 
+    public UDBankReader(File test, TransitionBasedParser parser){
+
+        this.tester = new Tester(parser);
+        try {
+            ReadUDFile(test,false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public Trainer getTrainer(){
         return trainer;
     }
 
+    public Tester getTester(){return tester;}
 
-    private void LoadProjTrees( File file) throws IOException {
+    public Sentence[] getSentences() {
+        return sentences;
+    }
+
+
+    public void ReadUDFile(File file, boolean training) throws IOException {
         FileReader reader = new FileReader(file);
         BufferedReader buffreader = new BufferedReader(reader);
         String line ;
+        
 
-
+        ArrayList<Sentence> tmp = new ArrayList<Sentence>();
         int count = 0;
+        int limit = 20;
         ArrayList<Token>  tokens = new ArrayList<Token>();
         ArrayList<Dependency> deps = new ArrayList<Dependency>();
         tokens.add(Token.makeRoot());
@@ -71,10 +100,6 @@ public class UDBankReader {
                 for(Token token : tokens){
                     if(token.isRoot()) {
                         continue;
-                    }
-                    if(token.getIndex()==1){
-                        deps.add(new Dependency(tokens.get(0),token,"root"));
-
                     }
                     else{
                         deps.add(new Dependency(
@@ -91,14 +116,25 @@ public class UDBankReader {
                 Sentence s = new Sentence(count);
                 Token [] sentenceTokens = tokens.toArray(new Token[tokens.size()]);
                 s.setTokens(sentenceTokens);
-                trainer.addGoldTree(count,tree,s);
+                s.setId(count);
+                tmp.add(s);
+                
+                if(training){
+                    trainer.train(tree,s);
+                }
+                else{
+                    tester.addGoldTree(s.id, tree);
+                }
+                
+                
+              
+                System.out.println("Loaded sentence : " + (count));
+                count++;
+                if(count>=limit) break;
+                // reset
                 tokens = new ArrayList<Token>();
                 tokens.add(Token.makeRoot());
                 deps = new ArrayList<Dependency>();
-
-                System.out.println("Loaded sentence : " + (count+1));
-                // count++;
-                break;
             }
             else{
 
@@ -107,7 +143,11 @@ public class UDBankReader {
             }
         }
 
+        sentences = tmp.toArray(new Sentence[tmp.size()]);
     }
+
+
+
 
 
 
@@ -131,7 +171,18 @@ public class UDBankReader {
                 int id = Integer.parseInt(row[udi.getIndex()]);
                 token.setHead(id);
             }
-            else{
+            else if(udi.getName().equals("deprel")){
+
+                String relation = "noname";
+                for(int i = 0; i<relations.length; i++){
+                    if(relations[i].equals(row[udi.getIndex()])){
+                        relation = row[udi.getIndex()];
+                    }
+                }
+
+                token.setAttributes(udi.getName(),relation);
+            }
+            else {
                 token.setAttributes(udi.getName(), row[udi.getIndex()]);
             }
         }

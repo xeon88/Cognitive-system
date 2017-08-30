@@ -1,19 +1,17 @@
-package DepParser;
+package DepParser.Parser;
+
+import DepParser.Model.Token;
 
 /**
  * Created by Marco Corona on 17/08/2017.
  */
 public class Sentence {
 
-    private int id;
-    private Token [] tokens;
+    public int id;
+    public Token[] tokens;
 
     public Sentence(int sentenceId){
         this.id = sentenceId;
-    }
-
-    public int getId() {
-        return id;
     }
 
 
@@ -26,7 +24,4 @@ public class Sentence {
         this.id = id;
     }
 
-    public Token[] getTokens() {
-        return tokens;
-    }
 }

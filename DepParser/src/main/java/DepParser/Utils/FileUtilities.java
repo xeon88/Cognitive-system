@@ -1,4 +1,4 @@
-package DepParser;
+package DepParser.Utils;
 
 import org.apache.commons.io.FilenameUtils;
 

@@ -1,4 +1,6 @@
-package DepParser;
+package DepParser.Model;
+
+import DepParser.Utils.UDBankReader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +47,20 @@ public class Token implements Cloneable{
         return root;
     }
 
+    public static Token makeFake(){
+        Token fake = new Token();
+        fake.index = -1;
+        fake.head = -1;
+        fake.attributes = new HashMap<String, String>();
+        fake.attributes.put("form","");
+        fake.attributes.put("lemma","");
+        fake.attributes.put("upostag","");
+        fake.attributes.put("xpostag","");
+        fake.attributes.put("xpostag","");
+        fake.attributes.put("idhead","");
+        return fake;
+
+    }
 
 
     public int getIndex() {
@@ -56,8 +72,12 @@ public class Token implements Cloneable{
     }
 
     public boolean isRoot(){
-        return index==0 && attributes.get("form").equals("<ROOT>");
+        return index==0 && attributes.get(UDBankReader.UDIndex.FORM.getName()).equals("<ROOT>");
 
+    }
+
+    public boolean isFake(){
+        return index==-1 && head==-1 && attributes.get(UDBankReader.UDIndex.FORM.getName()).equals("") ;
     }
 
     public void setIndex(int i){
@@ -98,5 +118,31 @@ public class Token implements Cloneable{
 
         return true;
     }
-    
+
+
+    @Override
+    public Token clone(){
+        Token clone = new Token();
+        clone.head = this.head;
+        clone.index = this.index;
+        clone.attributes = new HashMap<String, String>();
+        for( String key : this.attributes.keySet()){
+            clone.attributes.put(key,this.attributes.get(key));
+        }
+
+        return clone;
+    }
+
+
+    public String toString(){
+        StringBuilder builder = new StringBuilder();
+        builder .append("index : " + index + "\n")
+                .append("head : " + head + "\n");
+
+        for(String key : attributes.keySet()){
+            builder.append(key + "- " + attributes.get(key) + "\n");
+        }
+
+        return builder.toString();
+    }
 }
