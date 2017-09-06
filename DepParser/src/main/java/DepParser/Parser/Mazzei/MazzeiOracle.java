@@ -129,11 +129,7 @@ public class MazzeiOracle extends Oracle {
         else if (firstBuffer.getHead() == topStack.getIndex()
                 && state.isHead(firstBuffer.getIndex())
                 && ArcMazzei.Type.isRightAppliable(state)) {
-            /*
-            if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("root")){
-                return Action.Type.RIGHT_ROOT;
-            }
-            */
+
             if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("nsubj")){
                 return ArcEager.Type.RIGHT_NSUBJ;
             }
@@ -144,18 +140,6 @@ public class MazzeiOracle extends Oracle {
                 return ArcEager.Type.RIGHT_OTHER;
             }
         }
-
-        /*
-        else {
-            for (int i = 0; i < topStack.getIndex(); i++) {
-                if ((tokens[i].getHead() == firstBuffer.getIndex() ||
-                        firstBuffer.getHead() == tokens[i].getIndex()) && state.isReduceAppliable())
-                {
-                    return ArcEager.Type.REDUCE;
-                }
-            }
-        }
-        */
         return ArcEager.Type.SHIFT;
     }
 

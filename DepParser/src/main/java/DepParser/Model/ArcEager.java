@@ -113,9 +113,9 @@ public class ArcEager extends ArcSystem {
                 Stack<Token> stack = next.getStack();
                 LinkedList<Token> buffer = next.getBuffer();
                 stack.pop();
-                state.setTopStack(!stack.isEmpty() ? stack.peek() : null);
+                next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
                 next.setFirstBuffer(!buffer.isEmpty() ? buffer.getFirst() : null);
-                state.incrementStep();
+                next.incrementStep();
                 return next;
             }
         };
@@ -223,4 +223,84 @@ public class ArcEager extends ArcSystem {
         return appliable.toArray(new ArcEager.Type[appliable.size()]);
     }
 
+
+
+    public static boolean testShift(State prev, State next){
+
+        if(!next.getTopStack().equals(prev.getFirstBuffer())) return false;
+        if(next.getBuffer().size()!=prev.getBuffer().size()-1) return false;
+        if(next.getStack().size()!=prev.getStack().size()+1) return false;
+        if(next.getStep()<=prev.getStep()) return false;
+        return true;
+    }
+
+    public static boolean testLeft(State prev, State next){
+        boolean test = true;
+        if(next.getTopStack().equals(prev.getTopStack())) {
+            System.out.println("new top stack equals of old top stack");
+            test &=false;
+        }
+
+        Dependency arc = next.getArcs()[prev.getTopStack().getIndex()-1];
+        if(arc==null) {
+            System.out.println("dependency not added");
+            test  &=false;
+        }
+        if(!arc.getHead().equals(prev.getFirstBuffer())) {
+            System.out.println("head is not corrected");
+            test &=false;
+        }
+        if(next.getStep()<=prev.getStep()) {
+            System.out.println("step not incremented");
+            test &=false;
+        }
+        return test;
+    }
+
+
+    public static boolean testRight(State prev, State next){
+        boolean test = true;
+        if(!next.getTopStack().equals(prev.getFirstBuffer())){
+            System.out.println("new top stack not equals of old first buffer");
+            test &= false;
+        }
+        if(next.getArcs()[prev.getFirstBuffer().getIndex()-1]==null) {
+            System.out.println("dependency not added");
+            test &=false;
+        }
+        if(!next.getArcs()[prev.getFirstBuffer().getIndex()-1].getHead().
+                equals(prev.getTopStack())) {
+            System.out.println("head dependecy is not corrected");
+            test &=false;
+        }
+        if(next.getStep()<=prev.getStep()) {
+            System.out.println("step not incremented ");
+            test &= false;
+        }
+        return test;
+    }
+
+    public static boolean testReduce(State prev, State next){
+        boolean test = true;
+        if(next.getTopStack().equals(prev.getTopStack())){
+            System.out.println("new to stack is equal to old top stack");
+            test &= false;
+        }
+        if(next.getStep()<=prev.getStep()) {
+            System.out.println("step not incremented");
+            test &=false;
+        }
+        return true;
+    }
+
+
+    public static boolean test(Type action, State prev, State next){
+        boolean test = false;
+
+        if(action==Type.SHIFT) test =testShift(prev,next);
+        if(action==Type.REDUCE) test =testReduce(prev,next);
+        if(ArcEager.Type.isLeftAction(action)) test = testLeft(prev,next);
+        if(ArcEager.Type.isRightAction(action)) test =testRight(prev,next);
+        return test;
+    }
 }

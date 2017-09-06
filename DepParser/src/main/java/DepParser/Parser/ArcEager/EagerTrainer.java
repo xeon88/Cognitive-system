@@ -41,7 +41,7 @@ public class EagerTrainer extends Trainer{
         State state = new State(s);
         int test = 0;
 
-        logBuilder.append("TRAIN ALGORITHM PROCEDURE " + s.id +"\n");
+        logBuilder.append("TRAIN ALGORITHM PROCEDURE " + s.id + "\n\n");
         //System.out.println("Action : \n" + PrintUltis.toString(Action.getAllActionName(Action.Type.values())));
         log.log(logBuilder.toString(), Logging.DEBUG);
 
@@ -72,8 +72,9 @@ public class EagerTrainer extends Trainer{
 
             state = oracleAction.apply(state);
 
-            logBuilder.append("Predicted action : " + predictedAction.getName() + "\n\n");
-            logBuilder.append("Oracle action : " + oracleAction.getName() + "\n\n");
+            logBuilder.append("Compare actions : \n");
+            logBuilder.append("Predicted action : " + predictedAction.getName() + "\n");
+            logBuilder.append("Oracle action : " + oracleAction.getName() + "\n");
 
             //System.out.println("Predicted action : " + predictedAction.getName() + "\n");
             //System.out.println("Oracle action : " + oracleAction.getName() + "\n");
@@ -85,7 +86,6 @@ public class EagerTrainer extends Trainer{
                 model.updateWeights(features, oracleAction.getType(), 1);
                 model.updateWeights(features, predictedAction.getType(), -1);
                 classifier.setModel(model); // update classifier with new weights
-                //logBuilder.append(matrixToString(deltaMatrix));
             }
 
             if (count > 1) {

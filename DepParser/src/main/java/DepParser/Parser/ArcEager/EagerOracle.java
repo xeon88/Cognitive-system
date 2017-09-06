@@ -197,14 +197,13 @@ public class EagerOracle extends Oracle {
 
         while (!state.isTerminal()) {
 
-            /*
+
             logBuilder.append("Step number :" + state.getStep() + "\n\n");
-            logBuilder.append("Zero cost actions : \n" );
+            logBuilder.append("Zero cost actions : \n\n" );
             ArcEager.Type [] zeroCost = getZeroCostAction(s.id,state);
             logBuilder.append(PrintUltis.toString(ArcSystem.getAllActionName(zeroCost)));
             int [] costs = this.getAllCostAction(state, s);
             logBuilder.append(this.getCostsString(costs) + "\n");
-            */
 
             ArcEager.Type oracle = getAction(state);
             int cost = getCostAction(oracle,s.id,state);
@@ -219,8 +218,16 @@ public class EagerOracle extends Oracle {
             }
 
 
+            State prev = state.cloneState();
             state = oracle.apply(state);
-            logBuilder.append("arcs found : " + state.countArcsNotNull());
+
+            boolean test = ArcEager.test(oracle,prev,state);
+            if(!test){
+                System.out.println("Test on " + oracle.getName() + " not passed");
+            }
+
+
+            logBuilder.append("arcs found : " + state.countArcsNotNull() + "\n");
             logger.log(logBuilder.toString(), Logging.DEBUG);
 
             Transition tr = new Transition(state,oracle);
