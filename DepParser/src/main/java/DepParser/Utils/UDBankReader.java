@@ -1,12 +1,14 @@
 package DepParser.Utils;
 
+import DepParser.Model.ArcEager;
 import DepParser.Model.Dependency;
 import DepParser.Model.GoldTree;
 import DepParser.Model.Token;
+import DepParser.Parser.ArcEager.EagerTrainer;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.Tester;
 import DepParser.Parser.Trainer;
-import DepParser.Parser.TransitionBasedParser;
+import DepParser.Parser.TBParser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
  */
 public class UDBankReader {
 
-    private Trainer trainer;
+    private EagerTrainer trainer;
     private Tester tester;
     private static final String [] relations = new String[]{"nsubj","dobj","noname"};
     private Sentence[] sentences ;
@@ -51,7 +53,7 @@ public class UDBankReader {
 
     public UDBankReader(File train) {
 
-        trainer = new Trainer();
+        trainer = new EagerTrainer(ArcEager.SIZE);
         try {
             ReadUDFile(train,true);
         } catch (IOException e) {
@@ -60,7 +62,7 @@ public class UDBankReader {
     }
 
 
-    public UDBankReader(File test, TransitionBasedParser parser){
+    public UDBankReader(File test, TBParser parser){
 
         this.tester = new Tester(parser);
         try {
@@ -71,7 +73,7 @@ public class UDBankReader {
 
     }
 
-    public Trainer getTrainer(){
+    public EagerTrainer getTrainer(){
         return trainer;
     }
 

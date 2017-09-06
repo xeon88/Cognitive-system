@@ -15,9 +15,9 @@ package DepParser.Model;
 public class Transition {
     
     private State result;
-    private Action.Type action;
+    private ArcSystem.operation action;
     
-    public Transition(State result, Action.Type action){
+    public Transition(State result, ArcSystem.operation action){
     
         this.result = result;
         this.action = action;
@@ -28,7 +28,7 @@ public class Transition {
         return result;
     }
     
-    public Action.Type getAction(){
+    public ArcSystem.operation getAction(){
         return action;
     }
     

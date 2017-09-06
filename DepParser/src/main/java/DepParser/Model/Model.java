@@ -10,9 +10,9 @@ public class Model {
     private float [][][] weights ;
     private float [][][] averageWeights;
 
-    public Model(){
+    public Model(int operators){
 
-        weights= new float[Features.size][Features.hashSize][Action.size];
+        weights= new float[Features.size][Features.hashSize][operators];
 
         for(int i = 0; i<weights.length ; i++){
             for (int j = 0; j<weights[i].length; j++){

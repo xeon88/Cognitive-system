@@ -25,7 +25,6 @@ public class GoldTree extends ProjectiveTree {
 
     public void printGoldSeqs(){
 
-        
         for(int i = 0; i<history.length ; i++){
           System.out.println("Step ; " + i);
           System.out.println("Action : " + history[i].getAction().getName());

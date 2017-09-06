@@ -83,11 +83,11 @@ public class Dependency {
         if(arcs1.length!=arcs2.length) return -1;
         int diff=0;
         for(int i=0; i<arcs1.length; i++){
-            if(arcs1!=null && arcs2!=null){
+            if(arcs1[i]!=null && arcs2[i]!=null){
                 if(!arcs1[i].equals(arcs2[i])) diff++;
             }
             else{
-                if(arcs1!=null ^ arcs2!=null) diff++;
+                if(arcs1[i]!=null ^ arcs2[i]!=null) diff++;
             }
         }
     

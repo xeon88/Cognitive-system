@@ -9,3 +9,5 @@ config/
 Rocchio/target/
 Rocchio/src/main/resources/docs_400/
 Rocchio/src/main/resources/to_convert/
+DepParser/target/
+DepParser/nbactions.xml

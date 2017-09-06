@@ -10,7 +10,7 @@ import java.util.Stack;
 /**
  * Created by Marco Corona on 11/08/2017.
  */
-public class State implements Comparable<State>{
+public class State implements Comparable<State> {
 
     private Stack<Token> stack;
     private LinkedList<Token> buffer;
@@ -18,7 +18,7 @@ public class State implements Comparable<State>{
     private Dependency[] arcs;
     private Token firstBuffer;
     private Sentence input;
-    private int nseq;
+    private int step;
     private boolean rooted;
 
 
@@ -28,20 +28,20 @@ public class State implements Comparable<State>{
     private static final String OTHER = "other";
 
 
-    public State (Sentence s){
+    public State(Sentence s) {
         this.buffer = new LinkedList<Token>();
         this.rooted = false;
         this.stack = new Stack<Token>();
         this.topStack = null;
         this.firstBuffer = null;
         this.input = s;
-        this.arcs  = new Dependency[s.tokens.length-1]; // indexed by dependent token id
-        this.nseq = 0;
+        this.arcs = new Dependency[s.tokens.length - 1]; // indexed by dependent token id
+        this.step = 0;
         initStructures(s.tokens);
     }
 
-    public State(Stack<Token> stack, LinkedList<Token> buffer, Dependency [] arcs,
-                 Token topStack, Token firstBuffer, Sentence s, int nseq, boolean rooted)  {
+    public State(Stack<Token> stack, LinkedList<Token> buffer, Dependency[] arcs,
+                 Token topStack, Token firstBuffer, Sentence s, int nseq, boolean rooted) {
 
         this.buffer = buffer;
         this.stack = stack;
@@ -49,18 +49,18 @@ public class State implements Comparable<State>{
         this.topStack = topStack;
         this.firstBuffer = firstBuffer;
         this.input = s;
-        this.nseq = nseq;
+        this.step = step;
         this.rooted = rooted;
     }
 
 
-    public void initStructures(Token [] tokens){
+    public void initStructures(Token[] tokens) {
         stack.push(Token.makeRoot());
-        for(int i = 1; i<tokens.length ; i++){
+        for (int i = 1; i < tokens.length; i++) {
             buffer.add(tokens[i]);
         }
         topStack = !stack.isEmpty() ? stack.peek() : null;
-        firstBuffer = !buffer.isEmpty()? buffer.getFirst() : null;
+        firstBuffer = !buffer.isEmpty() ? buffer.getFirst() : null;
     }
 
 
@@ -93,116 +93,91 @@ public class State implements Comparable<State>{
         return firstBuffer;
     }
 
-    public int getNseq(){return nseq;}
-
-    public void shift(){
-        Token vertex = this.buffer.getFirst();
-        this.buffer.removeFirst();
-        this.stack.push(vertex);
-        topStack = !stack.isEmpty() ? stack.peek() : null;
-        firstBuffer = !buffer.isEmpty()? buffer.getFirst() : null;
-        nseq++;
+    public void setFirstBuffer(Token firstBuffer) {
+        this.firstBuffer = firstBuffer;
     }
 
 
-    private void left(String type){
-        Token head = this.buffer.getFirst();
-        Token dependent = this.stack.pop();
-        Dependency dependency = new Dependency(head,dependent,type);
-        arcs[dependent.getIndex()-1]=dependency;
-        if(head.isRoot()) rooted = true;
-        topStack = !stack.isEmpty() ? stack.peek() : null;
-        firstBuffer = !buffer.isEmpty()? buffer.getFirst() : null;
-        nseq++;
+    public void setRooted(boolean rooted) {
+        this.rooted = rooted;
+    }
+
+    public void setTopStack(Token topStack) {
+        this.topStack = topStack;
+    }
+
+    public void setArc(int index, Dependency arc) {
+        this.arcs[index] = arc;
     }
 
 
-    private void right(String type){
-        Token head = this.stack.pop(); // prende il top dello stack lo salva e poi poppa lo stack
-        Token dependent = this.buffer.getFirst(); // prende il primo della lista
-        this.buffer.removeFirst(); // rimuove dalla lista
-        this.buffer.addFirst(head); // mette all'inizio della lista la parola poppata
-        Dependency dependency = new Dependency(head,dependent,type);
-        arcs[dependent.getIndex()-1]=dependency;
-        if(head.isRoot()) rooted = true;
-        topStack = !stack.isEmpty() ? stack.peek() : null;
-        firstBuffer = !buffer.isEmpty()? buffer.getFirst() : null;
-        nseq++;
+    public int getStep() {
+        return step;
+    }
+
+    public void incrementStep() {
+        step++;
+    }
+
+    public boolean isTerminal() {
+        return this.buffer.isEmpty();
     }
 
 
-    /*
-    private void reduce(){
-        this.stack.pop();
-        topStack = !stack.isEmpty() ? stack.peek() : null;
-        firstBuffer = !buffer.isEmpty()? buffer.getFirst() : null;
-        nseq++;
-    }
-     */
+    public void printArcs() {
 
-
-    public State applyAction(Action.Type typeAction){
-
-            if(Action.Type.SHIFT==typeAction){
-                shift();
-                return this;
-            }
-            /*
-            else if(Action.Type.REDUCE==typeAction){
-                reduce();
-                return this;
-            }
-            */
-            else if(isLeftAction(typeAction)){
-                left(typeAction.getRelation());
-                return this;
-            }
-            else if(isRightAction(typeAction)){
-                right(typeAction.getRelation());
-                return this;
-            }
-            else{
-                return this;
-            }
-    }
-
-
-    public boolean isTerminal(){
-        if(this.buffer.isEmpty()){
-            return true;
-        }
-        return false;
-    }
-
-
-    public void printArcs(){
-
-        for(Dependency dep : arcs){
-            if(dep!=null){
+        for (Dependency dep : arcs) {
+            if (dep != null) {
                 System.out.println(dep.toString());
             }
         }
     }
 
 
-    public Token getStackTokenOrFake(int i){
+    public Token getStackTokenOrFake(int i) {
 
-        return i>=0 && i<stack.size() ? stack.get(i) : Token.makeFake();
+        return i >= 0 && i < stack.size() ? stack.get(i) : Token.makeFake();
     }
 
-    public Token getBufferTokenOrFake(int i){
-        return buffer.size()>i ? buffer.get(i) : Token.makeFake();
+    public Token getBufferTokenOrFake(int i) {
+        return buffer.size() > i ? buffer.get(i) : Token.makeFake();
     }
 
-    public Token getHeadOrFake(int i){
-        return arcs[i]!=null ? arcs[i].getHead() : Token.makeFake();
+    public Token getHeadOrFake(int i) {
+        return arcs[i] != null ? arcs[i].getHead() : Token.makeFake();
     }
 
-    
-    public int compareTo(State t){
-        return this.nseq-t.nseq;
+
+    public int compareTo(State t) {
+        return this.step - t.step;
+
     }
 
+    public State cloneState() {
+
+        Stack<Token> stack = (Stack<Token>) this.stack.clone();
+        LinkedList<Token> buffer = (LinkedList<Token>) this.buffer.clone();
+        Dependency[] arcs = this.arcs.clone();
+        Token first = this.firstBuffer!=null ? this.firstBuffer.clone() : null;
+        Token top = this.topStack!=null ? this.topStack.clone() : null;
+        int step = this.step;
+        boolean rooted = this.isRooted();
+        return new State(stack, buffer, arcs, top, first, input, step, rooted);
+    }
+
+
+    public int countArcsNotNull(){
+        int count = 0;
+        for(int i=0; i<arcs.length;i++){
+            if(arcs[i]!=null){
+                count++;
+            }
+        }
+        return count;
+    }
+
+
+    /**
 
     public boolean isLeftAppliable(){
         return !stack.isEmpty() && !buffer.isEmpty() &&
@@ -222,52 +197,9 @@ public class State implements Comparable<State>{
         return !buffer.isEmpty();
     }
 
-    public Action.Type [] getValidAction(){
-
-        ArrayList<Action.Type> valid = new ArrayList<Action.Type>();
-        if(isShiftAppliable()) valid.add(Action.Type.SHIFT);
-       // if(isReduceAppliable()) valid.add(Action.Type.REDUCE);
-
-        if(isLeftAppliable()){
-            /*
-            if(!rooted){
-                valid.add(Action.Type.LEFT_ROOT);
-            }
-            */
-            valid.add(Action.Type.LEFT_DOBJ);
-            valid.add(Action.Type.LEFT_NSUBJ);
-            valid.add(Action.Type.LEFT_OTHER);
-        }
-
-        if(isRightAppliable()){
-            /*
-            if(!rooted){
-                valid.add(Action.Type.RIGHT_ROOT);
-            }
-            */
-            valid.add(Action.Type.RIGHT_DOBJ);
-            valid.add(Action.Type.RIGHT_NSUBJ);
-            valid.add(Action.Type.RIGHT_OTHER);
-        }
-
-        return valid.toArray(new Action.Type[valid.size()]);
-    }
+    */
 
 
-    private boolean isLeftAction(Action.Type action){
-        if(action.getType()>=1 && action.getType()<=3){
-            return true;
-        }
-        return false;
-    }
-
-
-    private boolean isRightAction(Action.Type action){
-        if(action.getType()>=4 && action.getType()<=6){
-            return true;
-        }
-        return false;
-    }
 
 
     public boolean isHead(int head){
@@ -293,7 +225,7 @@ public class State implements Comparable<State>{
 
         State t = (State) obj;
 
-        if(this.nseq!=t.nseq){
+        if(this.step!=t.step){
             return false;
         }
 
@@ -320,7 +252,7 @@ public class State implements Comparable<State>{
     public int hashCode(){
 
         HashCodeBuilder builder = new HashCodeBuilder(31,17);
-        builder.append(nseq)
+        builder.append(step)
                 .append(stack)
                 .append(buffer)
                 .append(arcs)
@@ -330,6 +262,5 @@ public class State implements Comparable<State>{
 
     }
 
-
-
 }
+

@@ -11,9 +11,9 @@ import java.util.HashMap;
 public class Tester {
 
     private HashMap<Integer,ProjectiveTree> goldTrees;
-    private TransitionBasedParser parser;
+    private TBParser parser;
 
-    public Tester(TransitionBasedParser parser){
+    public Tester(TBParser parser){
         this.goldTrees = new HashMap<Integer,ProjectiveTree>();
         this.parser = parser;
     }
@@ -23,7 +23,7 @@ public class Tester {
         return goldTrees;
     }
 
-    public TransitionBasedParser getParser() {
+    public TBParser getParser() {
         return parser;
     }
 
