@@ -7,7 +7,7 @@ import java.util.Stack;
 /**
  * Created by Marco Corona on 30/08/2017.
  */
-public class ArcMazzei extends ArcSystem {
+public class ArcStandard extends ArcSystem {
 
     public static final int SIZE = 7;
     
@@ -25,26 +25,26 @@ public class ArcMazzei extends ArcSystem {
         },
         SHIFT(0,"Shift","") {
             public boolean isAppliable(State state) {
-                return !state.getBuffer().isEmpty();
+                return true;
             }
 
             public State apply(State state) {
-                Token first = state.getBuffer().getFirst();
-                state.getBuffer().removeFirst();
-                state.getStack().push(first);
-                Stack<Token> stack = state.getStack();
-                LinkedList<Token> buffer = state.getBuffer();
-                state.setTopStack(!stack.isEmpty() ? stack.peek() : null);
-                state.setFirstBuffer(!buffer.isEmpty()? buffer.getFirst() : null);
-                state.incrementStep();
-                return state.cloneState();
+                State next = state.cloneState();
+                Stack<Token> stack = next.getStack();
+                LinkedList<Token> buffer = next.getBuffer();
+                Token first = buffer.getFirst();
+                buffer.removeFirst();
+                stack.push(first);
+                next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
+                next.setFirstBuffer(!buffer.isEmpty() ? buffer.getFirst() : null);
+                next.incrementStep();
+                return next;
             }
         },
 
         LEFT_DOBJ(1,"Left","dobj") {
             public boolean isAppliable(State state) {
-                return !state.getStack().isEmpty() &&
-                        !state.getBuffer().isEmpty();
+                return Type.isLeftAppliable(state);
             }
 
             public State apply(State state) {
@@ -53,8 +53,7 @@ public class ArcMazzei extends ArcSystem {
         },
         LEFT_NSUBJ(2,"Left","nsubj") {
             public boolean isAppliable(State state) {
-                return !state.getStack().isEmpty() &&
-                        !state.getBuffer().isEmpty();
+                return isLeftAppliable(state) ;
             }
 
             public State apply(State state) {
@@ -63,23 +62,17 @@ public class ArcMazzei extends ArcSystem {
         },
         LEFT_OTHER(3,"Left","noname") {
             public boolean isAppliable(State state) {
-                return !state.getStack().isEmpty() &&
-                        !state.getBuffer().isEmpty();
+                return Type.isLeftAppliable(state);
             }
 
             public State apply(State state) {
                 return applyLeft(state,this.relation);
             }
         },
-        //LEFT_ROOT(1,"Left","root"),
-        //RIGHT_ROOT(5,"Right","root"),
         RIGHT_NSUBJ(4,"Right","nsubj") {
             public boolean isAppliable(State state) {
-                return !state.getStack().isEmpty() &&
-                        !state.getBuffer().isEmpty();
-
+                return isRightAppliable(state);
             }
-
 
             public State apply(State state) {
                 return applyRight(state,this.relation);
@@ -87,7 +80,7 @@ public class ArcMazzei extends ArcSystem {
         },
         RIGHT_DOBJ(5,"Right","dobj") {
             public boolean isAppliable(State state) {
-                return false;
+                return isRightAppliable(state);
             }
 
             public State apply(State state) {
@@ -96,14 +89,12 @@ public class ArcMazzei extends ArcSystem {
         },
         RIGHT_OTHER(6,"Right","noname") {
             public boolean isAppliable(State state) {
-                return false;
+                return isRightAppliable(state);
             }
-
             public State apply(State state){
-               return applyRight(state,this.relation);
+                return applyRight(state,this.relation);
             }
         };
-        //REDUCE(7,"Reduce","")
 
         protected int type;
         protected String name;
@@ -123,43 +114,62 @@ public class ArcMazzei extends ArcSystem {
 
 
         public State applyLeft(State state, String relation){
-            Stack<Token> stack = state.getStack();
-            LinkedList<Token> buffer = state.getBuffer();
+            State next = state.cloneState();
+            Stack<Token> stack = next.getStack();
+            LinkedList<Token> buffer = next.getBuffer();
             Token head = buffer.getFirst();
             Token dependent = stack.pop();
-            Dependency dependency = new Dependency(head,dependent,relation);
-            if(head.isRoot()) state.setRooted(true);
-            state.setArc(dependent.getIndex()-1,dependency);
-            state.setTopStack(!stack.isEmpty() ? stack.peek() : null);
-            state.setFirstBuffer(!buffer.isEmpty()? buffer.getFirst() : null);
-            state.incrementStep();
-            return state.cloneState();
+            Dependency dependency = new Dependency(head, dependent, relation);
+            if (head.isRoot()) state.setRooted(true);
+            next.setArc(dependent.getIndex() - 1, dependency);
+            next.updateLeftMost(dependency);
+            next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
+            next.setFirstBuffer(!buffer.isEmpty() ? buffer.getFirst() : null);
+            next.incrementStep();
+            return next;
         }
 
 
         public State applyRight(State state, String relation){
-            Stack<Token> stack = state.getStack();
-            LinkedList<Token> buffer = state.getBuffer();
+            State next = state.cloneState();
+            Stack<Token> stack = next.getStack();
+            LinkedList<Token> buffer = next.getBuffer();
             Token dependent = buffer.getFirst();
             Token head = stack.pop();
-            buffer.removeFirst(); // rimuove dalla lista
+            buffer.removeFirst();
             buffer.addFirst(head);
-            Dependency dependency = new Dependency(head,dependent,relation);
-            if(head.isRoot()) state.setRooted(true);
-            state.setArc(dependent.getIndex()-1,dependency);
-            state.setTopStack(!stack.isEmpty() ? stack.peek() : null);
-            state.setFirstBuffer(!buffer.isEmpty()? buffer.getFirst() : null);
-            state.incrementStep();
-            return state.cloneState();
+            Dependency dependency = new Dependency(head, dependent, relation);
+            if (head.isRoot()) state.setRooted(true);
+            next.setArc(dependent.getIndex() - 1, dependency);
+            next.updateRightMost(dependency);
+            next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
+            next.setFirstBuffer(!buffer.isEmpty() ? buffer.getFirst() : null);
+            next.incrementStep();
+            return next;
         }
 
 
         public static boolean isLeftAppliable(State state){
-            return !state.getStack().isEmpty() && !state.getStack().isEmpty();
+            if (!state.getStack().isEmpty()) {
+                Dependency[] arcs = state.getArcs();
+                Token head = state.getTopStack();
+                if (head.getIndex() != 0 &&
+                        arcs[head.getIndex()-1] == null) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static boolean isRightAppliable(State state){
-            return !state.getStack().isEmpty() && !state.getStack().isEmpty();
+            if (!state.getStack().isEmpty()) {
+                Dependency[] arcs = state.getArcs();
+                Token first = state.getFirstBuffer();
+                if ( arcs[first.getIndex()-1] == null) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static boolean isLeftAction(Type action){
@@ -182,9 +192,9 @@ public class ArcMazzei extends ArcSystem {
     }
 
 
-    public operation[] getValidAction(State state) {
+    public static operation[] getValidAction(State state) {
         ArrayList<Type> appliable = new ArrayList<Type>();
-        for(Type action : ArcMazzei.Type.values()){
+        for(Type action : ArcStandard.Type.values()){
             if(action.isAppliable(state)) appliable.add(action);
         }
 

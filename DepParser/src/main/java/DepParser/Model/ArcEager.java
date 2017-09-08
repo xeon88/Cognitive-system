@@ -152,7 +152,7 @@ public class ArcEager extends ArcSystem {
             Token dependent = stack.pop();
             Dependency dependency = new Dependency(head, dependent, relation);
             if (head.isRoot()) state.setRooted(true);
-
+            next.updateLeftMost(dependency);
             next.setArc(dependent.getIndex() - 1, dependency);
             next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
             next.setFirstBuffer(!buffer.isEmpty() ? buffer.getFirst() : null);
@@ -171,6 +171,7 @@ public class ArcEager extends ArcSystem {
             stack.push(dependent);
             Dependency dependency = new Dependency(head, dependent, relation);
             if (head.isRoot()) state.setRooted(true);
+            next.updateRightMost(dependency);
             next.setArc(dependent.getIndex() - 1, dependency);
             next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
             next.setFirstBuffer(!buffer.isEmpty() ? buffer.getFirst() : null);
@@ -189,7 +190,6 @@ public class ArcEager extends ArcSystem {
                 }
             }
             return false;
-
         }
 
         public static boolean isRightAppliable(State state){
@@ -209,8 +209,6 @@ public class ArcEager extends ArcSystem {
             }
             return false;
         }
-
-
     }
 
 
@@ -280,6 +278,7 @@ public class ArcEager extends ArcSystem {
         return test;
     }
 
+
     public static boolean testReduce(State prev, State next){
         boolean test = true;
         if(next.getTopStack().equals(prev.getTopStack())){
@@ -303,4 +302,5 @@ public class ArcEager extends ArcSystem {
         if(ArcEager.Type.isRightAction(action)) test =testRight(prev,next);
         return test;
     }
+
 }

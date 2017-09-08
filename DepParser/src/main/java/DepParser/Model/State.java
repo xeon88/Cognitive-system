@@ -4,6 +4,7 @@ import DepParser.Parser.Sentence;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Stack;
 
@@ -20,7 +21,8 @@ public class State implements Comparable<State> {
     private Sentence input;
     private int step;
     private boolean rooted;
-
+    private int[] leftmost;
+    private int[] rightmost;
 
     private static final String NSUBJ = "nsubj";
     private static final String DOBJ = "dobj";
@@ -36,12 +38,18 @@ public class State implements Comparable<State> {
         this.firstBuffer = null;
         this.input = s;
         this.arcs = new Dependency[s.tokens.length - 1]; // indexed by dependent token id
+        this.leftmost = new int [s.tokens.length-1];
+        this.rightmost = new int [s.tokens.length-1];
         this.step = 0;
+        Arrays.fill(leftmost,Integer.MAX_VALUE);
+        Arrays.fill(rightmost,-1);
         initStructures(s.tokens);
     }
 
     public State(Stack<Token> stack, LinkedList<Token> buffer, Dependency[] arcs,
-                 Token topStack, Token firstBuffer, Sentence s, int nseq, boolean rooted) {
+                 Token topStack, Token firstBuffer, Sentence s,
+                 int nseq, boolean rooted, int [] leftmost, int [] rightmost
+                ) {
 
         this.buffer = buffer;
         this.stack = stack;
@@ -51,6 +59,8 @@ public class State implements Comparable<State> {
         this.input = s;
         this.step = step;
         this.rooted = rooted;
+        this.leftmost = leftmost;
+        this.rightmost = rightmost;
     }
 
 
@@ -67,7 +77,6 @@ public class State implements Comparable<State> {
     public boolean isRooted() {
         return rooted;
     }
-
 
     public Stack<Token> getStack() {
         return stack;
@@ -108,6 +117,46 @@ public class State implements Comparable<State> {
 
     public void setArc(int index, Dependency arc) {
         this.arcs[index] = arc;
+    }
+
+    public void setLeftmost(int[] leftmost) {
+        this.leftmost = leftmost;
+    }
+
+    public void setRightmost(int[] rightmost) {
+        this.rightmost = rightmost;
+    }
+
+
+    public void updateLeftMost(Dependency arc){
+        if(arc.getHead().getIndex()==0) return;
+        if( arc.getDependent().getIndex() < this.leftmost[arc.getHead().getIndex()-1]){
+            this.leftmost[arc.getHead().getIndex()-1] = arc.getDependent().getIndex();
+        }
+    }
+
+    public void updateRightMost(Dependency arc){
+        if(arc.getHead().getIndex()==0) return;
+        if (arc.getDependent().getIndex() > this.rightmost[arc.getHead().getIndex()-1]) {
+            this.rightmost[arc.getHead().getIndex()-1] = arc.getDependent().getIndex();
+        }
+    }
+
+
+    private boolean isLegitIndex(int index){
+       boolean test = index>=0 && index<=input.tokens.length-1;
+       return test;
+    }
+
+    public Token getLeftmostToken(int index) {
+        if(index==0) return Token.makeFake();
+        return isLegitIndex(leftmost[index-1]) ? input.tokens[leftmost[index-1]]: Token.makeFake();
+    }
+
+
+    public Token getRightmostToken(int index) {
+        if(index==0) return Token.makeFake();
+        return isLegitIndex(rightmost[index-1]) ? input.tokens[rightmost[index-1]]: Token.makeFake();
     }
 
 
@@ -162,7 +211,10 @@ public class State implements Comparable<State> {
         Token top = this.topStack!=null ? this.topStack.clone() : null;
         int step = this.step;
         boolean rooted = this.isRooted();
-        return new State(stack, buffer, arcs, top, first, input, step, rooted);
+        int [] leftmost = this.leftmost.clone();
+        int [] rightmost = this.rightmost.clone();
+        return new State(stack, buffer, arcs, top, first, input, step
+                , rooted, leftmost, rightmost);
     }
 
 
@@ -243,6 +295,14 @@ public class State implements Comparable<State> {
             return false;
         }
 
+        if(this.leftmost==null ? t.leftmost!=null : !this.leftmost.equals(t.leftmost)){
+            return false;
+        }
+
+        if(this.rightmost==null ? t.rightmost!=null : !this.rightmost.equals(t.rightmost)){
+            return false;
+        }
+
         return true;
 
        }
@@ -261,6 +321,7 @@ public class State implements Comparable<State> {
         return builder.toHashCode();
 
     }
+
 
 }
 

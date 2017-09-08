@@ -1,26 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package DepParser.Parser.ArcEager;
+package DepParser.Parser.Mazzei;
 
-import DepParser.Model.ArcEager;
+import DepParser.Model.ArcStandard;
 import DepParser.Model.ProjectiveTree;
 import DepParser.Model.State;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.TBParser;
 
 /**
- *
- * @author theacidmc
+ * Created by Marco Corona on 06/09/2017.
  */
-public class EagerParser extends TBParser{
-    
-    
-    private EagerClassifier classifier;
-    
-    public EagerParser ( EagerClassifier classifier) {
+public class StandardParser extends TBParser{
+
+    private StandardClassifier classifier;
+
+    public StandardParser(StandardClassifier classifier) {
         super();
         this.classifier = classifier;
     }
@@ -30,14 +23,13 @@ public class EagerParser extends TBParser{
         ProjectiveTree tree = new ProjectiveTree();
         State state = new State(s);
         while (!state.isTerminal()){
-            ArcEager.Type predicted = classifier.getBestAction(state);
+            ArcStandard.Type predicted = classifier.getBestAction(state);
             //System.out.println("Action predicted : "  + predicted.getName());
             state = predicted.apply(state);
         }
         tree.setDependencies(state.getArcs());
         return tree;
-      
+
     }
-    
-    
+
 }

@@ -54,13 +54,14 @@ public class Logging {
 
     public void log(String message, String type) throws IOException {
 
-        if(config.get(type)){
+        if(message.equals("")) return;
+
+        if(config.containsKey(type) && config.get(type)){
             formatMessage(message,type);
             FileWriter writer = new FileWriter(log,true);
             writer.write(message + "\n");
             writer.close();
         }
     }
-
 
 }

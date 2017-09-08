@@ -1,37 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package DepParser.Parser.ArcEager;
+package DepParser.Parser.Mazzei;
 
-import DepParser.Model.ArcEager;
-import DepParser.Model.Features;
-import DepParser.Model.Model;
-import DepParser.Model.State;
+import DepParser.Model.*;
 import DepParser.Parser.Classifier;
 
 /**
- * @author theacidmc
+ * Created by Marco Corona on 06/09/2017.
  */
+public class StandardClassifier extends Classifier {
 
-
-public class EagerClassifier extends Classifier{
-
-    public EagerClassifier(Model model) {
+    public StandardClassifier(Model model) {
         super(model);
     }
 
 
-    public ArcEager.Type getBestAction(State state){
+    public ArcStandard.Type getBestAction(State state){
 
         double max = Double.NEGATIVE_INFINITY;
-        ArcEager.Type best = ArcEager.Type.NOP;
+        ArcStandard.Type best = ArcStandard.Type.NOP;
         Features fts = new Features(state);
         int [] featuresVector = fts.extract();
-        ArcEager.Type [] valid = ArcEager.getValidAction(state);
+        ArcStandard.Type [] valid = (ArcStandard.Type[]) ArcStandard.getValidAction(state);
         double[] scores = new double[ArcEager.Type.values().length-1];
-        for(ArcEager.Type action : valid){
+        for(ArcStandard.Type action : valid){
             double score = model.getScore(action.getType(), featuresVector);
             scores[action.getType()]=score;
             if(score>max){
@@ -39,7 +29,6 @@ public class EagerClassifier extends Classifier{
                 max = score;
             }
         }
-
         return best;
     }
 
@@ -49,13 +38,14 @@ public class EagerClassifier extends Classifier{
 
         Features fts = new Features(state);
         int [] featuresVector = fts.extract();
-        ArcEager.Type [] valid = ArcEager.getValidAction(state);
+        ArcStandard.Type [] valid = (ArcStandard.Type[]) ArcStandard.getValidAction(state);
         double[] scores = new double[ArcEager.Type.values().length-1];
-        for(ArcEager.Type action : valid){
+        for(ArcStandard.Type action : valid){
             double score = model.getScore(action.getType(), featuresVector);
             scores[action.getType()]=score;
         }
         return scores;
     }
+
 
 }

@@ -58,8 +58,8 @@ public abstract class Oracle {
 
     public void addGoldTree(Sentence s, GoldTree gold) throws IOException {
         goldTrees.put(s.id,gold);
-        boolean projective = gold.isProjectiveTree();
-        System.out.println("Gold tree number" + s.id  +" is : " + (projective ? "projective \n": "not projective \n"));
+     //   boolean projective = gold.isProjectiveTree();
+     //   System.out.println("Gold tree number" + s.id  +" is : " + (projective ? "projective \n": "not projective \n"));
         Transition [] goldseqs = findGoldSeqs(s,gold);
         gold.setGoldSeqs(goldseqs);
         goldTrees.put(s.id,gold);

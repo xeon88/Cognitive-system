@@ -5,9 +5,9 @@ import DepParser.Model.Dependency;
 import DepParser.Model.GoldTree;
 import DepParser.Model.Token;
 import DepParser.Parser.ArcEager.EagerTrainer;
+import DepParser.Parser.Mazzei.StandardTrainer;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.Tester;
-import DepParser.Parser.Trainer;
 import DepParser.Parser.TBParser;
 
 import java.io.*;
@@ -92,7 +92,7 @@ public class UDBankReader {
 
         ArrayList<Sentence> tmp = new ArrayList<Sentence>();
         int count = 0;
-        int limit = 20;
+        int limit = 500;
         ArrayList<Token>  tokens = new ArrayList<Token>();
         ArrayList<Dependency> deps = new ArrayList<Dependency>();
         tokens.add(Token.makeRoot());
@@ -146,6 +146,11 @@ public class UDBankReader {
         }
 
         sentences = tmp.toArray(new Sentence[tmp.size()]);
+
+        if(training){
+            float [][][] result = trainer.getModel().getResultWeights(trainer.getCount());
+            trainer.getModel().setWeights(result);
+        }
     }
 
 

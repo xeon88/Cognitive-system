@@ -23,9 +23,17 @@ public abstract  class Trainer{
         return model;
     }
 
+    public int getCount() {
+        return count;
+    }
 
 
-
+    public void updates(int [] features, int oracle, int predicted, int count ){
+        model.updateWeights(features, oracle, 1);
+        model.updateWeights(features, predicted, -1);
+        model.updateMeanWeights(features,oracle,count);
+        model.updateMeanWeights(features,predicted,-count);
+    }
 }
 
 

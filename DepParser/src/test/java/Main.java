@@ -1,6 +1,8 @@
 import DepParser.Model.ProjectiveTree;
 import DepParser.Parser.ArcEager.EagerParser;
 import DepParser.Parser.ArcEager.EagerTrainer;
+import DepParser.Parser.Mazzei.StandardParser;
+import DepParser.Parser.Mazzei.StandardTrainer;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.Tester;
 import DepParser.Utils.Logging;
@@ -46,7 +48,7 @@ public class Main {
 
         double accuracy = 0;
         double mean = 0;
-        int tests = 10;
+        int tests = 100;
         for(int i=0; i<tests ; i++){
             int random = (int)Math.floor(Math.random()*testReader.getSentences().length);
             ProjectiveTree found= parser.parse(sentences[random]);

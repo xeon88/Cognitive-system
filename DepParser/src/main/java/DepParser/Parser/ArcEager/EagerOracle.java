@@ -191,19 +191,21 @@ public class EagerOracle extends Oracle {
         Logging logger = new Logging();
 
         StringBuilder logBuilder = new StringBuilder();
-        logBuilder.append("ORACLE GOLD SEQUENCE FIND " + s.id +"\n");
-        logger.log(logBuilder.toString(), Logging.DEBUG);
-        logBuilder = new StringBuilder();
+        //logBuilder.append("ORACLE GOLD SEQUENCE FIND " + s.id +"\n");
+        //logger.log(logBuilder.toString(), Logging.DEBUG);
+        //logBuilder = new StringBuilder();
 
         while (!state.isTerminal()) {
 
 
+            /*
             logBuilder.append("Step number :" + state.getStep() + "\n\n");
             logBuilder.append("Zero cost actions : \n\n" );
             ArcEager.Type [] zeroCost = getZeroCostAction(s.id,state);
             logBuilder.append(PrintUltis.toString(ArcSystem.getAllActionName(zeroCost)));
             int [] costs = this.getAllCostAction(state, s);
             logBuilder.append(this.getCostsString(costs) + "\n");
+            */
 
             ArcEager.Type oracle = getAction(state);
             int cost = getCostAction(oracle,s.id,state);
@@ -227,8 +229,8 @@ public class EagerOracle extends Oracle {
             }
 
 
-            logBuilder.append("arcs found : " + state.countArcsNotNull() + "\n");
-            logger.log(logBuilder.toString(), Logging.DEBUG);
+            //logBuilder.append("arcs found : " + state.countArcsNotNull() + "\n");
+            //logger.log(logBuilder.toString(), Logging.DEBUG);
 
             Transition tr = new Transition(state,oracle);
             history.put(step,tr);
@@ -242,7 +244,7 @@ public class EagerOracle extends Oracle {
 
         Transition[] goldActions = history.values().toArray(new Transition[history.size()]);
 
-        logBuilder.append("Transitions gold action : " + goldActions.length);
+        //logBuilder.append("Transitions gold action : " + goldActions.length);
 
         for(int i=0; i<goldActions.length; i++){
             ArcEager.Type oracle = (ArcEager.Type)goldActions[i].getAction();

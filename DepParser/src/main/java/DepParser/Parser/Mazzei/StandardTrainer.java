@@ -1,30 +1,27 @@
-package DepParser.Parser.ArcEager;
+package DepParser.Parser.Mazzei;
 
-import DepParser.Parser.ArcEager.EagerOracle;
 import DepParser.Model.*;
-import DepParser.Parser.Classifier;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.Trainer;
 import DepParser.Utils.Logging;
-import DepParser.Utils.PrintUltis;
 
 import java.io.IOException;
 
 /**
  * Created by Marco Corona on 30/08/2017.
  */
-public class EagerTrainer extends Trainer{
+public class StandardTrainer extends Trainer{
 
-    private EagerOracle oracle;
-    private EagerClassifier classifier;
+    private StandardOracle oracle;
+    private StandardClassifier classifier;
 
-    public EagerTrainer(int operators){
+    public StandardTrainer(int operators){
         super(operators);
-        this.oracle = new EagerOracle();
-        this.classifier = new EagerClassifier(this.model);
+        this.oracle = new StandardOracle();
+        this.classifier = new StandardClassifier(this.model);
     }
 
-    public EagerClassifier getClassifier() {
+    public StandardClassifier getClassifier() {
         return classifier;
     }
 
@@ -39,11 +36,11 @@ public class EagerTrainer extends Trainer{
         oracle.addGoldTree(s, gold);
 
         State state = new State(s);
-        int test = 0;
 
-        // logBuilder.append("TRAIN ALGORITHM PROCEDURE " + s.id + "\n\n");
+        //logBuilder.append("TRAIN ALGORITHM PROCEDURE " + s.id + "\n\n");
         //System.out.println("Action : \n" + PrintUltis.toString(Action.getAllActionName(Action.Type.values())));
         //log.log(logBuilder.toString(), Logging.DEBUG);
+
 
         for( int i = 0; i<oracle.getLength(s.id); i++) {
 
@@ -54,14 +51,14 @@ public class EagerTrainer extends Trainer{
             logBuilder.append(oracle.getCostsString(costs) + "\n\n");
             */
 
-            ArcEager.Type[] appliable = ArcEager.getValidAction(state);
+            ArcStandard.Type[] appliable = (ArcStandard.Type[]) ArcStandard.getValidAction(state);
             int[] features = new Features(state).extract();
-            ArcEager.Type predictedAction = classifier.getBestAction(state);
-            ArcEager.Type oracleAction = (ArcEager.Type)oracle.getOracleAction(s.id,i);
+            ArcStandard.Type predictedAction = classifier.getBestAction(state);
+            ArcStandard.Type oracleAction = (ArcStandard.Type)oracle.getOracleAction(s.id,i);
 
             int cost = 0;
             if((cost = oracle.getCostAction(oracleAction,s.id,state))>0){
-                logBuilder.append("Appliable actions : " + ArcEager.getAllActionName(appliable) + "\n");
+                logBuilder.append("Appliable actions : " + ArcStandard.getAllActionName(appliable) + "\n");
                 logBuilder.append("predicted action : " + predictedAction.getName() + "-" + predictedAction.getRelation() + "\n");
                 logBuilder.append("oracle action : " + oracleAction.getName() + "-" + oracleAction.getRelation() + "\n");
                 logBuilder.append("cost of oracle action :" + cost + "\n");
@@ -70,18 +67,22 @@ public class EagerTrainer extends Trainer{
 
             state = oracleAction.apply(state);
 
-            //logBuilder.append("Compare actions : \n");
-            //logBuilder.append("Predicted action : " + predictedAction.getName() + "\n");
-            //logBuilder.append("Oracle action : " + oracleAction.getName() + "\n");
-
+            /*
+            logBuilder.append("Compare actions : \n");
+            logBuilder.append("Predicted action : " + predictedAction.getName() + "\n");
+            logBuilder.append("Oracle action : " + oracleAction.getName() + "\n");
+            */
             //System.out.println("Predicted action : " + predictedAction.getName() + "\n");
             //System.out.println("Oracle action : " + oracleAction.getName() + "\n");
+
+
             // update weights if predicted and oracle action doesn't match
 
             if (predictedAction != oracleAction) {
                 updates(features,oracleAction.getType(),predictedAction.getType(),count);
                 classifier.setModel(model);
             }
+
 
             count++;
             log.log(logBuilder.toString(), Logging.DEBUG);
