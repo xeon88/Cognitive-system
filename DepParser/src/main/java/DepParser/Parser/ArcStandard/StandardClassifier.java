@@ -1,4 +1,4 @@
-package DepParser.Parser.Mazzei;
+package DepParser.Parser.ArcStandard;
 
 import DepParser.Model.*;
 import DepParser.Parser.Classifier;

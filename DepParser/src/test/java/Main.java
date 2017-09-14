@@ -1,8 +1,6 @@
 import DepParser.Model.ProjectiveTree;
 import DepParser.Parser.ArcEager.EagerParser;
 import DepParser.Parser.ArcEager.EagerTrainer;
-import DepParser.Parser.Mazzei.StandardParser;
-import DepParser.Parser.Mazzei.StandardTrainer;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.Tester;
 import DepParser.Utils.Logging;
@@ -48,18 +46,18 @@ public class Main {
 
         double accuracy = 0;
         double mean = 0;
-        int tests = 100;
+        int tests = 400;
         for(int i=0; i<tests ; i++){
-            int random = (int)Math.floor(Math.random()*testReader.getSentences().length);
-            ProjectiveTree found= parser.parse(sentences[random]);
-            accuracy = tester.getAccuracy(random,found.getDependencies());
-            builder.append("Accuracy of parser for sentence " +  random + " is " + accuracy + "\n" );
+            //int random = (int)Math.floor(Math.random()*testReader.getSentences().length);
+            ProjectiveTree found= parser.parse(sentences[i]);
+            accuracy = tester.getAccuracy(i,found.getDependencies());
+            builder.append("Accuracy of parser for sentence " +  i + " is " + accuracy + "\n" );
             mean += accuracy;
 
             builder.append("Seqs found \n");
             builder.append(PrintUltis.toString(found.getDependencies()) + "\n");
             builder.append("Gold deps \n");
-            ProjectiveTree gold = tester.getGoldTrees().get(random);
+            ProjectiveTree gold = tester.getGoldTrees().get(i);
             builder.append(PrintUltis.toString(found.getDependencies()) + "\n");
 
         }

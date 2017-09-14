@@ -1,4 +1,4 @@
-package DepParser.Parser.Mazzei;
+package DepParser.Parser.ArcStandard;
 
 
 import DepParser.Model.*;
@@ -22,11 +22,11 @@ public class StandardOracle extends Oracle {
         super();
     }
 
-    public ArcStandard.Type[] getZeroCostAction(int sequenceId, State s) {
-        ArcStandard.Type [] appliable = (ArcStandard.Type[]) ArcStandard.getValidAction(s);
+    public ArcStandard.Type[] getZeroCostAction(State state) {
+        ArcStandard.Type [] appliable = (ArcStandard.Type[]) ArcStandard.getValidAction(state);
         ArrayList<ArcStandard.Type> zeroCost = new ArrayList<ArcStandard.Type>();
         for(ArcStandard.Type action : appliable){
-            if(getCostAction(action,sequenceId,s)==0){
+            if(getCostAction(action,state)==0){
                 zeroCost.add(action);
             }
         }
@@ -34,16 +34,18 @@ public class StandardOracle extends Oracle {
         return zeroCost.toArray(new ArcStandard.Type[zeroCost.size()]);
     }
 
-    public int getCostAction(ArcSystem.operation action, int sequenceId, State state) {
+
+    public int getCostAction(ArcSystem.operation action, State state) {
+
         return 0;
     }
 
 
 
-    public ArcStandard.Type[] getReachableGoldTreeActions(State state, int sequenceId) {
+    public ArcStandard.Type[] getReachableGoldTreeActions(State state) {
         ArrayList<ArcStandard.Type> goldReachable = new ArrayList<ArcStandard.Type>();
         for(ArcStandard.Type action : ArcStandard.Type.values()){
-            if(this.getCostAction(action,sequenceId,state)==0){
+            if(this.getCostAction(action,state)==0){
                 goldReachable.add(action);
             }
         }
@@ -64,19 +66,17 @@ public class StandardOracle extends Oracle {
         StringBuilder logBuilder = new StringBuilder();
         while (!state.isTerminal()) {
 
-            logBuilder.append("Zero cost actions : \n" );
-            ArcStandard.Type [] zeroCost = (ArcStandard.Type [])getZeroCostAction(s.id,state);
-            logBuilder.append(PrintUltis.toString(ArcSystem.getAllActionName(zeroCost)));
-            ArcStandard.Type oracle = (ArcStandard.Type) getAction(state);
-            int cost = getCostAction(oracle,s.id,state);
-            logBuilder.append("Selected action : " + oracle.getName() + "- " + oracle.getRelation() + " on step " + step +"\n\n");
+            /*
+                logBuilder.append("Zero cost actions : \n" );
+                ArcStandard.Type [] zeroCost = (ArcStandard.Type [])getZeroCostAction(state);
+                logBuilder.append(PrintUltis.toString(ArcSystem.getAllActionName(zeroCost)));
+                logBuilder.append("Selected action : " + oracle.getName() + "- " + oracle.getRelation() + " on step " + step +"\n\n");
+            */
+
+            ArcStandard.Type oracle = getAction(state);
+            int cost = getCostAction(oracle,state);
             if(cost>0){
-                logBuilder.append("topstack : " + state.getTopStack().getIndex() + "\n");
-                logBuilder.append("firstbuffer : " + state.getFirstBuffer().getIndex() + "\n");
-                logBuilder.append("arcs : " + PrintUltis.toString(state.getArcs(),state.getFirstBuffer().getIndex()) + "\n\n");
-                logBuilder.append("STACK : \n" + PrintUltis.toString(state.getStack()) + "\n\n");
-                logBuilder.append("BUFFER : \n" + PrintUltis.toString(state.getBuffer()) + "\n\n");
-                logBuilder.append("Costs actions \n:" + getCostsString(this.getAllCostAction(state,s)));
+                logBuilder = appendCostInfo(logBuilder,state);
             }
 
             state = oracle.apply(state);
@@ -158,12 +158,12 @@ public class StandardOracle extends Oracle {
     }
 
 
-
-    private int [] getAllCostAction(State state, Sentence sentence){
+    @Override
+    public int [] getAllCostAction(State state){
         int [] costs = new int [ArcStandard.Type.values().length-1];
         for(ArcStandard.Type action : ArcStandard.Type.values()){
             if(action.getType()==-1) continue;
-            costs[action.getType()]=getCostAction(action, sentence.id,state);
+            costs[action.getType()]=getCostAction(action,state);
         }
         return costs;
     }

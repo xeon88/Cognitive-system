@@ -38,31 +38,23 @@ public abstract class Oracle {
         return goldTrees.get(i).getGoldSeqs().length;
     }
 
-    public abstract ArcSystem.operation [] getZeroCostAction(int sequenceId, State s) throws IOException;
+    public abstract ArcSystem.operation [] getZeroCostAction(State s) throws IOException;
+
 
     /**
      * Compute the loss cost of an action when it was applied in State state
      * @return cost value
     */
 
-    public abstract int getCostAction(ArcSystem.operation action, int sequenceId , State state) throws IOException;
-    /**
-     *
-     * @return
-    */
-
-
-    public abstract ArcSystem.operation [] getReachableGoldTreeActions(State state, int sequenceId) throws IOException;
-
+    public abstract int getCostAction(ArcSystem.operation action, State state) throws IOException;
 
 
     public void addGoldTree(Sentence s, GoldTree gold) throws IOException {
         goldTrees.put(s.id,gold);
-     //   boolean projective = gold.isProjectiveTree();
-     //   System.out.println("Gold tree number" + s.id  +" is : " + (projective ? "projective \n": "not projective \n"));
         Transition [] goldseqs = findGoldSeqs(s,gold);
         gold.setGoldSeqs(goldseqs);
         goldTrees.put(s.id,gold);
+
     }
 
 
@@ -70,6 +62,23 @@ public abstract class Oracle {
 
     protected abstract String getCostsString(int [] costs);
 
+    public abstract int [] getAllCostAction(State state) throws IOException;
+
+    public abstract ArcSystem.operation [] getReachableGoldTreeActions(State state) throws IOException;
+
     protected abstract ArcSystem.operation getAction(State state);
+
+
+
+
+    public StringBuilder appendCostInfo(StringBuilder logBuilder , State state) throws IOException {
+        logBuilder.append("topstack : " + state.getTopStack().getIndex() + "\n");
+        logBuilder.append("firstbuffer : " + state.getFirstBuffer().getIndex() + "\n");
+        logBuilder.append("arcs : " + PrintUltis.toString(state.getArcs(),state.getFirstBuffer().getIndex()) + "\n\n");
+        logBuilder.append("STACK : \n" + PrintUltis.toString(state.getStack()) + "\n\n");
+        logBuilder.append("BUFFER : \n" + PrintUltis.toString(state.getBuffer()) + "\n\n");
+        logBuilder.append("Costs actions \n:" + getCostsString(this.getAllCostAction(state)));
+        return logBuilder;
+    }
 
 }

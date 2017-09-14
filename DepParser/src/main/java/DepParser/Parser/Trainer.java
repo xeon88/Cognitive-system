@@ -1,12 +1,16 @@
 package DepParser.Parser;
 
 import DepParser.Model.*;
+import DepParser.Utils.PrintUltis;
 
 import java.util.*;
 
 /**
  * Created by Marco Corona on 09/08/2017.
+ *
  */
+
+
 public abstract  class Trainer{
 
     protected Model model;   
@@ -34,6 +38,8 @@ public abstract  class Trainer{
         model.updateMeanWeights(features,oracle,count);
         model.updateMeanWeights(features,predicted,-count);
     }
+
+
 }
 
 

@@ -1,4 +1,4 @@
-package DepParser.Parser.Mazzei;
+package DepParser.Parser.ArcStandard;
 
 import DepParser.Model.*;
 import DepParser.Parser.Sentence;
@@ -57,7 +57,7 @@ public class StandardTrainer extends Trainer{
             ArcStandard.Type oracleAction = (ArcStandard.Type)oracle.getOracleAction(s.id,i);
 
             int cost = 0;
-            if((cost = oracle.getCostAction(oracleAction,s.id,state))>0){
+            if((cost = oracle.getCostAction(oracleAction,state))>0){
                 logBuilder.append("Appliable actions : " + ArcStandard.getAllActionName(appliable) + "\n");
                 logBuilder.append("predicted action : " + predictedAction.getName() + "-" + predictedAction.getRelation() + "\n");
                 logBuilder.append("oracle action : " + oracleAction.getName() + "-" + oracleAction.getRelation() + "\n");

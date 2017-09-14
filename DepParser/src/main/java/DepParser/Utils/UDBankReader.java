@@ -5,7 +5,6 @@ import DepParser.Model.Dependency;
 import DepParser.Model.GoldTree;
 import DepParser.Model.Token;
 import DepParser.Parser.ArcEager.EagerTrainer;
-import DepParser.Parser.Mazzei.StandardTrainer;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.Tester;
 import DepParser.Parser.TBParser;

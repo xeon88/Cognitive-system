@@ -22,14 +22,13 @@ public class EagerOracle extends Oracle {
     }
 
     @Override
-    public synchronized  ArcEager.Type[] getZeroCostAction(int sequenceId, State s) throws IOException {
+    public synchronized  ArcEager.Type[] getZeroCostAction(State state) throws IOException {
         //Logging logger = new Logging();
-        //StringBuilder builder = new StringBuilder();
-        //builder.append("ZERO COST ACTION : \n");
-        ArcEager.Type [] appliable = ArcEager.getValidAction(s);
+
+        ArcEager.Type [] appliable = ArcEager.getValidAction(state);
         ArrayList<ArcEager.Type> zeroCost = new ArrayList<ArcEager.Type>();
         for(ArcEager.Type action : appliable){
-            if(getCostAction(action,sequenceId,s)==0){
+            if(getCostAction(action,state)==0){
                 zeroCost.add(action);
             }
         }
@@ -37,12 +36,20 @@ public class EagerOracle extends Oracle {
         return zeroCost.toArray(new ArcEager.Type[zeroCost.size()]);
     }
 
+    /**
+     *  Compute the total cost of an action when it's applied on a state
+     *  It depends from the type of transition system adopted
+     * @param action
+     * @param state
+     * @return
+     * @throws IOException
+     */
 
     @Override
-    public synchronized int getCostAction(ArcSystem.operation action, int sequenceId , State state) throws IOException {
+    public synchronized int getCostAction(ArcSystem.operation action,State state) throws IOException {
 
         Logging logger = new Logging();
-        GoldTree goldTree = this.goldTrees.get(sequenceId);
+        GoldTree goldTree = this.goldTrees.get(state.getInput().id);
         Token top = state.getTopStack();
         Token first = state.getFirstBuffer();
         Dependency[] gold = goldTree.getDependencies();
@@ -55,11 +62,9 @@ public class EagerOracle extends Oracle {
             return Integer.MAX_VALUE;
         }
 
-
         if(ArcEager.Type.REDUCE == action && !ArcEager.Type.REDUCE.isAppliable(state)){
             return Integer.MAX_VALUE;
         }
-
 
         if(ArcEager.Type.isLeftAction((ArcEager.Type)action) && !ArcEager.Type.isLeftAppliable(state)){
             return Integer.MAX_VALUE;
@@ -165,12 +170,32 @@ public class EagerOracle extends Oracle {
     }
 
 
+    /**
+     *  Check if an action is a zero-cost action if it's applied on a state
+     * @param action
+     * @param state
+     * @return
+     * @throws IOException
+     */
+
+    public boolean isZeroCost(ArcEager.Type action, State state) throws IOException {
+
+        ArcEager.Type [] zeros = getZeroCostAction(state);
+        for(ArcEager.Type zero : zeros){
+            if(action==zero){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     @Override
-    public ArcSystem.operation [] getReachableGoldTreeActions(State state, int sequenceId) throws IOException {
+    public ArcSystem.operation [] getReachableGoldTreeActions(State state) throws IOException {
 
         ArrayList<ArcEager.Type> goldReachable = new ArrayList<ArcEager.Type>();
         for(ArcEager.Type action : ArcEager.Type.values()){
-            if(this.getCostAction(action,sequenceId,state)==0){
+            if(this.getCostAction(action,state)==0){
                 goldReachable.add(action);
             }
         }
@@ -185,7 +210,6 @@ public class EagerOracle extends Oracle {
     public synchronized Transition [] findGoldSeqs(Sentence s, GoldTree goldTree) throws IOException {
 
         LinkedHashMap<Integer, Transition> history = new LinkedHashMap<Integer,Transition>();
-        //goldTree.printDeps();
         State state = new State(s);
         int step = 0;
         Logging logger = new Logging();
@@ -199,24 +223,19 @@ public class EagerOracle extends Oracle {
 
 
             /*
-            logBuilder.append("Step number :" + state.getStep() + "\n\n");
-            logBuilder.append("Zero cost actions : \n\n" );
-            ArcEager.Type [] zeroCost = getZeroCostAction(s.id,state);
-            logBuilder.append(PrintUltis.toString(ArcSystem.getAllActionName(zeroCost)));
-            int [] costs = this.getAllCostAction(state, s);
-            logBuilder.append(this.getCostsString(costs) + "\n");
+                logBuilder.append("Step number :" + state.getStep() + "\n\n");
+                logBuilder.append("Zero cost actions : \n\n" );
+                ArcEager.Type [] zeroCost = getZeroCostAction(s.id,state);
+                logBuilder.append(PrintUltis.toString(ArcSystem.getAllActionName(zeroCost)));
+                int [] costs = this.getAllCostAction(state, s);
+                logBuilder.append(this.getCostsString(costs) + "\n");
             */
 
             ArcEager.Type oracle = getAction(state);
-            int cost = getCostAction(oracle,s.id,state);
+            int cost = getCostAction(oracle,state);
             logBuilder.append("Selected action : " + oracle.getName() + "- " + oracle.getRelation() + " on step " + step +"\n\n");
             if(cost>0){
-                logBuilder.append("topstack : " + state.getTopStack().getIndex() + "\n");
-                logBuilder.append("firstbuffer : " + state.getFirstBuffer().getIndex() + "\n");
-                logBuilder.append("arcs : " + PrintUltis.toString(state.getArcs(),state.getFirstBuffer().getIndex()) + "\n\n");
-                logBuilder.append("STACK : \n" + PrintUltis.toString(state.getStack()) + "\n\n");
-                logBuilder.append("BUFFER : \n" + PrintUltis.toString(state.getBuffer()) + "\n\n");
-                logBuilder.append("Costs actions \n:" + getCostsString(this.getAllCostAction(state,s)));
+                logBuilder = appendCostInfo(logBuilder,state);
             }
 
 
@@ -265,19 +284,18 @@ public class EagerOracle extends Oracle {
             logger.log(logBuilder.toString(),Logging.DEBUG);
         }
 
-        //state.printArcs();
         return goldActions;
     }
 
 
-    public synchronized int [] getAllCostAction(State state, Sentence sentence) throws IOException {
+    @Override
+    public synchronized int [] getAllCostAction(State state) throws IOException {
 
         int [] costs = new int [ArcEager.Type.values().length-1];
         for(ArcEager.Type action : ArcEager.Type.values()){
             if(action.getType()==-1) continue;
-            costs[action.getType()]=getCostAction(action, sentence.id,state);
+            costs[action.getType()]=getCostAction(action,state);
         }
-
         return costs;
     }
 
