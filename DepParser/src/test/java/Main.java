@@ -41,7 +41,6 @@ public class Main {
 
         UDBankReader testReader = new UDBankReader(test, parser);
         Tester tester = testReader.getTester();
-
         Sentence [] sentences = testReader.getSentences();
 
         double accuracy = 0;

@@ -31,6 +31,7 @@ public abstract  class Trainer{
         return count;
     }
 
+    public abstract void train(GoldTree tree, Sentence s);
 
     public void updates(int [] features, int oracle, int predicted, int count ){
         model.updateWeights(features, oracle, 1);

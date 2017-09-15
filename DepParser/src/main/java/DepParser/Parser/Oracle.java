@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 /**
  * Created by Marco Corona on 09/08/2017.
  */
+
+
 public abstract class Oracle {
 
     protected HashMap<Integer,GoldTree> goldTrees;
@@ -20,7 +22,6 @@ public abstract class Oracle {
     public Oracle(){
         goldTrees = new HashMap<Integer, GoldTree>();
     }
-
 
     public HashMap<Integer, GoldTree> getGoldTrees() {
         return goldTrees;
@@ -38,37 +39,14 @@ public abstract class Oracle {
         return goldTrees.get(i).getGoldSeqs().length;
     }
 
-    public abstract ArcSystem.operation [] getZeroCostAction(State s) throws IOException;
 
 
-    /**
-     * Compute the loss cost of an action when it was applied in State state
-     * @return cost value
-    */
-
-    public abstract int getCostAction(ArcSystem.operation action, State state) throws IOException;
-
-
-    public void addGoldTree(Sentence s, GoldTree gold) throws IOException {
+    public void addGoldTree(Sentence s, GoldTree gold){
         goldTrees.put(s.id,gold);
         Transition [] goldseqs = findGoldSeqs(s,gold);
         gold.setGoldSeqs(goldseqs);
         goldTrees.put(s.id,gold);
-
     }
-
-
-    public abstract Transition[] findGoldSeqs (Sentence s , GoldTree tree) throws IOException;
-
-    protected abstract String getCostsString(int [] costs);
-
-    public abstract int [] getAllCostAction(State state) throws IOException;
-
-    public abstract ArcSystem.operation [] getReachableGoldTreeActions(State state) throws IOException;
-
-    protected abstract ArcSystem.operation getAction(State state);
-
-
 
 
     public StringBuilder appendCostInfo(StringBuilder logBuilder , State state) throws IOException {
@@ -81,4 +59,18 @@ public abstract class Oracle {
         return logBuilder;
     }
 
+
+    public abstract Transition[] findGoldSeqs (Sentence s , GoldTree tree) ;
+
+    protected abstract String getCostsString(int [] costs);
+
+    public abstract int [] getAllCostAction(State state) throws IOException;
+
+    public abstract ArcSystem.operation [] getReachableGoldTreeActions(State state) throws IOException;
+
+    protected abstract ArcSystem.operation getAction(State state);
+
+    public abstract ArcSystem.operation [] getZeroCostAction(State s) throws IOException;
+
+    public abstract int getCostAction(ArcSystem.operation action, State state) throws IOException;
 }

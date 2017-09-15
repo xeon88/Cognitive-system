@@ -30,13 +30,11 @@ public class StandardOracle extends Oracle {
                 zeroCost.add(action);
             }
         }
-        //logger.log(builder.toString(),Logging.DEBUG);
         return zeroCost.toArray(new ArcStandard.Type[zeroCost.size()]);
     }
 
 
     public int getCostAction(ArcSystem.operation action, State state) {
-
         return 0;
     }
 
@@ -56,57 +54,20 @@ public class StandardOracle extends Oracle {
     }
 
 
-    public Transition[] findGoldSeqs(Sentence s, GoldTree tree) throws IOException {
+    public Transition[] findGoldSeqs(Sentence s, GoldTree tree){
         LinkedHashMap<Integer, Transition> history = new LinkedHashMap<Integer,Transition>();
         State state = new State(s);
         int step = 0;
-        Logging logger = new Logging();
 
-
-        StringBuilder logBuilder = new StringBuilder();
         while (!state.isTerminal()) {
-
-            /*
-                logBuilder.append("Zero cost actions : \n" );
-                ArcStandard.Type [] zeroCost = (ArcStandard.Type [])getZeroCostAction(state);
-                logBuilder.append(PrintUltis.toString(ArcSystem.getAllActionName(zeroCost)));
-                logBuilder.append("Selected action : " + oracle.getName() + "- " + oracle.getRelation() + " on step " + step +"\n\n");
-            */
-
             ArcStandard.Type oracle = getAction(state);
-            int cost = getCostAction(oracle,state);
-            if(cost>0){
-                logBuilder = appendCostInfo(logBuilder,state);
-            }
-
             state = oracle.apply(state);
             Transition tr = new Transition(state,oracle);
             step++;
             history.put(step,tr);
         }
 
-        // check seqs
-        state = new State(s);
-
         Transition[] goldActions = history.values().toArray(new Transition[history.size()]);
-        for(int i=0; i<goldActions.length; i++){
-            ArcStandard.Type oracle = (ArcStandard.Type)goldActions[i].getAction();
-            state = oracle.apply(state);
-        }
-
-        if(!Dependency.sameArcs(tree.getDependencies(),state.getArcs())){
-            logBuilder.append("Gold tree \n" + PrintUltis.toString(tree.getDependencies()));
-            logBuilder.append("Oracle tree \n" + PrintUltis.toString(state.getArcs()));
-            logBuilder.append("[ERROR] Oracle not works! \n");
-            StringBuilder outputLog= new StringBuilder();
-            outputLog.append(logBuilder.toString());
-            logger.log(outputLog.toString(),Logging.DEBUG);
-            System.out.println("[ERROR] Oracle not works! \n");
-        }
-        else{
-            System.out.println("Oracle works perfectly!");
-        }
-
         return goldActions;
     }
 

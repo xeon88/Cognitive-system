@@ -8,6 +8,7 @@ import DepParser.Parser.ArcEager.EagerTrainer;
 import DepParser.Parser.Sentence;
 import DepParser.Parser.Tester;
 import DepParser.Parser.TBParser;
+import DepParser.Parser.Trainer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,15 +16,16 @@ import java.util.ArrayList;
 /**
  * Created by Marco Corona on 08/08/2017.
  */
+
+
 public class UDBankReader {
 
-    private EagerTrainer trainer;
+    private Trainer trainer;
     private Tester tester;
     private static final String [] relations = new String[]{"nsubj","dobj","noname"};
     private Sentence[] sentences ;
 
     public enum UDIndex{
-
         ID(0,"id"),
         FORM(1,"form"),
         LEMMA(2,"lemma"),
@@ -50,9 +52,8 @@ public class UDBankReader {
     }
 
 
-    public UDBankReader(File train) {
-
-        trainer = new EagerTrainer(ArcEager.SIZE);
+    public UDBankReader(File train , Trainer trainer) {
+        this.trainer = trainer;
         try {
             ReadUDFile(train,true);
         } catch (IOException e) {
@@ -62,17 +63,15 @@ public class UDBankReader {
 
 
     public UDBankReader(File test, TBParser parser){
-
         this.tester = new Tester(parser);
         try {
             ReadUDFile(test,false);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    public EagerTrainer getTrainer(){
+    public Trainer getTrainer(){
         return trainer;
     }
 
@@ -83,43 +82,24 @@ public class UDBankReader {
     }
 
 
+
     public void ReadUDFile(File file, boolean training) throws IOException {
+
         FileReader reader = new FileReader(file);
         BufferedReader buffreader = new BufferedReader(reader);
         String line ;
-        
-
         ArrayList<Sentence> tmp = new ArrayList<Sentence>();
         int count = 0;
         int limit = 500;
         ArrayList<Token>  tokens = new ArrayList<Token>();
-        ArrayList<Dependency> deps = new ArrayList<Dependency>();
         tokens.add(Token.makeRoot());
 
         while((line = buffreader.readLine())!=null){
             if(line.equals("")){
-                for(Token token : tokens){
-                    if(token.isRoot()) {
-                        continue;
-                    }
-                    else{
-                        deps.add(new Dependency(
-                                tokens.get(token.getHead()),
-                                token,
-                                token.getValue(UDIndex.DEPREL.getName()))
-                            );
-                    }
-                }
 
-                GoldTree tree = new GoldTree();
-                Dependency [] dependencies = deps.toArray(new Dependency[deps.size()]);
-                tree.setDependencies(dependencies);
-                Sentence s = new Sentence(count);
-                Token [] sentenceTokens = tokens.toArray(new Token[tokens.size()]);
-                s.setTokens(sentenceTokens);
-                s.setId(count);
+                GoldTree tree = makeGoldTree(tokens);
+                Sentence s = makeSentence(count,tokens);
                 tmp.add(s);
-                
                 if(training){
                     trainer.train(tree,s);
                 }
@@ -127,18 +107,15 @@ public class UDBankReader {
                     tester.addGoldTree(s.id, tree);
                 }
                 
-                
-              
                 System.out.println("Loaded sentence : " + (count));
                 count++;
                 if(count>=limit) break;
+
                 // reset
                 tokens = new ArrayList<Token>();
                 tokens.add(Token.makeRoot());
-                deps = new ArrayList<Dependency>();
             }
             else{
-
                 Token token = createToken(line);
                 tokens.add(token);
             }
@@ -151,12 +128,6 @@ public class UDBankReader {
             trainer.getModel().setWeights(result);
         }
     }
-
-
-
-
-
-
 
 
     private Token createToken(String line){
@@ -195,5 +166,38 @@ public class UDBankReader {
         return token;
     }
 
+
+
+
+    private GoldTree makeGoldTree(ArrayList<Token> tokens){
+
+        ArrayList<Dependency> deps = new ArrayList<Dependency>();
+        for(Token token : tokens){
+            if(token.isRoot()) {
+                continue;
+            }
+            else{
+                deps.add(new Dependency(
+                        tokens.get(token.getHead()),
+                        token,
+                        token.getValue(UDIndex.DEPREL.getName()))
+                );
+            }
+        }
+
+        GoldTree tree = new GoldTree();
+        Dependency [] dependencies = deps.toArray(new Dependency[deps.size()]);
+        tree.setDependencies(dependencies);
+        return tree;
+    }
+
+
+    private Sentence makeSentence(int id, ArrayList<Token> tokens){
+        Sentence s = new Sentence(id);
+        Token [] sentenceTokens = tokens.toArray(new Token[tokens.size()]);
+        s.setTokens(sentenceTokens);
+        s.setId(id);
+        return  s;
+    }
 
 }

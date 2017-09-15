@@ -12,9 +12,10 @@ import DepParser.Parser.Sentence;
 import DepParser.Parser.TBParser;
 
 /**
- *
  * @author theacidmc
  */
+
+
 public class EagerParser extends TBParser{
     
     
@@ -25,13 +26,13 @@ public class EagerParser extends TBParser{
         this.classifier = classifier;
     }
 
+
     @Override
     public ProjectiveTree parse(Sentence s) {
         ProjectiveTree tree = new ProjectiveTree();
         State state = new State(s);
         while (!state.isTerminal()){
             ArcEager.Type predicted = classifier.getBestAction(state);
-            //System.out.println("Action predicted : "  + predicted.getName());
             state = predicted.apply(state);
         }
         tree.setDependencies(state.getArcs());
