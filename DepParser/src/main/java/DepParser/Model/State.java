@@ -193,6 +193,7 @@ public class State implements Comparable<State> {
     }
 
     public Token getHeadOrFake(int i) {
+        if(i==-1) return Token.makeFake();
         return arcs[i] != null ? arcs[i].getHead() : Token.makeFake();
     }
 
@@ -251,17 +252,6 @@ public class State implements Comparable<State> {
 
     */
 
-
-
-
-    public boolean isHead(int head){
-        for(int i=0;i<arcs.length;i++){
-            if(arcs[i]!=null && arcs[i].getHead().getIndex()==head ){
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     @Override

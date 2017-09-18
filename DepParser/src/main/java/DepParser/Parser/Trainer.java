@@ -13,6 +13,8 @@ import java.util.*;
 
 public abstract  class Trainer{
 
+    protected Oracle oracle;
+    protected Classifier classifier;
     protected Model model;   
     protected int count;
 
@@ -22,6 +24,14 @@ public abstract  class Trainer{
         count = 1;
     }
 
+
+    public Classifier getClassifier() {
+        return classifier;
+    }
+
+    public Oracle getOracle() {
+        return oracle;
+    }
 
     public Model getModel() {
         return model;

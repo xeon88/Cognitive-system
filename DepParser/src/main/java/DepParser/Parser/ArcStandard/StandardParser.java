@@ -24,7 +24,6 @@ public class StandardParser extends TBParser{
         State state = new State(s);
         while (!state.isTerminal()){
             ArcStandard.Type predicted = classifier.getBestAction(state);
-            //System.out.println("Action predicted : "  + predicted.getName());
             state = predicted.apply(state);
         }
         tree.setDependencies(state.getArcs());

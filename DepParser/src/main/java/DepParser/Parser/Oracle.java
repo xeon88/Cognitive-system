@@ -35,11 +35,10 @@ public abstract class Oracle {
     }
 
 
+
     public int getLength(int i){
         return goldTrees.get(i).getGoldSeqs().length;
     }
-
-
 
     public void addGoldTree(Sentence s, GoldTree gold){
         goldTrees.put(s.id,gold);
@@ -68,7 +67,7 @@ public abstract class Oracle {
 
     public abstract ArcSystem.operation [] getReachableGoldTreeActions(State state) throws IOException;
 
-    protected abstract ArcSystem.operation getAction(State state);
+    public abstract ArcSystem.operation getAction(State state);
 
     public abstract ArcSystem.operation [] getZeroCostAction(State s) throws IOException;
 

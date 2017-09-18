@@ -14,30 +14,26 @@ import java.io.IOException;
 
 public class EagerTrainer extends Trainer{
 
-    private EagerOracle oracle;
-    private EagerClassifier classifier;
 
-    public EagerTrainer(int operators){
-        super(operators);
+
+    public EagerTrainer(){
+        super(ArcEager.SIZE);
         this.oracle = new EagerOracle();
         this.classifier = new EagerClassifier(this.model);
     }
 
-    public EagerClassifier getClassifier() {
-        return classifier;
-    }
+
 
 
     public synchronized void train(GoldTree gold, Sentence s){
-
         oracle.addGoldTree(s, gold);
         State state = new State(s);
         while (!state.isTerminal()) {
-            ArcEager.Type predictedAction = classifier.getBestAction(state);
-            ArcEager.Type oracleAction = oracle.getAction(state);
+            ArcEager.Type predictedAction = (ArcEager.Type)classifier.getBestAction(state);
+            ArcEager.Type oracleAction = (ArcEager.Type) oracle.getAction(state);
+            int[] features = new Features(state).extract();
             state = oracleAction.apply(state);
             if(oracleAction!=predictedAction){
-                int[] features = new Features(state).extract();
                 updates(features,oracleAction.getType(),predictedAction.getType(),count);
                 classifier.setModel(model);
             }

@@ -195,8 +195,8 @@ public class EagerOracle extends Oracle {
     }
 
 
-
-    protected synchronized ArcEager.Type getAction(State state) {
+    @Override
+    public synchronized ArcEager.Type getAction(State state) {
 
         Token topStack = state.getTopStack();
         Token firstBuffer = state.getFirstBuffer();

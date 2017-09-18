@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Features {
 
     public static final int hashSize = (int)Math.pow(2,17);
-    public static final int size = 28;
+    public static final int size = 27;
 
     protected Token s0;
     protected Token s1;
@@ -33,7 +33,7 @@ public class Features {
         this.s0r = Token.makeFake();
         this.b0l = Token.makeFake();
         if(!s0.isFake()){
-            this.s0h = s.getHeadOrFake(s0.getIndex());
+            this.s0h = s.getHeadOrFake(s0.getIndex()-1);
             this.s0l = s.getLeftmostToken(s0.getIndex());
             this.s0r = s.getRightmostToken(s0.getIndex());
         }
@@ -124,48 +124,39 @@ public class Features {
                                 s0.getValue(UDBankReader.UDIndex.FORM.getName()),
                                 b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
                                 ),
-
                 Feature.create(Feature.S0_POS_B0_POS_FORM.label , //#21
                                 s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                                 b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                                 b0.getValue(UDBankReader.UDIndex.FORM.getName())),
 
-
-                Feature.create(Feature.S0_POS_FORM_B0_POS.label , //#22
-                        s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        s0.getValue(UDBankReader.UDIndex.FORM.getName()),
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
-
-
-                Feature.create(Feature.S0H_POS_S0_POS_B0_POS.label, //#23
+                Feature.create(Feature.S0H_POS_S0_POS_B0_POS.label, //#22
                         s0h.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
                 ),
-                Feature.create(Feature.S0H_POS_FORM_S0_POS_FORM_B0_POS.label, //#24
+                Feature.create(Feature.S0H_POS_FORM_S0_POS_FORM_B0_POS.label, //#23
                         s0h.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         s0h.getValue(UDBankReader.UDIndex.FORM.getName()),
                         s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         s0.getValue(UDBankReader.UDIndex.FORM.getName()),
                         b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
                         ),
-                Feature.create(Feature.S0_POS_S0L_POS_B0_POS.label, //#25
+                Feature.create(Feature.S0_POS_S0L_POS_B0_POS.label, //#24
                         s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         s0l.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
                         ),
-                Feature.create(Feature.S0_POS_S0R_POS_B0_POS.label,//#26
+                Feature.create(Feature.S0_POS_S0R_POS_B0_POS.label,//#25
                         s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         s0r.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
                         ),
-                Feature.create(Feature.S0_POS_B0_POS_B0L_POS.label, //#27
+                Feature.create(Feature.S0_POS_B0_POS_B0L_POS.label, //#26
                         s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
                         b0l.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
                         )
         };
-
             return features;
 
         }

@@ -62,8 +62,8 @@ public class UDBankReader {
     }
 
 
-    public UDBankReader(File test, TBParser parser){
-        this.tester = new Tester(parser);
+    public UDBankReader(File test, Tester tester ){
+        this.tester = tester;
         try {
             ReadUDFile(test,false);
         } catch (IOException e) {
@@ -170,7 +170,6 @@ public class UDBankReader {
 
 
     private GoldTree makeGoldTree(ArrayList<Token> tokens){
-
         ArrayList<Dependency> deps = new ArrayList<Dependency>();
         for(Token token : tokens){
             if(token.isRoot()) {

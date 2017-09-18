@@ -4,14 +4,10 @@ package DepParser.Parser.ArcStandard;
 import DepParser.Model.*;
 import DepParser.Parser.Oracle;
 import DepParser.Parser.Sentence;
-import DepParser.Utils.Logging;
-import DepParser.Utils.PrintUltis;
 import DepParser.Utils.UDBankReader;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 
 /**
  * Created by Marco Corona on 30/08/2017.
@@ -76,7 +72,7 @@ public class StandardOracle extends Oracle {
     }
 
     @Override
-    protected ArcStandard.Type getAction(State state) {
+    public ArcStandard.Type getAction(State state) {
 
         if(state.getStack().isEmpty()){
             return ArcStandard.Type.SHIFT;
@@ -103,7 +99,7 @@ public class StandardOracle extends Oracle {
 
         else if (firstBuffer.getHead() == topStack.getIndex()
                 && ArcStandard.Type.isRightAppliable(state)
-                && checkSubTree(firstBuffer.getIndex(),state)){
+                && checkChilds(firstBuffer.getIndex(),state)){
 
             if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("nsubj")){
                 return ArcStandard.Type.RIGHT_NSUBJ;
@@ -130,31 +126,16 @@ public class StandardOracle extends Oracle {
     }
 
 
-    public boolean checkSubTree(int head, State state){
-
-
-        LinkedList<Integer> dependent = new LinkedList<Integer>();
-        dependent.addFirst(head);
-        boolean [] checked = new boolean[state.getArcs().length];
+    public boolean checkChilds(int head, State state){
         Dependency[] arcs = state.getArcs();
         Dependency [] gold = goldTrees.get(state.getInput().id).getDependencies();
-        while (!dependent.isEmpty()){
-            int first = dependent.removeFirst();
-            for(int i=0; i<checked.length;i++){
-                if(!checked[i]){
-                    if(gold[i].getHead().getIndex()==first){
-                        if(arcs[i]==null){
-                            return false;
-                        }
-                        else {
-                            dependent.addFirst(gold[i].getDependent().getIndex());
-                            checked[i]=true;
-                        }
-                    }
+        for(Dependency arc : gold ){
+            if(arc.getHead().getIndex()==head){
+                if(arcs[arc.getDependent().getIndex()-1]==null){
+                    return false;
                 }
             }
         }
-
         return true;
     }
 
