@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public class Features {
 
-    public static final int hashSize = (int)Math.pow(2,17);
+    public static final int hashSize = (int)Math.pow(2,21);
     public static final int size = 27;
 
     protected Token s0;

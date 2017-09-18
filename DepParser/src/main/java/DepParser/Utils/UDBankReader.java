@@ -124,7 +124,7 @@ public class UDBankReader {
         sentences = tmp.toArray(new Sentence[tmp.size()]);
 
         if(training){
-            float [][][] result = trainer.getModel().getResultWeights(trainer.getCount());
+            float [][]result = trainer.getModel().getResultWeights(trainer.getCount());
             trainer.getModel().setWeights(result);
         }
     }
