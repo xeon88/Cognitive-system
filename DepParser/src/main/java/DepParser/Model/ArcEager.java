@@ -11,7 +11,7 @@ public class ArcEager extends ArcSystem {
     
     public static final int SIZE = 8;
 
-    public enum Type implements operation {
+    public enum Type implements transition {
 
         NOP(-1, "no-op", "") {
             public boolean isAppliable(State state) {
@@ -19,7 +19,7 @@ public class ArcEager extends ArcSystem {
             }
 
             public State apply(State state) {
-                return state.cloneState();
+                return state.clone();
             }
         },
         SHIFT(0, "Shift", "") {
@@ -28,7 +28,7 @@ public class ArcEager extends ArcSystem {
             }
 
             public State apply(State state) {
-                State next = state.cloneState();
+                State next = state.clone();
                 Stack<Token> stack = next.getStack();
                 LinkedList<Token> buffer = next.getBuffer();
                 Token first = buffer.getFirst();
@@ -98,10 +98,9 @@ public class ArcEager extends ArcSystem {
         REDUCE(7, "Reduce", "") {
             public boolean isAppliable(State state) {
                 if (!state.getStack().isEmpty()) {
-                    Dependency[] arcs = state.getArcs();
+                    Arc[] arcs = state.getArcs();
                     Token head = state.getTopStack();
-                    if ((head.getIndex()==0 && state.isRooted()) ||
-                            (head.getIndex()!=0 && arcs[head.getIndex() - 1] != null)) {
+                    if ((head.getIndex()!=0 && arcs[head.getIndex() - 1] != null)) {
                         return true;
                     }
                 }
@@ -109,7 +108,7 @@ public class ArcEager extends ArcSystem {
             }
 
             public State apply(State state) {
-                State next = state.cloneState();
+                State next = state.clone();
                 Stack<Token> stack = next.getStack();
                 LinkedList<Token> buffer = next.getBuffer();
                 stack.pop();
@@ -145,13 +144,12 @@ public class ArcEager extends ArcSystem {
 
         protected State applyLeft(State state, String relation) {
 
-            State next = state.cloneState();
+            State next = state.clone();
             Stack<Token> stack = next.getStack();
             LinkedList<Token> buffer = next.getBuffer();
             Token head = buffer.getFirst();
             Token dependent = stack.pop();
-            Dependency dependency = new Dependency(head, dependent, relation);
-            if (head.isRoot()) state.setRooted(true);
+            Arc dependency = new Arc(head, dependent, relation);
             next.updateLeftMost(dependency);
             next.setArc(dependent.getIndex() - 1, dependency);
             next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
@@ -162,15 +160,14 @@ public class ArcEager extends ArcSystem {
 
 
         protected State applyRight(State state, String relation) {
-            State next = state.cloneState();
+            State next = state.clone();
             Stack<Token> stack = next.getStack();
             LinkedList<Token> buffer = next.getBuffer();
             Token dependent = buffer.getFirst();
             Token head = stack.peek();
             buffer.removeFirst();
             stack.push(dependent);
-            Dependency dependency = new Dependency(head, dependent, relation);
-            if (head.isRoot()) state.setRooted(true);
+            Arc dependency = new Arc(head, dependent, relation);
             next.updateRightMost(dependency);
             next.setArc(dependent.getIndex() - 1, dependency);
             next.setTopStack(!stack.isEmpty() ? stack.peek() : null);
@@ -182,7 +179,7 @@ public class ArcEager extends ArcSystem {
 
         public static boolean isLeftAppliable(State state) {
             if (!state.getStack().isEmpty()) {
-                Dependency[] arcs = state.getArcs();
+                Arc[] arcs = state.getArcs();
                 Token head = state.getTopStack();
                 if (head.getIndex() != 0 &&
                         arcs[head.getIndex()-1] == null) {
@@ -212,7 +209,7 @@ public class ArcEager extends ArcSystem {
     }
 
 
-    public static ArcEager.Type [] getValidAction(State state) {
+    public static ArcEager.Type [] getValidActions(State state) {
         ArrayList<ArcEager.Type> appliable = new ArrayList<ArcEager.Type>();
         for(ArcEager.Type action : ArcEager.Type.values()){
             if(action.isAppliable(state)) appliable.add(action);
@@ -239,7 +236,7 @@ public class ArcEager extends ArcSystem {
             test &=false;
         }
 
-        Dependency arc = next.getArcs()[prev.getTopStack().getIndex()-1];
+        Arc arc = next.getArcs()[prev.getTopStack().getIndex()-1];
         if(arc==null) {
             System.out.println("dependency not added");
             test  &=false;

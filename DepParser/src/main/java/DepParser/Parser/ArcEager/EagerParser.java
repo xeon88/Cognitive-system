@@ -6,9 +6,9 @@
 package DepParser.Parser.ArcEager;
 
 import DepParser.Model.ArcEager;
-import DepParser.Model.ProjectiveTree;
+import DepParser.Model.Tree;
 import DepParser.Model.State;
-import DepParser.Parser.Sentence;
+import DepParser.Model.Sentence;
 import DepParser.Parser.TBParser;
 
 /**
@@ -18,21 +18,18 @@ import DepParser.Parser.TBParser;
 
 public class EagerParser extends TBParser{
     
-    
-    private EagerClassifier classifier;
-    
+
     public EagerParser ( EagerClassifier classifier) {
-        super();
-        this.classifier = classifier;
+        super(classifier);
     }
 
 
     @Override
-    public ProjectiveTree parse(Sentence s) {
-        ProjectiveTree tree = new ProjectiveTree();
+    public Tree parse(Sentence s) {
+        Tree tree = new Tree();
         State state = new State(s);
         while (!state.isTerminal()){
-            ArcEager.Type predicted = classifier.getBestAction(state);
+            ArcEager.Type predicted = (ArcEager.Type)classifier.getBestAction(state);
             state = predicted.apply(state);
         }
         tree.setDependencies(state.getArcs());

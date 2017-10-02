@@ -8,16 +8,16 @@ package DepParser.Model;
 /**
  *
  * @author Marco Corona
- * It describes a transition as a couple action applied and state result of that transition 
+ *
  */
 
 
 public class Transition {
     
     private State result;
-    private ArcSystem.operation action;
+    private ArcSystem.transition action;
     
-    public Transition(State result, ArcSystem.operation action){
+    public Transition(State result, ArcSystem.transition action){
     
         this.result = result;
         this.action = action;
@@ -28,7 +28,7 @@ public class Transition {
         return result;
     }
     
-    public ArcSystem.operation getAction(){
+    public ArcSystem.transition getAction(){
         return action;
     }
     

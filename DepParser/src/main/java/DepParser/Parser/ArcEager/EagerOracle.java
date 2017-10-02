@@ -2,12 +2,9 @@ package DepParser.Parser.ArcEager;
 
 import DepParser.Model.*;
 import DepParser.Parser.Oracle;
-import DepParser.Parser.Sentence;
-import DepParser.Utils.Logging;
-import DepParser.Utils.PrintUltis;
-import DepParser.Utils.UDBankReader;
+import DepParser.Model.Sentence;
+import DepParser.Utils.ConllReader;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -23,7 +20,7 @@ public class EagerOracle extends Oracle {
 
     @Override
     public synchronized  ArcEager.Type[] getZeroCostAction(State state) {
-        ArcEager.Type [] appliable = ArcEager.getValidAction(state);
+        ArcEager.Type [] appliable = ArcEager.getValidActions(state);
         ArrayList<ArcEager.Type> zeroCost = new ArrayList<ArcEager.Type>();
         for(ArcEager.Type action : appliable){
             if(getCostAction(action,state)==0){
@@ -44,12 +41,12 @@ public class EagerOracle extends Oracle {
      */
 
     @Override
-    public synchronized int getCostAction(ArcSystem.operation action,State state){
+    public synchronized int getCostAction(ArcSystem.transition action, State state){
 
         GoldTree goldTree = this.goldTrees.get(state.getInput().id);
         Token top = state.getTopStack();
         Token first = state.getFirstBuffer();
-        Dependency[] gold = goldTree.getDependencies();
+        Arc[] gold = goldTree.getDependencies();
         int cost = 0;
 
         if(ArcEager.Type.SHIFT == action && !ArcEager.Type.SHIFT.isAppliable(state)){
@@ -70,7 +67,7 @@ public class EagerOracle extends Oracle {
 
         if (ArcEager.Type.SHIFT == action) {
 
-            for (Dependency dep : gold){
+            for (Arc dep : gold){
                 if(dep.getDependent().equals(first)){
                     if(state.getStack().contains(dep.getHead())){
                         cost++;
@@ -86,7 +83,7 @@ public class EagerOracle extends Oracle {
 
 
         if (ArcEager.Type.REDUCE == action) {
-            for(Dependency dep: gold){
+            for(Arc dep: gold){
                 if(dep.getHead().equals(top)){
                     if(state.getBuffer().equals(dep.getDependent())){
                         cost++;
@@ -96,7 +93,7 @@ public class EagerOracle extends Oracle {
         }
 
         if (ArcEager.Type.isLeftAction((ArcEager.Type)action)) {
-            for (Dependency dep : gold) {
+            for (Arc dep : gold) {
                 if(dep.getDependent().equals(top)){
                     if(!dep.getHead().equals(first) && state.getBuffer().contains(dep.getHead())){
                         cost++;
@@ -111,7 +108,7 @@ public class EagerOracle extends Oracle {
         }
 
         if (ArcEager.Type.isRightAction((ArcEager.Type)action)) {
-            for (Dependency dep : gold) {
+            for (Arc dep : gold) {
                 if(dep.getDependent().equals(first)){
                     if(!dep.getHead().equals(top) &&
                             (state.getStack().contains(dep.getHead()) ||
@@ -152,7 +149,7 @@ public class EagerOracle extends Oracle {
 
 
     @Override
-    public ArcSystem.operation [] getReachableGoldTreeActions(State state){
+    public ArcSystem.transition[] getReachableGoldTreeActions(State state){
         ArrayList<ArcEager.Type> goldReachable = new ArrayList<ArcEager.Type>();
         for(ArcEager.Type action : ArcEager.Type.values()){
             if(this.getCostAction(action,state)==0){
@@ -204,13 +201,13 @@ public class EagerOracle extends Oracle {
 
 
         if (ArcEager.Type.isLeftAppliable(state) && topStack.getHead() == firstBuffer.getIndex() ) {
-            if(topStack.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("nsubj")){
+            if(topStack.getValue(ConllReader.Conll.DEPREL.getName()).equals("nsubj")){
                 return ArcEager.Type.LEFT_NSUBJ;
             }
-            if(topStack.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("dobj")){
+            if(topStack.getValue(ConllReader.Conll.DEPREL.getName()).equals("dobj")){
                 return ArcEager.Type.LEFT_DOBJ;
             }
-            if(topStack.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("noname")){
+            if(topStack.getValue(ConllReader.Conll.DEPREL.getName()).equals("noname")){
                 return ArcEager.Type.LEFT_OTHER;
             }
 
@@ -218,13 +215,13 @@ public class EagerOracle extends Oracle {
 
         else if (ArcEager.Type.isRightAppliable(state) && firstBuffer.getHead() == topStack.getIndex()
                 ) {
-            if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("nsubj")){
+            if(firstBuffer.getValue(ConllReader.Conll.DEPREL.getName()).equals("nsubj")){
                 return ArcEager.Type.RIGHT_NSUBJ;
             }
-            if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("dobj")){
+            if(firstBuffer.getValue(ConllReader.Conll.DEPREL.getName()).equals("dobj")){
                 return ArcEager.Type.RIGHT_DOBJ;
             }
-            if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("noname")){
+            if(firstBuffer.getValue(ConllReader.Conll.DEPREL.getName()).equals("noname")){
                 return ArcEager.Type.RIGHT_OTHER;
             }
         }

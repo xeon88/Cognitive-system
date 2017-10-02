@@ -3,7 +3,7 @@ package DepParser.Model;
 /**
  * Created by Marco Corona on 17/08/2017.
  */
-public class GoldTree extends ProjectiveTree {
+public class GoldTree extends Tree {
 
     private Transition [] history;
 

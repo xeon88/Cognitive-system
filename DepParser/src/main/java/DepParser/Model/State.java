@@ -1,9 +1,7 @@
 package DepParser.Model;
 
-import DepParser.Parser.Sentence;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Stack;
@@ -11,33 +9,25 @@ import java.util.Stack;
 /**
  * Created by Marco Corona on 11/08/2017.
  */
-public class State implements Comparable<State> {
+public class State implements Comparable<State>, Cloneable {
 
     private Stack<Token> stack;
     private LinkedList<Token> buffer;
     private Token topStack;
-    private Dependency[] arcs;
+    private Arc[] arcs;
     private Token firstBuffer;
     private Sentence input;
     private int step;
-    private boolean rooted;
     private int[] leftmost;
     private int[] rightmost;
 
-    private static final String NSUBJ = "nsubj";
-    private static final String DOBJ = "dobj";
-    private static final String ROOT = "root";
-    private static final String OTHER = "other";
-
-
     public State(Sentence s) {
         this.buffer = new LinkedList<Token>();
-        this.rooted = false;
         this.stack = new Stack<Token>();
         this.topStack = null;
         this.firstBuffer = null;
         this.input = s;
-        this.arcs = new Dependency[s.tokens.length - 1]; // indexed by dependent token id
+        this.arcs = new Arc[s.tokens.length - 1]; // indexed by dependent token id
         this.leftmost = new int [s.tokens.length-1];
         this.rightmost = new int [s.tokens.length-1];
         this.step = 0;
@@ -46,9 +36,9 @@ public class State implements Comparable<State> {
         initStructures(s.tokens);
     }
 
-    public State(Stack<Token> stack, LinkedList<Token> buffer, Dependency[] arcs,
+    public State(Stack<Token> stack, LinkedList<Token> buffer, Arc[] arcs,
                  Token topStack, Token firstBuffer, Sentence s,
-                 int nseq, boolean rooted, int [] leftmost, int [] rightmost
+                 int nseq, int [] leftmost, int [] rightmost
                 ) {
 
         this.buffer = buffer;
@@ -58,7 +48,6 @@ public class State implements Comparable<State> {
         this.firstBuffer = firstBuffer;
         this.input = s;
         this.step = step;
-        this.rooted = rooted;
         this.leftmost = leftmost;
         this.rightmost = rightmost;
     }
@@ -74,9 +63,6 @@ public class State implements Comparable<State> {
     }
 
 
-    public boolean isRooted() {
-        return rooted;
-    }
 
     public Stack<Token> getStack() {
         return stack;
@@ -86,7 +72,7 @@ public class State implements Comparable<State> {
         return buffer;
     }
 
-    public Dependency[] getArcs() {
+    public Arc[] getArcs() {
         return arcs;
     }
 
@@ -106,16 +92,11 @@ public class State implements Comparable<State> {
         this.firstBuffer = firstBuffer;
     }
 
-
-    public void setRooted(boolean rooted) {
-        this.rooted = rooted;
-    }
-
     public void setTopStack(Token topStack) {
         this.topStack = topStack;
     }
 
-    public void setArc(int index, Dependency arc) {
+    public void setArc(int index, Arc arc) {
         this.arcs[index] = arc;
     }
 
@@ -127,15 +108,19 @@ public class State implements Comparable<State> {
         this.rightmost = rightmost;
     }
 
+    public void updateTopAndFirst(){
+        this.topStack = !stack.isEmpty() ? stack.peek() : null;
+        this.firstBuffer = !buffer.isEmpty() ? buffer.getFirst() : null;
+    }
 
-    public void updateLeftMost(Dependency arc){
+    public void updateLeftMost(Arc arc){
         if(arc.getHead().getIndex()==0) return;
         if( arc.getDependent().getIndex() < this.leftmost[arc.getHead().getIndex()-1]){
             this.leftmost[arc.getHead().getIndex()-1] = arc.getDependent().getIndex();
         }
     }
 
-    public void updateRightMost(Dependency arc){
+    public void updateRightMost(Arc arc){
         if(arc.getHead().getIndex()==0) return;
         if (arc.getDependent().getIndex() > this.rightmost[arc.getHead().getIndex()-1]) {
             this.rightmost[arc.getHead().getIndex()-1] = arc.getDependent().getIndex();
@@ -159,7 +144,6 @@ public class State implements Comparable<State> {
         return isLegitIndex(rightmost[index-1]) ? input.tokens[rightmost[index-1]]: Token.makeFake();
     }
 
-
     public int getStep() {
         return step;
     }
@@ -172,19 +156,7 @@ public class State implements Comparable<State> {
         return this.buffer.isEmpty();
     }
 
-
-    public void printArcs() {
-
-        for (Dependency dep : arcs) {
-            if (dep != null) {
-                System.out.println(dep.toString());
-            }
-        }
-    }
-
-
     public Token getStackTokenOrFake(int i) {
-
         return i >= 0 && i < stack.size() ? stack.get(i) : Token.makeFake();
     }
 
@@ -203,19 +175,19 @@ public class State implements Comparable<State> {
 
     }
 
-    public State cloneState() {
+    @Override
+    public State clone() {
 
         Stack<Token> stack = (Stack<Token>) this.stack.clone();
         LinkedList<Token> buffer = (LinkedList<Token>) this.buffer.clone();
-        Dependency[] arcs = this.arcs.clone();
+        Arc[] arcs = this.arcs.clone();
         Token first = this.firstBuffer!=null ? this.firstBuffer.clone() : null;
         Token top = this.topStack!=null ? this.topStack.clone() : null;
         int step = this.step;
-        boolean rooted = this.isRooted();
         int [] leftmost = this.leftmost.clone();
         int [] rightmost = this.rightmost.clone();
         return new State(stack, buffer, arcs, top, first, input, step
-                , rooted, leftmost, rightmost);
+                , leftmost, rightmost);
     }
 
 
@@ -230,28 +202,14 @@ public class State implements Comparable<State> {
     }
 
 
-    /**
+    public void printArcs() {
 
-    public boolean isLeftAppliable(){
-        return !stack.isEmpty() && !buffer.isEmpty() &&
-                ( topStack.isRoot() ? false : arcs[topStack.getIndex()-1]==null);
+        for (Arc dep : arcs) {
+            if (dep != null) {
+                System.out.println(dep.toString());
+            }
+        }
     }
-
-    public boolean isRightAppliable(){
-        return !stack.isEmpty() && !buffer.isEmpty();
-    }
-
-    public boolean isReduceAppliable(){
-        return !stack.isEmpty() &&
-                (topStack.isRoot() ? rooted : arcs[topStack.getIndex()-1]!=null);
-    }
-
-    public boolean isShiftAppliable(){
-        return !buffer.isEmpty();
-    }
-
-    */
-
 
 
     @Override
@@ -270,8 +228,6 @@ public class State implements Comparable<State> {
         if(this.step!=t.step){
             return false;
         }
-
-        if(this.rooted!=t.rooted) return false;
 
         if(this.stack==null ? t.stack!=null : !this.stack.equals(t.stack)){
             return false;

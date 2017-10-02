@@ -1,15 +1,21 @@
 package DepParser.Parser;
 
-import DepParser.Model.ArcSystem;
-import DepParser.Model.ProjectiveTree;
-import DepParser.Model.State;
+import DepParser.Model.Sentence;
+import DepParser.Model.Tree;
 
 /**
  * Created by Marco Corona on 01/08/2017.
  */
+
+
 public abstract class TBParser {
 
-    public TBParser(){}
+    protected Classifier classifier;
 
-    public abstract ProjectiveTree parse(Sentence s);
+    public TBParser(Classifier classifier){
+        this.classifier = classifier;
+    }
+
+    public abstract Tree parse(Sentence s);
+
 }

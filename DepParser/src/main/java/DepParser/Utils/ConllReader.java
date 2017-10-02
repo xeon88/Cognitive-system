@@ -1,14 +1,10 @@
 package DepParser.Utils;
 
-import DepParser.Model.ArcEager;
-import DepParser.Model.Dependency;
+import DepParser.Model.Arc;
 import DepParser.Model.GoldTree;
 import DepParser.Model.Token;
-import DepParser.Parser.ArcEager.EagerTrainer;
-import DepParser.Parser.Sentence;
-import DepParser.Parser.Tester;
-import DepParser.Parser.TBParser;
-import DepParser.Parser.Trainer;
+import DepParser.Parser.ConllStorage;
+import DepParser.Model.Sentence;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,14 +14,13 @@ import java.util.ArrayList;
  */
 
 
-public class UDBankReader {
+public class ConllReader {
 
-    private Trainer trainer;
-    private Tester tester;
+    private ConllStorage storage;
     private static final String [] relations = new String[]{"nsubj","dobj","noname"};
     private Sentence[] sentences ;
 
-    public enum UDIndex{
+    public enum Conll {
         ID(0,"id"),
         FORM(1,"form"),
         LEMMA(2,"lemma"),
@@ -39,7 +34,7 @@ public class UDBankReader {
         private int index;
         private String name;
 
-        UDIndex(int i, String name){
+        Conll(int i, String name){
             this.index = i;
             this.name = name;
         }
@@ -52,30 +47,19 @@ public class UDBankReader {
     }
 
 
-    public UDBankReader(File train , Trainer trainer) {
-        this.trainer = trainer;
+    public ConllStorage getStorage() {
+        return storage;
+    }
+
+    public ConllReader(File conll, ConllStorage storage ){
+        this.storage = storage;
         try {
-            ReadUDFile(train,true);
+            ReadUDFile(conll);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public UDBankReader(File test, Tester tester ){
-        this.tester = tester;
-        try {
-            ReadUDFile(test,false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Trainer getTrainer(){
-        return trainer;
-    }
-
-    public Tester getTester(){return tester;}
 
     public Sentence[] getSentences() {
         return sentences;
@@ -83,33 +67,25 @@ public class UDBankReader {
 
 
 
-    public void ReadUDFile(File file, boolean training) throws IOException {
+    public void ReadUDFile(File file) throws IOException {
 
         FileReader reader = new FileReader(file);
         BufferedReader buffreader = new BufferedReader(reader);
         String line ;
         ArrayList<Sentence> tmp = new ArrayList<Sentence>();
         int count = 0;
-        int limit = 500;
         ArrayList<Token>  tokens = new ArrayList<Token>();
         tokens.add(Token.makeRoot());
 
         while((line = buffreader.readLine())!=null){
             if(line.equals("")){
-
                 GoldTree tree = makeGoldTree(tokens);
                 Sentence s = makeSentence(count,tokens);
                 tmp.add(s);
-                if(training){
-                    trainer.train(tree,s);
-                }
-                else{
-                    tester.addGoldTree(s.id, tree);
-                }
-                
+                storage.addGoldTree(s,tree);
                 System.out.println("Loaded sentence : " + (count));
                 count++;
-                if(count>=limit) break;
+                //if(count>=limit) break;
 
                 // reset
                 tokens = new ArrayList<Token>();
@@ -122,11 +98,6 @@ public class UDBankReader {
         }
 
         sentences = tmp.toArray(new Sentence[tmp.size()]);
-
-        if(training){
-            float [][][] result = trainer.getModel().getResultWeights(trainer.getCount());
-            trainer.getModel().setWeights(result);
-        }
     }
 
 
@@ -139,7 +110,7 @@ public class UDBankReader {
         }
 
         token = new Token();
-        for ( UDIndex udi : UDIndex.values()) {
+        for ( Conll udi : Conll.values()) {
             if(udi.getName().equals("id")){
                 int id = Integer.parseInt(row[udi.getIndex()]);
                 token.setIndex(id);
@@ -170,22 +141,22 @@ public class UDBankReader {
 
 
     private GoldTree makeGoldTree(ArrayList<Token> tokens){
-        ArrayList<Dependency> deps = new ArrayList<Dependency>();
+        ArrayList<Arc> deps = new ArrayList<Arc>();
         for(Token token : tokens){
             if(token.isRoot()) {
                 continue;
             }
             else{
-                deps.add(new Dependency(
+                deps.add(new Arc(
                         tokens.get(token.getHead()),
                         token,
-                        token.getValue(UDIndex.DEPREL.getName()))
+                        token.getValue(Conll.DEPREL.getName()))
                 );
             }
         }
 
         GoldTree tree = new GoldTree();
-        Dependency [] dependencies = deps.toArray(new Dependency[deps.size()]);
+        Arc[] dependencies = deps.toArray(new Arc[deps.size()]);
         tree.setDependencies(dependencies);
         return tree;
     }

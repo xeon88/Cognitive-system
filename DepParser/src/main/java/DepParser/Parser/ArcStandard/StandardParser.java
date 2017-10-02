@@ -1,9 +1,9 @@
 package DepParser.Parser.ArcStandard;
 
 import DepParser.Model.ArcStandard;
-import DepParser.Model.ProjectiveTree;
+import DepParser.Model.Tree;
 import DepParser.Model.State;
-import DepParser.Parser.Sentence;
+import DepParser.Model.Sentence;
 import DepParser.Parser.TBParser;
 
 /**
@@ -11,19 +11,16 @@ import DepParser.Parser.TBParser;
  */
 public class StandardParser extends TBParser{
 
-    private StandardClassifier classifier;
-
-    public StandardParser(StandardClassifier classifier) {
-        super();
-        this.classifier = classifier;
+    public StandardParser( StandardClassifier classifier) {
+        super(classifier);
     }
 
     @Override
-    public ProjectiveTree parse(Sentence s) {
-        ProjectiveTree tree = new ProjectiveTree();
+    public Tree parse(Sentence s) {
+        Tree tree = new Tree();
         State state = new State(s);
         while (!state.isTerminal()){
-            ArcStandard.Type predicted = classifier.getBestAction(state);
+            ArcStandard.Type predicted = (ArcStandard.Type) classifier.getBestAction(state);
             state = predicted.apply(state);
         }
         tree.setDependencies(state.getArcs());

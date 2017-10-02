@@ -1,6 +1,6 @@
 package DepParser.Model;
 
-import DepParser.Utils.UDBankReader;
+import DepParser.Utils.ConllReader;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public class Features {
 
-    public static final int hashSize = (int)Math.pow(2,17);
+    public static final int hashSize = (int)Math.pow(2,15);
     public static final int size = 27;
 
     protected Token s0;
@@ -48,117 +48,117 @@ public class Features {
         try {
         int [] features = new int[]{
                 Feature.create(Feature.S0_POS.label ,  //#0
-                                s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
+                                s0.getValue(ConllReader.Conll.UPOSTAG.getName())),
 
                 Feature.create(Feature.S1_POS.label ,  //#1
-                                s1.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
+                                s1.getValue(ConllReader.Conll.UPOSTAG.getName())),
 
                 Feature.create(Feature.B0_POS.label , //#2
-                                b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
+                                b0.getValue(ConllReader.Conll.UPOSTAG.getName())),
 
                 Feature.create(Feature.B1_POS.label , //#3
-                                b1.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
+                                b1.getValue(ConllReader.Conll.UPOSTAG.getName())),
 
                 Feature.create(Feature.B2_POS.label , //#4
-                                b2.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
+                                b2.getValue(ConllReader.Conll.UPOSTAG.getName())),
 
                 Feature.create(Feature.S0_FORM.label , //#5
-                                s0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                s0.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.S1_FORM.label , //#6
-                                s1.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                s1.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.B0_FORM.label , //#7
-                                b0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                b0.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.B1_FORM.label , //#8
-                                b1.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                b1.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.S0_POS_FORM_B0_POS_FORM.label, //#9
-                        s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        s0.getValue(UDBankReader.UDIndex.FORM.getName()),
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        b0.getValue(UDBankReader.UDIndex.FORM.getName())
+                        s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        s0.getValue(ConllReader.Conll.FORM.getName()),
+                        b0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        b0.getValue(ConllReader.Conll.FORM.getName())
                         ),
 
                 Feature.create(Feature.S0_POS_FORM.label, //#10
-                                s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                s0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                s0.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.S1_POS_FORM.label, //#11
-                                s1.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                s1.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                s1.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                s1.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.B0_POS_FORM.label, //#12
-                                b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                b0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b0.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.B1_POS_FORM.label, //#13
-                                b1.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b1.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                b1.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b1.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.B2_POS_FORM.label, //#14
-                                b2.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b2.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                b2.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b2.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.S0_POS_B0_POS.label , //#15
-                                s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
+                                s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b0.getValue(ConllReader.Conll.UPOSTAG.getName())),
 
                 Feature.create(Feature.S0_FORM_B0_FORM.label , //#16
-                        s0.getValue(UDBankReader.UDIndex.FORM.getName()),
-                        b0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                        s0.getValue(ConllReader.Conll.FORM.getName()),
+                        b0.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.S0_POS_B0_FORM.label , //#17
-                                s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b0.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.S0_FORM_B0_POS.label , //#18
-                                s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b0.getValue(ConllReader.Conll.FORM.getName())),
                 Feature.create(Feature.B0_POS_B1_POS.label , //#19
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        b1.getValue(UDBankReader.UDIndex.UPOSTAG.getName())),
+                        b0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        b1.getValue(ConllReader.Conll.UPOSTAG.getName())),
+
                 Feature.create(Feature.S0_POS_FORM_B0_POS.label , //#20
-                                s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                s0.getValue(UDBankReader.UDIndex.FORM.getName()),
-                                b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
+                                s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                s0.getValue(ConllReader.Conll.FORM.getName()),
+                                b0.getValue(ConllReader.Conll.UPOSTAG.getName())
                                 ),
                 Feature.create(Feature.S0_POS_B0_POS_FORM.label , //#21
-                                s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                                b0.getValue(UDBankReader.UDIndex.FORM.getName())),
+                                s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                                b0.getValue(ConllReader.Conll.FORM.getName())),
 
                 Feature.create(Feature.S0H_POS_S0_POS_B0_POS.label, //#22
-                        s0h.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
+                        s0h.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        b0.getValue(ConllReader.Conll.UPOSTAG.getName())
                 ),
                 Feature.create(Feature.S0H_POS_FORM_S0_POS_FORM_B0_POS.label, //#23
-                        s0h.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        s0h.getValue(UDBankReader.UDIndex.FORM.getName()),
-                        s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        s0.getValue(UDBankReader.UDIndex.FORM.getName()),
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
+                        s0h.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        s0h.getValue(ConllReader.Conll.FORM.getName()),
+                        s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        s0.getValue(ConllReader.Conll.FORM.getName()),
+                        b0.getValue(ConllReader.Conll.UPOSTAG.getName())
                         ),
                 Feature.create(Feature.S0_POS_S0L_POS_B0_POS.label, //#24
-                        s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        s0l.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
+                        s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        s0l.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        b0.getValue(ConllReader.Conll.UPOSTAG.getName())
                         ),
                 Feature.create(Feature.S0_POS_S0R_POS_B0_POS.label,//#25
-                        s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        s0r.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
+                        s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        s0r.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        b0.getValue(ConllReader.Conll.UPOSTAG.getName())
                         ),
                 Feature.create(Feature.S0_POS_B0_POS_B0L_POS.label, //#26
-                        s0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        b0.getValue(UDBankReader.UDIndex.UPOSTAG.getName()),
-                        b0l.getValue(UDBankReader.UDIndex.UPOSTAG.getName())
+                        s0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        b0.getValue(ConllReader.Conll.UPOSTAG.getName()),
+                        b0l.getValue(ConllReader.Conll.UPOSTAG.getName())
                         )
         };
             return features;
-
         }
         catch (Exception ex){
             System.out.println("Error to parse state");

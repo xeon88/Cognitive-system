@@ -3,10 +3,12 @@ package DepParser.Model;
 /**
  * Created by Marco Corona on 11/08/2017.
  */
+
+
 public abstract class ArcSystem {
 
 
-    public interface operation {
+    public interface transition {
 
         public int getType();
         public String getName();
@@ -16,7 +18,7 @@ public abstract class ArcSystem {
     }
 
 
-    public static String []  getAllActionName( operation [] actions){
+    public static String []  getAllActionName( transition[] actions){
 
         String out [] = new String[actions.length];
         for (int i=0; i<actions.length ; i++ ){
@@ -24,8 +26,5 @@ public abstract class ArcSystem {
         }
         return out;
     }
-
-
-
 
 }

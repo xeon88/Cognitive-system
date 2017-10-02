@@ -2,7 +2,6 @@ package DepParser.Parser;
 
 
 import DepParser.Model.ArcSystem;
-import DepParser.Model.Features;
 import DepParser.Model.Model;
 import DepParser.Model.State;
 
@@ -26,6 +25,6 @@ public abstract class Classifier {
         this.model = model;
     }
 
-    public abstract ArcSystem.operation getBestAction(State state);
+    public abstract ArcSystem.transition getBestAction(State state);
 
 }

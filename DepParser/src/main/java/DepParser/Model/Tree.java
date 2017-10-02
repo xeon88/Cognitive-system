@@ -3,36 +3,22 @@ package DepParser.Model;
 /**
  * Created by Marco Corona on 03/08/2017.
  */
-public class ProjectiveTree {
 
-    private Dependency[] dependencies;
+public class Tree {
 
-    public ProjectiveTree(){
+    private Arc[] dependencies;
+
+    public Tree(){
     }
 
-    public void setDependencies(Dependency [] deps){
+    public void setDependencies(Arc[] deps){
         this.dependencies = deps;
     }
 
-    public Dependency[] getDependencies() {
+    public Arc[] getDependencies() {
         return dependencies;
     }
 
-
-
-    public void printDeps(){
-
-        System.out.println("Deps List : \n");
-        String deps = "";
-        if(dependencies!=null){
-            for(int i = 0; i<dependencies.length; i++){
-                if(dependencies[i]!=null){
-                    deps += dependencies[i].toString() + "\n";
-                }
-            }
-        }
-        System.out.println(deps);
-    }
 
 
     public boolean isProjectiveTree(){
@@ -72,7 +58,6 @@ public class ProjectiveTree {
                     idxHead = dependencies[idxHead-1].getHead().getIndex();
                     if(idxHead==dependencies[arc].getHead().getIndex()){
                         flag = true;
-                        //System.out.println("path found from" + idxHead + " to" + i);
                         break;
                     }
                 }
@@ -83,6 +68,21 @@ public class ProjectiveTree {
         return proj;
     }
 
+    public void printDeps(){
+
+        System.out.println("Deps List : \n");
+        String deps = "";
+        if(dependencies!=null){
+            for(int i = 0; i<dependencies.length; i++){
+                if(dependencies[i]!=null){
+                    deps += dependencies[i].toString() + "\n";
+                }
+            }
+        }
+        System.out.println(deps);
+    }
+
+
     @Override
     public boolean equals(Object obj){
 
@@ -90,11 +90,11 @@ public class ProjectiveTree {
             return false;
         }
 
-        if(!ProjectiveTree.class.isAssignableFrom(obj.getClass())){
+        if(!Tree.class.isAssignableFrom(obj.getClass())){
             return false;
         }
 
-        ProjectiveTree t = (ProjectiveTree) obj;
+        Tree t = (Tree) obj;
 
         if(this.dependencies.length!=t.dependencies.length) return false;
 

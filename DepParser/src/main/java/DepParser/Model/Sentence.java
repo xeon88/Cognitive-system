@@ -1,6 +1,5 @@
-package DepParser.Parser;
+package DepParser.Model;
 
-import DepParser.Model.Token;
 
 /**
  * Created by Marco Corona on 17/08/2017.

@@ -9,9 +9,11 @@ public class Model {
 
     private float [][][] weights ;
     private float [][][] averageWeights;
+    private int operators;
 
     public Model(int operators){
 
+        this.operators = operators;
         weights= new float[Features.size][Features.hashSize][operators];
 
         for(int i = 0; i<weights.length ; i++){
@@ -63,7 +65,7 @@ public class Model {
 
 
     public float[][][] getResultWeights(int count){
-        float [][][] result = new float[Features.size][Features.hashSize][weights[0][0].length];
+        float [][][] result = new float[Features.size][Features.hashSize][operators];
         for(int feature = 0; feature<weights.length ; feature++){
             for(int hash = 0; hash<weights[feature].length; hash++){
                 for(int action=0; action<weights[feature][hash].length ; action++){

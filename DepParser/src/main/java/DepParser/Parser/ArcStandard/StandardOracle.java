@@ -3,8 +3,8 @@ package DepParser.Parser.ArcStandard;
 
 import DepParser.Model.*;
 import DepParser.Parser.Oracle;
-import DepParser.Parser.Sentence;
-import DepParser.Utils.UDBankReader;
+import DepParser.Model.Sentence;
+import DepParser.Utils.ConllReader;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,7 +19,7 @@ public class StandardOracle extends Oracle {
     }
 
     public ArcStandard.Type[] getZeroCostAction(State state) {
-        ArcStandard.Type [] appliable = (ArcStandard.Type[]) ArcStandard.getValidAction(state);
+        ArcStandard.Type [] appliable = (ArcStandard.Type[]) ArcStandard.getValidActions(state);
         ArrayList<ArcStandard.Type> zeroCost = new ArrayList<ArcStandard.Type>();
         for(ArcStandard.Type action : appliable){
             if(getCostAction(action,state)==0){
@@ -30,7 +30,7 @@ public class StandardOracle extends Oracle {
     }
 
 
-    public int getCostAction(ArcSystem.operation action, State state) {
+    public int getCostAction(ArcSystem.transition action, State state) {
         return 0;
     }
 
@@ -74,40 +74,46 @@ public class StandardOracle extends Oracle {
     @Override
     public ArcStandard.Type getAction(State state) {
 
+        /*
         if(state.getStack().isEmpty()){
             return ArcStandard.Type.SHIFT;
         }
+        */
+
 
         Token topStack = state.getTopStack();
         Token firstBuffer = state.getFirstBuffer();
         Token[] tokens = state.getInput().tokens;
-        Dependency[] arcs = state.getArcs();
+        Arc[] arcs = state.getArcs();
 
 
-        if (topStack.getHead() == firstBuffer.getIndex() && ArcStandard.Type.isLeftAppliable(state)) {
-            if(topStack.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("nsubj")){
+        if (ArcStandard.Type.isLeftAppliable(state) && topStack.getHead() == firstBuffer.getIndex()) {
+            String relationTop = topStack.getValue(ConllReader.Conll.DEPREL.getName());
+
+            if(relationTop.equals("nsubj")){
                 return ArcStandard.Type.LEFT_NSUBJ;
             }
-            if(topStack.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("dobj")){
+            if(relationTop.equals("dobj")){
                 return ArcStandard.Type.LEFT_DOBJ;
             }
-            if(topStack.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("noname")){
+            if(relationTop.equals("noname")){
                 return ArcStandard.Type.LEFT_OTHER;
             }
 
         }
 
-        else if (firstBuffer.getHead() == topStack.getIndex()
-                && ArcStandard.Type.isRightAppliable(state)
+        else if (ArcStandard.Type.isRightAppliable(state) && firstBuffer.getHead() == topStack.getIndex()
                 && checkChilds(firstBuffer.getIndex(),state)){
 
-            if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("nsubj")){
+            String relationFirst = firstBuffer.getValue(ConllReader.Conll.DEPREL.getName());
+
+            if(relationFirst.equals("nsubj")){
                 return ArcStandard.Type.RIGHT_NSUBJ;
             }
-            if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("dobj")){
+            if(relationFirst.equals("dobj")){
                 return ArcStandard.Type.RIGHT_DOBJ;
             }
-            if(firstBuffer.getValue(UDBankReader.UDIndex.DEPREL.getName()).equals("noname")){
+            if(relationFirst.equals("noname")){
                 return ArcStandard.Type.RIGHT_OTHER;
             }
         }
@@ -127,9 +133,9 @@ public class StandardOracle extends Oracle {
 
 
     public boolean checkChilds(int head, State state){
-        Dependency[] arcs = state.getArcs();
-        Dependency [] gold = goldTrees.get(state.getInput().id).getDependencies();
-        for(Dependency arc : gold ){
+        Arc[] arcs = state.getArcs();
+        Arc[] gold = goldTrees.get(state.getInput().id).getDependencies();
+        for(Arc arc : gold ){
             if(arc.getHead().getIndex()==head){
                 if(arcs[arc.getDependent().getIndex()-1]==null){
                     return false;

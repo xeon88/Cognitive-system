@@ -1,6 +1,6 @@
 package DepParser.Utils;
 
-import DepParser.Model.Dependency;
+import DepParser.Model.Arc;
 import DepParser.Model.Token;
 
 import java.util.Collection;
@@ -74,7 +74,7 @@ public class PrintUltis {
 
 
 
-    public static String toString(Dependency [] arcs){
+    public static String toString(Arc[] arcs){
 
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i<arcs.length ; i++){
@@ -84,7 +84,7 @@ public class PrintUltis {
         return builder.toString();
     }
 
-    public static String toString(Dependency [] arcs,int lastpos){
+    public static String toString(Arc[] arcs, int lastpos){
 
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i<lastpos ; i++){

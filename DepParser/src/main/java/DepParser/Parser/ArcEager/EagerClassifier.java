@@ -29,7 +29,7 @@ public class EagerClassifier extends Classifier{
         ArcEager.Type best = ArcEager.Type.NOP;
         Features fts = new Features(state);
         int [] featuresVector = fts.extract();
-        ArcEager.Type [] valid = ArcEager.getValidAction(state);
+        ArcEager.Type [] valid = ArcEager.getValidActions(state);
         double[] scores = new double[ArcEager.Type.values().length-1];
         for(ArcEager.Type action : valid){
             double score = model.getScore(action.getType(), featuresVector);
@@ -49,7 +49,7 @@ public class EagerClassifier extends Classifier{
 
         Features fts = new Features(state);
         int [] featuresVector = fts.extract();
-        ArcEager.Type [] valid = ArcEager.getValidAction(state);
+        ArcEager.Type [] valid = ArcEager.getValidActions(state);
         double[] scores = new double[ArcEager.Type.values().length-1];
         for(ArcEager.Type action : valid){
             double score = model.getScore(action.getType(), featuresVector);

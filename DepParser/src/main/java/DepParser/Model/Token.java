@@ -1,6 +1,6 @@
 package DepParser.Model;
 
-import DepParser.Utils.UDBankReader;
+import DepParser.Utils.ConllReader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -72,12 +72,12 @@ public class Token implements Cloneable{
     }
 
     public boolean isRoot(){
-        return index==0 && attributes.get(UDBankReader.UDIndex.FORM.getName()).equals("<ROOT>");
+        return index==0 && attributes.get(ConllReader.Conll.FORM.getName()).equals("<ROOT>");
 
     }
 
     public boolean isFake(){
-        return index==-1 && head==-1 && attributes.get(UDBankReader.UDIndex.FORM.getName()).equals("") ;
+        return index==-1 && head==-1 && attributes.get(ConllReader.Conll.FORM.getName()).equals("") ;
     }
 
     public void setIndex(int i){
@@ -93,12 +93,7 @@ public class Token implements Cloneable{
     }
 
     public String getValue(String attr){
-        if(!attributes.containsKey(attr)){
-            return null;
-        }
-        else{
-            return attributes.get(attr);
-        }
+        return  attributes.containsKey(attr) ? attributes.get(attr) : null;
     }
 
 

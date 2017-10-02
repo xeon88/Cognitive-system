@@ -19,7 +19,7 @@ public class StandardClassifier extends Classifier {
         ArcStandard.Type best = ArcStandard.Type.NOP;
         Features fts = new Features(state);
         int [] featuresVector = fts.extract();
-        ArcStandard.Type [] valid = (ArcStandard.Type[]) ArcStandard.getValidAction(state);
+        ArcStandard.Type [] valid = (ArcStandard.Type[]) ArcStandard.getValidActions(state);
         double[] scores = new double[ArcEager.Type.values().length-1];
         for(ArcStandard.Type action : valid){
             double score = model.getScore(action.getType(), featuresVector);
@@ -38,7 +38,7 @@ public class StandardClassifier extends Classifier {
 
         Features fts = new Features(state);
         int [] featuresVector = fts.extract();
-        ArcStandard.Type [] valid = (ArcStandard.Type[]) ArcStandard.getValidAction(state);
+        ArcStandard.Type [] valid = (ArcStandard.Type[]) ArcStandard.getValidActions(state);
         double[] scores = new double[ArcEager.Type.values().length-1];
         for(ArcStandard.Type action : valid){
             double score = model.getScore(action.getType(), featuresVector);
@@ -46,6 +46,4 @@ public class StandardClassifier extends Classifier {
         }
         return scores;
     }
-
-
 }

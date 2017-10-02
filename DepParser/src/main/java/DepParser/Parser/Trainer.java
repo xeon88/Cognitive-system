@@ -11,17 +11,19 @@ import java.util.*;
  */
 
 
-public abstract  class Trainer{
+public abstract  class Trainer implements ConllStorage{
 
     protected Oracle oracle;
     protected Classifier classifier;
     protected Model model;   
     protected int count;
+    protected int epoch;
 
     public Trainer(int operators) {
 
         this.model = new Model(operators);
         count = 1;
+        epoch = 50;
     }
 
 
@@ -41,7 +43,6 @@ public abstract  class Trainer{
         return count;
     }
 
-    public abstract void train(GoldTree tree, Sentence s);
 
     public void updates(int [] features, int oracle, int predicted, int count ){
         model.updateWeights(features, oracle, 1);
@@ -51,6 +52,18 @@ public abstract  class Trainer{
     }
 
 
+    public void updates(int [] features, int oracle, int predicted, int count , int max){
+        model.updateWeights(features, oracle, 1);
+        model.updateWeights(features, predicted, max==0 ? 1 : -max);
+        model.updateMeanWeights(features,oracle,count);
+        model.updateMeanWeights(features,predicted,max==0 ? count : -max*count);
+    }
+
+    public void setResultWeights(){
+        float [][][] result = model.getResultWeights(count);
+        model.setWeights(result);
+        classifier.setModel(model);
+    }
 }
 
 
